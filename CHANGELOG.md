@@ -1,3 +1,7 @@
+# 1.0.0-alpha.1 (2019-11-08)
+
+
+
 <a name="0.37.0"></a>
 # [0.37.0](https://github.com/algolia/autocomplete.js/compare/v0.36.0...v0.37.0) (2019-08-30)
 
