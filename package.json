@@ -1,7 +1,7 @@
 {
   "name": "@francoischalifour/autocomplete.js",
   "description": "Fast and fully-featured autocomplete JavaScript library.",
-  "version": "1.0.0-alpha.3",
+  "version": "1.0.0-alpha.4",
   "license": "MIT",
   "homepage": "https://github.com/algolia/autocomplete.js",
   "repository": "algolia/autocomplete.js",

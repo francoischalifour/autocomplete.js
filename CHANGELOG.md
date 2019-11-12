@@ -1,3 +1,12 @@
+# [1.0.0-alpha.4](https://github.com/algolia/autocomplete.js/compare/v1.0.0-alpha.3...v1.0.0-alpha.4) (2019-11-12)
+
+
+### Bug Fixes
+
+* **Template:** support React elements ([be614ac](https://github.com/algolia/autocomplete.js/commit/be614aca8f3ce9caa07a93ae0b46fca6a29f7838))
+
+
+
 # [1.0.0-alpha.3](https://github.com/algolia/autocomplete.js/compare/v1.0.0-alpha.2...v1.0.0-alpha.3) (2019-11-12)
 
 
