@@ -1,3 +1,24 @@
+# [1.0.0-alpha.3](https://github.com/algolia/autocomplete.js/compare/v1.0.0-alpha.2...v1.0.0-alpha.3) (2019-11-12)
+
+
+### Bug Fixes
+
+* **Dropdown:** add React keys ([8f5ca9b](https://github.com/algolia/autocomplete.js/commit/8f5ca9b4af439ab767ce5da0c0ad9630f198c447))
+* **SearchBox:** convert SVG attributes to props ([ba7fae4](https://github.com/algolia/autocomplete.js/commit/ba7fae40e236c9ab94f9ccc04c945568f45479a1))
+* fix linting issues ([5bdab0c](https://github.com/algolia/autocomplete.js/commit/5bdab0c04b88f14f9c3787309dd5b72d2c10f746))
+* prevent default Downshift event on special key down and click ([3f672a6](https://github.com/algolia/autocomplete.js/commit/3f672a67ef376ea41ba42af71c55ebed42dbaf64))
+* **SearchBox:** don't prevent default on form reset ([a6a09e0](https://github.com/algolia/autocomplete.js/commit/a6a09e08a6e45859cb97face51b4743adac59c57))
+* **sources:** normalize sources when calling `setResult` ([8903aa4](https://github.com/algolia/autocomplete.js/commit/8903aa4d485af384eafc19e2ba0db7c04370511f))
+
+
+### Features
+
+* **api:** sanitize `getSources()` to add default values ([855b558](https://github.com/algolia/autocomplete.js/commit/855b5582c1dbec45be4ee16cb0b2d47cd2ed0cac))
+* **navigator:** introduce Navigator API ([6445db5](https://github.com/algolia/autocomplete.js/commit/6445db59e4f5d0b97290a86d6b43dbeb2d91c010))
+* **SearchBox:** allow custom templates ([802e24f](https://github.com/algolia/autocomplete.js/commit/802e24fbe47a23679395a18506987e3b043e4abc))
+
+
+
 # [1.0.0-alpha.2](https://github.com/algolia/autocomplete.js/compare/v1.0.0-alpha.1...v1.0.0-alpha.2) (2019-11-08)
 
 
