@@ -974,10 +974,6 @@ storiesOf('Options', module)
         minLength: 0,
         showCompletion: true,
         defaultHighlightedIndex: -1,
-        transformResultsRender: results => {
-          console.log(results);
-          return results;
-        },
         getSources({ query, setContext }) {
           return getAlgoliaResults({
             searchClient,
