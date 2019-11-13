@@ -10,3 +10,6 @@ dist/
 
 # Deployment build files
 /website/stories
+
+# IDE
+.vscode/
