@@ -1,3 +1,18 @@
+# [1.0.0-alpha.5](https://github.com/algolia/autocomplete.js/compare/v1.0.0-alpha.4...v1.0.0-alpha.5) (2019-11-13)
+
+
+### Bug Fixes
+
+* **Autocomplete:** fix inconsistent query state on reset ([c033d85](https://github.com/algolia/autocomplete.js/commit/c033d85b58830b5d9eca08b861f967889be30d49))
+* **Navigator:** open in new window with `noopener` ([384bf55](https://github.com/algolia/autocomplete.js/commit/384bf5524a799ba08ccd4ae28d3e32e2fbdf327b))
+
+
+### Features
+
+* **dropdown:** inject custom classNames to rendered sources ([e781560](https://github.com/algolia/autocomplete.js/commit/e781560bee1097bddb43f69f158f746059c5d849))
+
+
+
 # [1.0.0-alpha.4](https://github.com/algolia/autocomplete.js/compare/v1.0.0-alpha.3...v1.0.0-alpha.4) (2019-11-12)
 
 
