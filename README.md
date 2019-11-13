@@ -567,6 +567,12 @@ const source = {
 
 Called when an item is selected.
 
+#### `classNames`
+
+> `ClassNames`
+
+CSS classes applied to the template after the source
+
 ### State
 
 The Autocomplete.js state drives the behavior of the experience.
