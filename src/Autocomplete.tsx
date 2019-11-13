@@ -45,7 +45,7 @@ function hasResults(results: Result[]): boolean {
 }
 
 /**
- * Called by default to decide if the dropdown should open based on the autocompete state.
+ * Called by default to decide if the dropdown should open based on the autocomplete state.
  */
 const defaultShouldDropdownOpen: AutocompleteProps['shouldDropdownOpen'] = ({
   state,
