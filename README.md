@@ -571,7 +571,7 @@ Called when an item is selected.
 
 > `ClassNames`
 
-CSS classes applied to the template after the source
+CSS classes applied to the template after the source.
 
 ### State
 
