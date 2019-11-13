@@ -1,3 +1,12 @@
+# [1.0.0-alpha.6](https://github.com/algolia/autocomplete.js/compare/v1.0.0-alpha.5...v1.0.0-alpha.6) (2019-11-13)
+
+
+### Bug Fixes
+
+* **Autocomplete:** convert to Preact elements when using `transformResultsRender` ([d3fd224](https://github.com/algolia/autocomplete.js/commit/d3fd224aef887dc2e9d1325f7c53abc53739fb39))
+
+
+
 # [1.0.0-alpha.5](https://github.com/algolia/autocomplete.js/compare/v1.0.0-alpha.4...v1.0.0-alpha.5) (2019-11-13)
 
 
