@@ -407,6 +407,12 @@ Called when the input changes.
 
 This turns experience is "controlled" mode. You'll be in charge of updating the state with the [top-level API](#autocomplete).
 
+#### `shouldDropdownOpen`
+
+> `(options: { state: AutocompleteState }) => boolean`
+
+Needed to check if the dropdown should open depending on the Autocomplete state.
+
 ### Sources
 
 An Autocomplete source refers to an object with the following properties:

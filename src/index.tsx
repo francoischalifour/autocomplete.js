@@ -30,6 +30,7 @@ function autocomplete(options: AutocompleteOptions): AutocompleteApi {
     templates,
     navigator,
     transformResultsRender,
+    shouldDropdownOpen,
   } = options || {};
 
   const autocompleteRef = createRef();
@@ -64,6 +65,7 @@ function autocomplete(options: AutocompleteOptions): AutocompleteApi {
       onClick={onClick}
       onError={onError}
       onKeyDown={onKeyDown}
+      shouldDropdownOpen={shouldDropdownOpen}
     />,
     containerElement
   );
