@@ -1444,7 +1444,6 @@ storiesOf('Options', module)
         },
         shouldDropdownOpen: () => true,
       });
-
       return container;
     })
   );
