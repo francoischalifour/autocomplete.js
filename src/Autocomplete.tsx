@@ -26,7 +26,6 @@ import {
   PublicAutocompleteSource,
   DropdownPosition,
 } from './types';
-import { statement } from '@babel/template';
 
 export const defaultEnvironment: Environment =
   typeof window === 'undefined' ? ({} as Environment) : window;
