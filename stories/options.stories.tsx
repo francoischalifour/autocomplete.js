@@ -1219,6 +1219,7 @@ storiesOf('Options', module)
         minLength: 4,
         showCompletion: true,
         defaultHighlightedIndex: -1,
+        shouldDropdownOpen: () => true,
         getSources({ query, setContext }) {
           return getAlgoliaResults({
             searchClient,
@@ -1442,7 +1443,6 @@ storiesOf('Options', module)
             ];
           });
         },
-        shouldDropdownOpen: () => true,
       });
       return container;
     })
