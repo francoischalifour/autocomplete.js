@@ -342,7 +342,7 @@ export interface PublicAutocompleteProps {
     }
   ) => void | Promise<void | { state: AutocompleteState }>;
   /**
-   * Called to know if the dropdown should be opened depending on the state.
+   * Called to check whether the dropdown should open based on the Autocomplete state.
    */
   shouldDropdownOpen?(options: { state: AutocompleteState }): boolean;
 }
