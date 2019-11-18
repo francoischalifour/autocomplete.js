@@ -808,15 +808,15 @@ function ControlledAutocomplete(props: ControlledAutocompleteProps) {
               onReset={(event: Event) => {
                 event.preventDefault();
 
+                if (inputRef.current) {
+                  inputRef.current.focus();
+                }
+
                 onInput({
                   query: '',
                   state,
                   ...setters,
                 });
-
-                if (inputRef.current) {
-                  inputRef.current.focus();
-                }
               }}
               onSubmit={(event: Event) => {
                 event.preventDefault();
