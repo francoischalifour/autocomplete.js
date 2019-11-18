@@ -1,3 +1,12 @@
+# [1.0.0-alpha.8](https://github.com/algolia/autocomplete.js/compare/v1.0.0-alpha.7...v1.0.0-alpha.8) (2019-11-18)
+
+
+### Features
+
+* **getDropdownPosition:** add feature to position the dropdown ([3449a40](https://github.com/algolia/autocomplete.js/commit/3449a40bd1afa0ad9c952f096839e54b2d6d901b))
+
+
+
 # [1.0.0-alpha.7](https://github.com/algolia/autocomplete.js/compare/v1.0.0-alpha.6...v1.0.0-alpha.7) (2019-11-18)
 
 
