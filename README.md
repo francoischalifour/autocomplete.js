@@ -411,7 +411,9 @@ This turns experience is "controlled" mode. You'll be in charge of updating the 
 
 > `(options: { state: AutocompleteState }) => boolean`
 
-Needed to check if the dropdown should open depending on the Autocomplete state.
+Called to check whether the dropdown should open based on the Autocomplete state.
+
+The default behavior is to open the dropdown when there are results.
 
 ### Sources
 
