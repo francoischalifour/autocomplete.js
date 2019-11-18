@@ -1,3 +1,17 @@
+# [1.0.0-alpha.7](https://github.com/algolia/autocomplete.js/compare/v1.0.0-alpha.6...v1.0.0-alpha.7) (2019-11-18)
+
+
+### Bug Fixes
+
+* **Dropdown:** compute right position based on client width ([83fc49e](https://github.com/algolia/autocomplete.js/commit/83fc49e606baec232a3351ac0a922117ff01e49c))
+
+
+### Reverts
+
+* chore: release v1.0.0-alpha.7 ([#9](https://github.com/algolia/autocomplete.js/issues/9)) ([1516eef](https://github.com/algolia/autocomplete.js/commit/1516eef6b9e7ab2cb3a5c76ee9dca2c1651921e0))
+
+
+
 # [1.0.0-alpha.6](https://github.com/algolia/autocomplete.js/compare/v1.0.0-alpha.5...v1.0.0-alpha.6) (2019-11-13)
 
 
