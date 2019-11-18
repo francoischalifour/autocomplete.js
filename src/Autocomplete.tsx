@@ -49,7 +49,9 @@ function hasResults(results: Result[]): boolean {
  */
 const defaultShouldDropdownOpen: AutocompleteProps['shouldDropdownOpen'] = ({
   state,
-}) => hasResults(state.results);
+}) => {
+  return hasResults(state.results);
+};
 
 function defaultOnInput({
   query,
