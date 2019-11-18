@@ -409,7 +409,7 @@ This turns experience is "controlled" mode. You'll be in charge of updating the 
 
 #### `shouldDropdownOpen`
 
-> `(options: { state: AutocompleteState }) => boolean`
+> `(options: { state: AutocompleteState }) => boolean` | defaults to `({ state }) => state.results.some(result => result.suggestions.length > 0)`
 
 Called to check whether the dropdown should open based on the Autocomplete state.
 
