@@ -1,3 +1,19 @@
+# [1.0.0-alpha.9](https://github.com/algolia/autocomplete.js/compare/v1.0.0-alpha.8...v1.0.0-alpha.9) (2019-11-19)
+
+
+### Bug Fixes
+
+* **autocomplete:** add `replaceNode` for Preact to reuse the same element ([156c25a](https://github.com/algolia/autocomplete.js/commit/156c25a6e76b4c322d2ff18114f531210ffa78d4)), closes [/github.com/preactjs/preact/blob/3a8b14f5b2d8fdc7998ba6333c25b3dc3a2ae6fd/src/render.js#L13](https://github.com//github.com/preactjs/preact/blob/3a8b14f5b2d8fdc7998ba6333c25b3dc3a2ae6fd/src/render.js/issues/L13)
+* **onFocus:** do not trigger `onInput` when focusing with same query ([ca603eb](https://github.com/algolia/autocomplete.js/commit/ca603eb3197ee5b214b1e11c126b092822a29a2f))
+
+
+### Features
+
+* **shouldDropdownOpen:** introduce option to open the menu programmatically ([#8](https://github.com/algolia/autocomplete.js/issues/8)) ([962e99e](https://github.com/algolia/autocomplete.js/commit/962e99ebf1e3a548a7441127531f07679f38e23e)), closes [#5](https://github.com/algolia/autocomplete.js/issues/5)
+* **shouldDropdownOpen:** reverse behavior to work with empty results by default ([6235c1d](https://github.com/algolia/autocomplete.js/commit/6235c1d0fc264d7c290cd7909567ffde560d17bb))
+
+
+
 # [1.0.0-alpha.8](https://github.com/algolia/autocomplete.js/compare/v1.0.0-alpha.7...v1.0.0-alpha.8) (2019-11-18)
 
 
