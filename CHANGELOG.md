@@ -1,3 +1,19 @@
+# [1.0.0-alpha.10](https://github.com/algolia/autocomplete.js/compare/v1.0.0-alpha.9...v1.0.0-alpha.10) (2020-01-09)
+
+
+### Bug Fixes
+
+* **Autocomplete:** merge Navigator API options with defaults ([3515aa6](https://github.com/algolia/autocomplete.js/commit/3515aa67d2ecfb0b4140fb3d599e15f9ef06440a))
+* **onInput:** don't call `getSuggestions` when querying spaces ([9b33e10](https://github.com/algolia/autocomplete.js/commit/9b33e1054ef0778d6a55826ed9b2768297b18879))
+* **showCompletion:** do not show completion if query is the same as completion ([0f0404d](https://github.com/algolia/autocomplete.js/commit/0f0404dedf35167d226847a955137deeaba9eb09))
+
+
+### Reverts
+
+* refactor(onReset): focus input after `onInput` ([34c3e4f](https://github.com/algolia/autocomplete.js/commit/34c3e4f3ba3ac60906112fab9890c0384cb1c1ce))
+
+
+
 # [1.0.0-alpha.9](https://github.com/algolia/autocomplete.js/compare/v1.0.0-alpha.8...v1.0.0-alpha.9) (2019-11-19)
 
 
