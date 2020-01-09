@@ -23,6 +23,7 @@
     "dist",
     "node_modules",
     "stories",
+    "examples",
     "website"
   ]
 }
