@@ -24,7 +24,6 @@ import {
   PublicAutocompleteProps,
   Result,
   PublicAutocompleteSource,
-  DropdownPosition,
 } from './types';
 
 export const defaultEnvironment = (typeof window === 'undefined'
@@ -345,7 +344,6 @@ function UncontrolledAutocomplete(
     },
     dropdownContainer = environment.document.body,
     dropdownAlignment = 'left',
-    getDropdownPosition = ({ dropdownPosition }) => dropdownPosition,
     templates = {},
     initialState = {},
     transformResultsRender = (results: JSX.Element[]) => results,
@@ -463,7 +461,6 @@ function UncontrolledAutocomplete(
       keyboardShortcuts={keyboardShortcuts}
       dropdownContainer={dropdownContainer}
       dropdownAlignment={dropdownAlignment}
-      getDropdownPosition={getDropdownPosition}
       templates={templates}
       initialState={initialState}
       transformResultsRender={transformResultsRender}
@@ -515,6 +512,7 @@ interface ControlledAutocompleteProps
   setIsStalled: StateUpdater<AutocompleteState['isStalled']>;
   setError: StateUpdater<AutocompleteState['error']>;
   setContext: StateUpdater<AutocompleteState['context']>;
+  inputRef: Ref<HTMLElement | null>;
 }
 
 function ControlledAutocomplete(props: ControlledAutocompleteProps) {
@@ -530,7 +528,6 @@ function ControlledAutocomplete(props: ControlledAutocompleteProps) {
     environment,
     dropdownContainer,
     dropdownAlignment,
-    getDropdownPosition,
     templates,
     transformResultsRender,
     onFocus,
@@ -556,11 +553,8 @@ function ControlledAutocomplete(props: ControlledAutocompleteProps) {
     context,
   } = props;
 
-  const [dropdownRect, setDropdownRect] = useState<
-    DropdownPosition | undefined
-  >(undefined);
-
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const searchboxRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
     function onGlobalKeyDown(event: KeyboardEvent): void {
@@ -602,40 +596,6 @@ function ControlledAutocomplete(props: ControlledAutocompleteProps) {
       }
     };
   }, [environment, keyboardShortcuts]);
-
-  useEffect(() => {
-    environment.addEventListener('resize', onResize);
-
-    return () => {
-      environment.removeEventListener('resize', onResize);
-    };
-  }, [environment]);
-
-  useEffect(() => {
-    // We need to track the container position because the dropdown position is
-    // computed based on the container position.
-    onResize();
-  }, [container, dropdownContainer]);
-
-  function onResize(): void {
-    const containerRect = container.getBoundingClientRect();
-    const dropdownPosition = {
-      top: containerRect.top + containerRect.height,
-      left: dropdownAlignment === 'left' ? containerRect.left : undefined,
-      right:
-        dropdownAlignment === 'right'
-          ? environment.document.documentElement.clientWidth -
-            (containerRect.left + containerRect.width)
-          : undefined,
-    };
-
-    setDropdownRect(
-      getDropdownPosition({
-        containerRect,
-        dropdownPosition,
-      })
-    );
-  }
 
   const isQueryLongEnough = query.length >= minLength;
   const shouldOpen =
@@ -700,6 +660,7 @@ function ControlledAutocomplete(props: ControlledAutocompleteProps) {
               .join(' ')}
           >
             <SearchBox
+              ref={searchboxRef}
               placeholder={placeholder}
               autofocus={autofocus}
               completion={getCompletion({
@@ -856,7 +817,6 @@ function ControlledAutocomplete(props: ControlledAutocompleteProps) {
 
             {createPortal(
               <Dropdown
-                position={dropdownRect}
                 hidden={!shouldOpen}
                 isOpen={isOpen}
                 isStalled={isStalled}
@@ -871,6 +831,8 @@ function ControlledAutocomplete(props: ControlledAutocompleteProps) {
                 onClick={onClick}
                 getMenuProps={getMenuProps}
                 getItemProps={getItemProps}
+                alignment={dropdownAlignment}
+                searchboxRef={searchboxRef}
               />,
               dropdownContainer
             )}

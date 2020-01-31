@@ -1,6 +1,9 @@
 /** @jsx h */
 
-import { h } from 'preact';
+import { h, Ref } from 'preact';
+import { createPopper } from '@popperjs/core/lib/popper-lite';
+import offsetModifier from '@popperjs/core/lib/modifiers/offset';
+import { useLayoutEffect, useRef } from 'preact/hooks';
 
 import { Template } from './Template';
 import {
@@ -8,12 +11,10 @@ import {
   AutocompleteState,
   AutocompleteProps,
   AutocompleteSetters,
-  DropdownPosition,
 } from './types';
 import { convertToPreactChildren } from './utils';
 
 interface DropdownProps extends AutocompleteState {
-  position: DropdownPosition | undefined;
   hidden: boolean;
   templates: AutocompleteProps['templates'];
   onClick: AutocompleteProps['onClick'];
@@ -21,10 +22,11 @@ interface DropdownProps extends AutocompleteState {
   setters: AutocompleteSetters;
   getItemProps(options?: object): any;
   getMenuProps(options?: object): any;
+  alignment: 'left' | 'right';
+  searchboxRef: Ref<HTMLInputElement | null>;
 }
 
 export const Dropdown = ({
-  position,
   hidden,
   isOpen,
   isStalled,
@@ -39,7 +41,10 @@ export const Dropdown = ({
   onClick,
   getItemProps,
   getMenuProps,
+  searchboxRef,
 }: DropdownProps) => {
+  const dropdownRef = useRef<HTMLElement>();
+  const popperInstance = useRef();
   const state = {
     isOpen,
     isStalled,
@@ -50,17 +55,23 @@ export const Dropdown = ({
     results,
   };
 
-  // Sanitize the dropdown position to only extract the number values so that
-  // the style is correct.
-  const positionStyle =
-    position &&
-    Object.keys(position).reduce<{ [key: string]: number }>((acc, current) => {
-      if (typeof position[current] === 'number') {
-        acc[current] = position[current];
-      }
+  useLayoutEffect(() => {
+    if (searchboxRef.current && dropdownRef.current) {
+      popperInstance.current = createPopper(
+        searchboxRef.current,
+        dropdownRef.current,
+        {
+          placement: `bottom`,
+          modifiers: [{ ...offsetModifier, options: { offset: [0, 5] } }],
+        }
+      );
+    }
+    return () => popperInstance.current.destroy();
+  }, [searchboxRef, dropdownRef]);
 
-      return acc;
-    }, {});
+  useLayoutEffect(() => {
+    isOpen && popperInstance.current && popperInstance.current.update();
+  }, [isOpen]);
 
   return (
     <div
@@ -71,8 +82,8 @@ export const Dropdown = ({
       ]
         .filter(Boolean)
         .join(' ')}
-      style={positionStyle}
       hidden={hidden}
+      ref={dropdownRef}
     >
       <div className="algolia-autocomplete-dropdown-container">
         <Template

@@ -39,6 +39,7 @@
     "release:trigger": "shipjs trigger"
   },
   "dependencies": {
+    "@popperjs/core": "^2.0.4",
     "downshift": "https://github.com/francoischalifour/downshift#ac372e473eea78ac7db8775acbae6726adc7e325",
     "preact": "^10.0.0"
   },
