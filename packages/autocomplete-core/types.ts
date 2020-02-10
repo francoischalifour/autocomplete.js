@@ -36,8 +36,9 @@ export type GetRootProps = (props?: {
   'aria-labelledby': string;
 };
 
-export type GetFormProps = (props?: {
+export type GetFormProps = (props: {
   [key: string]: unknown;
+  inputElement: HTMLInputElement;
 }) => {
   onSubmit(event: Event): void;
   onReset(event: Event): void;
