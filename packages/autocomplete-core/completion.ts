@@ -13,7 +13,12 @@ export function getCompletion<TItem>({
   state,
   props,
 }: GetCompletionProps<TItem>): string | null {
-  if (!props.showCompletion || !state.isOpen || state.status === 'stalled') {
+  if (
+    !props.showCompletion ||
+    state.highlightedIndex < 0 ||
+    !state.isOpen ||
+    state.status === 'stalled'
+  ) {
     return null;
   }
 
