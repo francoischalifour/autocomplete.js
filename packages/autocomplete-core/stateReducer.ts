@@ -118,7 +118,7 @@ export const stateReducer = <TItem>(
     case 'reset': {
       return {
         ...state,
-        highlightedIndex: props.defaultHighlightedIndex,
+        highlightedIndex: -1,
         isOpen: false,
         status: 'idle',
         statusContext: {},
