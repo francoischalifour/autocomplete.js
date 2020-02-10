@@ -55,6 +55,7 @@ export type GetInputProps = (props?: {
   onKeyDown(event: KeyboardEvent): void;
   onFocus(): void;
   onBlur(): void;
+  onClick(event: MouseEvent): void;
 };
 
 export type GetResetProps = (props?: {

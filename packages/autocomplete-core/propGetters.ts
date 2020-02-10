@@ -34,6 +34,29 @@ export function getPropGetters({
   };
 
   const getInputProps: GetInputProps = rest => {
+    function onFocus() {
+      // We want to trigger a query when `minLength` is reached because the
+      // dropdown should open with the current query.
+      if (store.getState().query.length >= props.minLength) {
+        onInput({
+          query: store.getState().query,
+          store,
+          props,
+          setHighlightedIndex,
+          setQuery,
+          setSuggestions,
+          setIsOpen,
+          setStatus,
+          setContext,
+        });
+      }
+
+      store.setState(
+        stateReducer(store.getState(), { type: 'focus', value: {} }, props)
+      );
+      props.onStateChange({ state: store.getState() });
+    }
+
     return {
       'aria-autocomplete': 'list',
       'aria-activedescendant':
@@ -78,29 +101,8 @@ export function getPropGetters({
           setContext,
         });
       },
-      onFocus() {
-        // We want to trigger a query when `minLength` is reached because the
-        // dropdown should open with the current query.
-        if (store.getState().query.length >= props.minLength) {
-          onInput({
-            query: store.getState().query,
-            store,
-            props,
-            setHighlightedIndex,
-            setQuery,
-            setSuggestions,
-            setIsOpen,
-            setStatus,
-            setContext,
-          });
-        }
-
-        store.setState(
-          stateReducer(store.getState(), { type: 'focus', value: {} }, props)
-        );
-        props.onStateChange({ state: store.getState() });
-      },
-      onBlur() {
+      onFocus,
+      onBlur: () => {
         store.setState(
           stateReducer(
             store.getState(),
@@ -112,6 +114,18 @@ export function getPropGetters({
           )
         );
         props.onStateChange({ state: store.getState() });
+      },
+      onClick: () => {
+        // When the dropdown is closed and you click on the input while
+        // the input is focused, the `onFocus` event is not triggered
+        // (default browser behavior).
+        // In an autocomplete context, it makes sense to open the menu in this
+        // case.
+        // We mimic this event by catching the `onClick` event which
+        // triggers the `onFocus` for the dropdown to open.
+        if (!store.getState().isOpen) {
+          onFocus();
+        }
       },
       ...rest,
     };
