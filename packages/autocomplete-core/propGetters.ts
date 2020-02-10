@@ -70,6 +70,12 @@ export function getPropGetters({
           event,
           store,
           props,
+          setHighlightedIndex,
+          setQuery,
+          setSuggestions,
+          setIsOpen,
+          setStatus,
+          setContext,
         });
       },
       onFocus() {
@@ -177,19 +183,24 @@ export function getPropGetters({
           return;
         }
 
-        store.setState(
-          stateReducer(
-            store.getState(),
-            {
-              type: 'click',
-              value: rest.source.getInputValue({
-                suggestion: rest.item,
-                state: store.getState(),
-              }),
-            },
-            props
-          )
-        );
+        onInput({
+          query: rest.source.getInputValue({
+            suggestion: rest.item,
+            state: store.getState(),
+          }),
+          store,
+          props,
+          setHighlightedIndex,
+          setQuery,
+          setSuggestions,
+          setIsOpen,
+          setStatus,
+          setContext,
+          nextState: {
+            isOpen: false,
+          },
+        });
+
         props.onStateChange({ state: store.getState() });
       },
       ...rest,

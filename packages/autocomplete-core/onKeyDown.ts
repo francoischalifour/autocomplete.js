@@ -1,12 +1,18 @@
 import { stateReducer } from './stateReducer';
+import { onInput } from './onInput';
+import { getCompletion } from './completion';
 import {
   getSuggestionFromHighlightedIndex,
   getRelativeHighlightedIndex,
 } from './utils';
 
-import { AutocompleteStore, RequiredAutocompleteOptions } from './types';
+import {
+  AutocompleteStore,
+  RequiredAutocompleteOptions,
+  AutocompleteSetters,
+} from './types';
 
-interface OnKeyDownOptions<TItem> {
+interface OnKeyDownOptions<TItem> extends AutocompleteSetters<TItem> {
   event: KeyboardEvent;
   store: AutocompleteStore<TItem>;
   props: RequiredAutocompleteOptions<TItem>;
@@ -16,6 +22,12 @@ export function onKeyDown<TItem>({
   event,
   store,
   props,
+  setHighlightedIndex,
+  setQuery,
+  setSuggestions,
+  setIsOpen,
+  setStatus,
+  setContext,
 }: OnKeyDownOptions<TItem>): void {
   if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
     // Default browser behavior changes the caret placement on ArrowUp and
@@ -38,6 +50,35 @@ export function onKeyDown<TItem>({
       `${props.id}-item-${store.getState().highlightedIndex}`
     );
     nodeItem?.scrollIntoView(false);
+  } else if (
+    (event.key === 'Tab' ||
+      // When the user hits the right arrow and is at the end of the input
+      // query, we validate the completion.
+      (event.key === 'ArrowRight' &&
+        (event.target as HTMLInputElement).selectionStart ===
+          store.getState().query.length)) &&
+    props.showCompletion &&
+    store.getState().isOpen
+  ) {
+    event.preventDefault();
+
+    const query = getCompletion({ state: store.getState(), props });
+
+    if (query) {
+      onInput({
+        query,
+        store,
+        props,
+        setHighlightedIndex,
+        setQuery,
+        setSuggestions,
+        setIsOpen,
+        setStatus,
+        setContext,
+      });
+
+      props.onStateChange({ state: store.getState() });
+    }
   } else if (event.key === 'Escape') {
     // This prevents the default browser behavior on `input[type="search"]`
     // to remove the query right away because we first want to close the
@@ -64,12 +105,13 @@ export function onKeyDown<TItem>({
     }
 
     const suggestion = getSuggestionFromHighlightedIndex({
-      highlightedIndex: store.getState().highlightedIndex,
       state: store.getState(),
     });
 
     const item =
-      suggestion.items[getRelativeHighlightedIndex({ store, suggestion })];
+      suggestion.items[
+        getRelativeHighlightedIndex({ state: store.getState(), suggestion })
+      ];
     const itemUrl = suggestion.source.getSuggestionUrl({
       suggestion: item,
       state: store.getState(),
@@ -98,16 +140,21 @@ export function onKeyDown<TItem>({
     } else if (event.altKey) {
       // Keep native browser behavior
     } else {
-      store.setState(
-        stateReducer(
-          store.getState(),
-          {
-            type: 'Enter',
-            value: inputValue,
-          },
-          props
-        )
-      );
+      onInput({
+        query: inputValue,
+        store,
+        props,
+        setHighlightedIndex,
+        setQuery,
+        setSuggestions,
+        setIsOpen,
+        setStatus,
+        setContext,
+        nextState: {
+          isOpen: false,
+        },
+      });
+
       props.onStateChange({ state: store.getState() });
 
       if (itemUrl !== undefined) {

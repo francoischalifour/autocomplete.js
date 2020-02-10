@@ -13,10 +13,12 @@ import { SearchBox } from './SearchBox';
 import { Dropdown } from './Dropdown';
 
 export function Autocomplete<TItem extends {}>(
-  props: AutocompleteOptions<TItem>
+  providedProps: AutocompleteOptions<TItem>
 ) {
-  const { initialState } = getDefaultProps(props);
-  const [state, setState] = useState<AutocompleteState<TItem>>(initialState);
+  const props = getDefaultProps(providedProps);
+  const [state, setState] = useState<AutocompleteState<TItem>>(
+    props.initialState
+  );
 
   const autocomplete = useRef(
     createAutocomplete<TItem>({
@@ -45,12 +47,13 @@ export function Autocomplete<TItem extends {}>(
       {...autocomplete.current.getRootProps()}
     >
       <SearchBox
+        placeholder={props.placeholder}
         onInputRef={inputRef}
-        completion=""
         query={state.query}
         isOpen={state.isOpen}
         status={state.status}
         getInputProps={autocomplete.current.getInputProps}
+        completion={autocomplete.current.getCompletion()}
         onReset={event => {
           const { onReset } = autocomplete.current.getResetProps();
           onReset(event);

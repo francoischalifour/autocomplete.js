@@ -1,6 +1,4 @@
-export type StateUpdater<TState> = (
-  value: TState // | ((prevState: TState) => TState)
-) => void;
+export type StateUpdater<TState> = (value: TState) => void;
 
 export interface AutocompleteItem {
   __autocomplete_id: number;
@@ -133,7 +131,9 @@ export interface AutocompleteState<TItem> {
 
 export interface AutocompleteInstance<TItem>
   extends AutocompleteSetters<TItem>,
-    AutocompleteAccessibilityGetters<TItem> {}
+    AutocompleteAccessibilityGetters<TItem> {
+  getCompletion(): string | null;
+}
 
 export interface AutocompleteSourceOptions<TItem> {
   /**

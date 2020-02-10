@@ -2,6 +2,7 @@ import {
   AutocompleteStore,
   AutocompleteSetters,
   RequiredAutocompleteOptions,
+  AutocompleteState,
 } from './types';
 
 let lastStalledId: number | null = null;
@@ -10,6 +11,14 @@ interface OnInputOptions<TItem> extends AutocompleteSetters<TItem> {
   query: string;
   store: AutocompleteStore<TItem>;
   props: RequiredAutocompleteOptions<TItem>;
+  /**
+   * The next partial state to apply after the function is called.
+   *
+   * This is useful when we call `onInput` in a different scenario than an
+   * actual input. For example, we use `onInput` when we click on an item,
+   * but we want to close the dropdown in that case.
+   */
+  nextState?: Partial<AutocompleteState<TItem>>;
 }
 
 export function onInput<TItem>({
@@ -22,6 +31,7 @@ export function onInput<TItem>({
   setIsOpen,
   setStatus,
   setContext,
+  nextState = {},
 }: OnInputOptions<TItem>): void {
   if (lastStalledId) {
     clearTimeout(lastStalledId);
@@ -38,7 +48,9 @@ export function onInput<TItem>({
         items: [],
       }))
     );
-    setIsOpen(props.shouldDropdownOpen({ state: store.getState() }));
+    setIsOpen(
+      nextState.isOpen ?? props.shouldDropdownOpen({ state: store.getState() })
+    );
 
     return;
   }
@@ -89,8 +101,9 @@ export function onInput<TItem>({
           setStatus('idle');
           setSuggestions(suggestions);
           setIsOpen(
-            query.length >= props.minLength &&
-              props.shouldDropdownOpen({ state: store.getState() })
+            nextState.isOpen ??
+              (query.length >= props.minLength &&
+                props.shouldDropdownOpen({ state: store.getState() }))
           );
         })
         .catch(error => {

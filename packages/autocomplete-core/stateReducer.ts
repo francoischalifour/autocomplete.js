@@ -129,6 +129,7 @@ export const stateReducer = <TItem>(
     case 'focus': {
       return {
         ...state,
+        highlightedIndex: 0,
         isOpen: state.query.length >= props.minLength,
       };
     }
@@ -147,16 +148,6 @@ export const stateReducer = <TItem>(
       return {
         ...state,
         highlightedIndex: action.value,
-      };
-    }
-
-    case 'Enter':
-    case 'click': {
-      return {
-        ...state,
-        isOpen: !state.isOpen,
-        highlightedIndex: -1,
-        query: action.value,
       };
     }
 

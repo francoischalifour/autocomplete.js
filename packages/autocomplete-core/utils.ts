@@ -96,10 +96,8 @@ export function getNextHighlightedIndex(
 // or `onClick` because those are native browser events.
 // However, we can get the source from the suggestion index.
 export function getSuggestionFromHighlightedIndex<TItem>({
-  highlightedIndex,
   state,
 }: {
-  highlightedIndex: number;
   state: AutocompleteState<TItem>;
 }): AutocompleteSource | undefined {
   // Given 3 sources with respectively 1, 2 and 3 suggestions: [1, 2, 3]
@@ -118,7 +116,7 @@ export function getSuggestionFromHighlightedIndex<TItem>({
 
   // Based on the accumulated counts, we can infer the index of the suggestion.
   const suggestionIndex = accumulatedSuggestionsCount.reduce((acc, current) => {
-    if (current <= highlightedIndex) {
+    if (current <= state.highlightedIndex) {
       return acc + 1;
     }
 
@@ -141,13 +139,13 @@ export function getSuggestionFromHighlightedIndex<TItem>({
  *         (absolute: 3, relative: 1)
  * @param param0
  */
-export function getRelativeHighlightedIndex({ store, suggestion }): number {
+export function getRelativeHighlightedIndex({ state, suggestion }): number {
   let isOffsetFound = false;
   let counter = 0;
   let previousItemsOffset = 0;
 
   while (isOffsetFound === false) {
-    const currentSuggestion = store.getState().suggestions[counter];
+    const currentSuggestion = state.suggestions[counter];
 
     if (currentSuggestion === suggestion) {
       isOffsetFound = true;
@@ -159,5 +157,5 @@ export function getRelativeHighlightedIndex({ store, suggestion }): number {
     counter++;
   }
 
-  return store.getState().highlightedIndex - previousItemsOffset;
+  return state.highlightedIndex - previousItemsOffset;
 }
