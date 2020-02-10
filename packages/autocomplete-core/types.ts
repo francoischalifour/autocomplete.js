@@ -36,6 +36,13 @@ export type GetRootProps = (props?: {
   'aria-labelledby': string;
 };
 
+export type GetFormProps = (props?: {
+  [key: string]: unknown;
+}) => {
+  onSubmit(event: Event): void;
+  onReset(event: Event): void;
+};
+
 export type GetInputProps = (props: {
   [key: string]: unknown;
   inputElement: HTMLInputElement;
@@ -57,12 +64,6 @@ export type GetInputProps = (props: {
   onFocus(): void;
   onBlur(): void;
   onClick(event: MouseEvent): void;
-};
-
-export type GetResetProps = (props?: {
-  [key: string]: unknown;
-}) => {
-  onReset(event: Event): void;
 };
 
 export type GetItemProps<TItem> = (props: {
@@ -111,8 +112,8 @@ export interface Suggestion<TItem> {
 
 export interface AutocompleteAccessibilityGetters<TItem> {
   getRootProps: GetRootProps;
+  getFormProps: GetFormProps;
   getInputProps: GetInputProps;
-  getResetProps: GetResetProps;
   getItemProps: GetItemProps<TItem>;
   getLabelProps: GetLabelProps;
   getMenuProps: GetMenuProps;

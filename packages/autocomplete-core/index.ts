@@ -22,8 +22,8 @@ function createAutocomplete<TItem extends {}>(
   } = getAutocompleteSetters({ store, props });
   const {
     getRootProps,
+    getFormProps,
     getInputProps,
-    getResetProps,
     getItemProps,
     getLabelProps,
     getMenuProps,
@@ -46,8 +46,8 @@ function createAutocomplete<TItem extends {}>(
     setStatus,
     setContext,
     getRootProps,
+    getFormProps,
     getInputProps,
-    getResetProps,
     getItemProps,
     getLabelProps,
     getMenuProps,

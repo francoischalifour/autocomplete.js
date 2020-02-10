@@ -97,9 +97,6 @@ export function onKeyDown<TItem>({
     );
     props.onStateChange({ state: store.getState() });
   } else if (event.key === 'Enter') {
-    // This prevents the `onSubmit` event to be sent.
-    event.preventDefault();
-
     if (store.getState().highlightedIndex < 0) {
       return;
     }
@@ -112,6 +109,12 @@ export function onKeyDown<TItem>({
       suggestion.items[
         getRelativeHighlightedIndex({ state: store.getState(), suggestion })
       ];
+
+    if (item) {
+      // This prevents the `onSubmit` event to be sent when an item is selected.
+      event.preventDefault();
+    }
+
     const itemUrl = suggestion.source.getSuggestionUrl({
       suggestion: item,
       state: store.getState(),

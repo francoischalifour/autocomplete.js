@@ -13,6 +13,7 @@ type ActionType =
   | 'ArrowDown'
   | 'Escape'
   | 'Enter'
+  | 'submit'
   | 'reset'
   | 'focus'
   | 'mousemove'
@@ -112,6 +113,16 @@ export const stateReducer = <TItem>(
         status: 'idle',
         statusContext: {},
         suggestions: [],
+      };
+    }
+
+    case 'submit': {
+      return {
+        ...state,
+        highlightedIndex: -1,
+        isOpen: false,
+        status: 'idle',
+        statusContext: {},
       };
     }
 

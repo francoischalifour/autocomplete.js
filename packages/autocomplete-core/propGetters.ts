@@ -5,8 +5,8 @@ import { isSpecialClick } from './utils';
 
 import {
   GetRootProps,
+  GetFormProps,
   GetInputProps,
-  GetResetProps,
   GetItemProps,
   GetLabelProps,
   GetMenuProps,
@@ -29,6 +29,44 @@ export function getPropGetters({
       'aria-haspopup': 'listbox',
       'aria-owns': store.getState().isOpen ? `${props.id}-menu` : null,
       'aria-labelledby': `${props.id}-label`,
+      ...rest,
+    };
+  };
+
+  const getFormProps: GetFormProps = rest => {
+    return {
+      onSubmit: event => {
+        event.preventDefault();
+
+        // @TODO: call the `onInputChange` or `onSubmit` user prop?
+
+        store.setState(
+          stateReducer(store.getState(), { type: 'submit', value: null }, props)
+        );
+        props.onStateChange({ state: store.getState() });
+      },
+      onReset: event => {
+        event.preventDefault();
+
+        if (props.minLength === 0) {
+          onInput({
+            query: '',
+            store,
+            props,
+            setHighlightedIndex,
+            setQuery,
+            setSuggestions,
+            setIsOpen,
+            setStatus,
+            setContext,
+          });
+        }
+
+        store.setState(
+          stateReducer(store.getState(), { type: 'reset', value: {} }, props)
+        );
+        props.onStateChange({ state: store.getState() });
+      },
       ...rest,
     };
   };
@@ -135,34 +173,6 @@ export function getPropGetters({
     };
   };
 
-  const getResetProps: GetResetProps = rest => {
-    return {
-      onReset(event) {
-        event.preventDefault();
-
-        if (props.minLength === 0) {
-          onInput({
-            query: '',
-            store,
-            props,
-            setHighlightedIndex,
-            setQuery,
-            setSuggestions,
-            setIsOpen,
-            setStatus,
-            setContext,
-          });
-        }
-
-        store.setState(
-          stateReducer(store.getState(), { type: 'reset', value: {} }, props)
-        );
-        props.onStateChange({ state: store.getState() });
-      },
-      ...rest,
-    };
-  };
-
   const getItemProps: GetItemProps<any> = rest => {
     if (rest.item === undefined) {
       throw new Error('`getItemProps` expects an `item`.');
@@ -257,8 +267,8 @@ export function getPropGetters({
 
   return {
     getRootProps,
+    getFormProps,
     getInputProps,
-    getResetProps,
     getItemProps,
     getLabelProps,
     getMenuProps,
