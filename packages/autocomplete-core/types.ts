@@ -224,6 +224,12 @@ export interface AutocompleteOptions<TItem> {
    */
   placeholder?: string;
   /**
+   * The default item index to pre-select.
+   *
+   * @default 0
+   */
+  defaultHighlightedIndex?: number;
+  /**
    * The function called when an item is selected.
    */
   // onSelect(): void;
@@ -287,6 +293,7 @@ export interface RequiredAutocompleteOptions<TItem> {
   id: string;
   onStateChange<TItem>(props: { state: AutocompleteState<TItem> }): void;
   placeholder: string;
+  defaultHighlightedIndex: number;
   showCompletion: boolean;
   minLength: number;
   stallThreshold: number;

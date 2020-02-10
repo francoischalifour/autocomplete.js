@@ -37,7 +37,7 @@ export function onInput<TItem>({
     clearTimeout(lastStalledId);
   }
 
-  setHighlightedIndex(0);
+  setHighlightedIndex(props.defaultHighlightedIndex);
   setQuery(query);
 
   if (query.length < props.minLength) {

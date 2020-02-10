@@ -18,6 +18,7 @@ export function getDefaultProps<TItem>(
     id: generateAutocompleteId(),
     minLength: 1,
     placeholder: '',
+    defaultHighlightedIndex: 0,
     showCompletion: false,
     stallThreshold: 300,
     environment,

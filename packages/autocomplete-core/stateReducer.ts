@@ -16,6 +16,7 @@ type ActionType =
   | 'reset'
   | 'focus'
   | 'mousemove'
+  | 'mouseleave'
   | 'click'
   | 'blur';
 
@@ -117,8 +118,7 @@ export const stateReducer = <TItem>(
     case 'reset': {
       return {
         ...state,
-        // @TODO: fallback to default value
-        highlightedIndex: -1,
+        highlightedIndex: props.defaultHighlightedIndex,
         isOpen: false,
         status: 'idle',
         statusContext: {},
@@ -129,7 +129,7 @@ export const stateReducer = <TItem>(
     case 'focus': {
       return {
         ...state,
-        highlightedIndex: 0,
+        highlightedIndex: props.defaultHighlightedIndex,
         isOpen: state.query.length >= props.minLength,
       };
     }
@@ -148,6 +148,13 @@ export const stateReducer = <TItem>(
       return {
         ...state,
         highlightedIndex: action.value,
+      };
+    }
+
+    case 'mouseleave': {
+      return {
+        ...state,
+        highlightedIndex: props.defaultHighlightedIndex,
       };
     }
 

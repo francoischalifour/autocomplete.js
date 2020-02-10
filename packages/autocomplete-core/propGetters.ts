@@ -220,6 +220,19 @@ export function getPropGetters({
       role: 'listbox',
       'aria-labelledby': `${props.id}-label`,
       id: `${props.id}-menu`,
+      onMouseLeave() {
+        store.setState(
+          stateReducer(
+            store.getState(),
+            {
+              type: 'mouseleave',
+              value: null,
+            },
+            props
+          )
+        );
+        props.onStateChange({ state: store.getState() });
+      },
       ...rest,
     };
   };
