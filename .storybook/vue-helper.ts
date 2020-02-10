@@ -6,13 +6,15 @@ type RenderParams = {
   components?: { [name: string]: any };
   template: string;
   data?: Function;
+  methods?: { [name: string]: Function };
 };
 
 export function render({
   container,
   components,
   template,
-  data,
+  data = () => ({}),
+  methods,
 }: RenderParams) {
   // eslint-disable-next-line no-new
   new Vue({
@@ -20,5 +22,6 @@ export function render({
     components,
     render: compileToFunctions(template).render,
     data,
+    methods,
   });
 }
