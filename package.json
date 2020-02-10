@@ -66,6 +66,9 @@
     "rollup-plugin-terser": "5.2.0",
     "shipjs": "0.15.0",
     "typescript": "3.7.5",
+    "vue": "2.6.11",
+    "vue-loader": "15.8.3",
+    "vue-template-compiler": "2.6.11",
     "webpack": "4.41.5"
   }
 }
