@@ -1,5 +1,6 @@
 import { stateReducer } from './stateReducer';
 import { onInput } from './onInput';
+import { getCompletion } from './completion';
 import {
   getSuggestionFromHighlightedIndex,
   getRelativeHighlightedIndex,
@@ -49,6 +50,35 @@ export function onKeyDown<TItem>({
       `${props.id}-item-${store.getState().highlightedIndex}`
     );
     nodeItem?.scrollIntoView(false);
+  } else if (
+    (event.key === 'Tab' ||
+      // When the user hits the right arrow and is at the end of the input
+      // query, we validate the completion.
+      (event.key === 'ArrowRight' &&
+        (event.target as HTMLInputElement).selectionStart ===
+          store.getState().query.length)) &&
+    props.showCompletion &&
+    store.getState().isOpen
+  ) {
+    event.preventDefault();
+
+    const query = getCompletion({ state: store.getState(), props });
+
+    if (query) {
+      onInput({
+        query,
+        store,
+        props,
+        setHighlightedIndex,
+        setQuery,
+        setSuggestions,
+        setIsOpen,
+        setStatus,
+        setContext,
+      });
+
+      props.onStateChange({ state: store.getState() });
+    }
   } else if (event.key === 'Escape') {
     // This prevents the default browser behavior on `input[type="search"]`
     // to remove the query right away because we first want to close the

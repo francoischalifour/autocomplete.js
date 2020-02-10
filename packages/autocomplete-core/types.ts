@@ -131,7 +131,9 @@ export interface AutocompleteState<TItem> {
 
 export interface AutocompleteInstance<TItem>
   extends AutocompleteSetters<TItem>,
-    AutocompleteAccessibilityGetters<TItem> {}
+    AutocompleteAccessibilityGetters<TItem> {
+  getCompletion(): string | null;
+}
 
 export interface AutocompleteSourceOptions<TItem> {
   /**

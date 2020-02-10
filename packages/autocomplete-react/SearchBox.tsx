@@ -3,8 +3,8 @@
 import { h, Ref } from 'preact';
 
 export interface SearchBoxProps {
-  completion: string;
   placeholder: string;
+  completion: string | null;
   isOpen: boolean;
   status: string;
   query: string;
@@ -15,10 +15,6 @@ export interface SearchBoxProps {
 }
 
 export function SearchBox(props: SearchBoxProps) {
-  const showCompletion = Boolean(
-    props.isOpen && props.status !== 'stalled' && props.completion
-  );
-
   return (
     <form
       action=""
@@ -67,7 +63,7 @@ export function SearchBox(props: SearchBoxProps) {
       </div>
 
       <div className="algolia-autocomplete-searchbox">
-        {showCompletion && (
+        {props.completion && (
           <span
             className="algolia-autocomplete-completion"
             aria-live={'assertive'}

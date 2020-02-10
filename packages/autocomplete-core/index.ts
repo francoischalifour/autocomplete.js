@@ -2,6 +2,7 @@ import { getDefaultProps } from './defaultProps';
 import { createStore } from './store';
 import { getPropGetters } from './propGetters';
 import { getAutocompleteSetters } from './autocompleteSetters';
+import { getCompletion } from './completion';
 
 import { AutocompleteOptions, AutocompleteInstance } from './types';
 
@@ -50,6 +51,7 @@ function createAutocomplete<TItem extends {}>(
     getItemProps,
     getLabelProps,
     getMenuProps,
+    getCompletion: () => getCompletion({ state: store.getState(), props }),
   };
 }
 

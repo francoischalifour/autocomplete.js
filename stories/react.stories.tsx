@@ -19,6 +19,7 @@ storiesOf('React', module).add(
     render(
       <Autocomplete
         placeholder="Search items…"
+        showCompletion={true}
         getSources={() => {
           return [
             {
