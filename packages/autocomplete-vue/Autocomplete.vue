@@ -10,7 +10,7 @@
   >
     <search-box
       ref="searchBox"
-      completion=""
+      :completion="autocomplete.getCompletion()"
       :query="state.query"
       :isOpen="state.isOpen"
       :status="state.status"
