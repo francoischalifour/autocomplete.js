@@ -38,13 +38,13 @@ export type GetRootProps = (props?: {
 
 export type GetFormProps = (props: {
   [key: string]: unknown;
-  inputElement: HTMLInputElement;
+  inputElement: HTMLInputElement | null;
 }) => {
   onSubmit(event: Event): void;
   onReset(event: Event): void;
 };
 
-export type GetInputProps = (props: {
+export type GetInputProps = (props?: {
   [key: string]: unknown;
   inputElement: HTMLInputElement;
 }) => {

@@ -44,6 +44,10 @@ export function getPropGetters({
           stateReducer(store.getState(), { type: 'submit', value: null }, props)
         );
         props.onStateChange({ state: store.getState() });
+
+        if (rest?.inputElement) {
+          rest.inputElement.blur();
+        }
       },
       onReset: event => {
         event.preventDefault();
@@ -66,6 +70,10 @@ export function getPropGetters({
           stateReducer(store.getState(), { type: 'reset', value: {} }, props)
         );
         props.onStateChange({ state: store.getState() });
+
+        if (rest?.inputElement) {
+          rest.inputElement.focus();
+        }
       },
       ...rest,
     };
@@ -162,7 +170,7 @@ export function getPropGetters({
         // We mimic this event by catching the `onClick` event which
         // triggers the `onFocus` for the dropdown to open.
         if (
-          rest.inputElement === props.environment.document.activeElement &&
+          rest?.inputElement === props.environment.document.activeElement &&
           !store.getState().isOpen &&
           store.getState().query.length >= props.minLength
         ) {
