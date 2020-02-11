@@ -20,6 +20,7 @@
     />
 
     <dropdown
+      ref="dropdown"
       :suggestions="state.suggestions"
       :isOpen="state.isOpen"
       :status="state.status"
@@ -136,6 +137,9 @@ export default {
     },
   },
   watch: {
+    state() {
+      this.$refs.dropdown.setSuggestionsWithItemProps();
+    },
     providedProps: {
       immediate: true,
       handler() {
