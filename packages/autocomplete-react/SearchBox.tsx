@@ -24,6 +24,7 @@ export function SearchBox(props: SearchBoxProps) {
       noValidate
       className="algolia-autocomplete-form"
       onSubmit={props.onSubmit}
+      onReset={props.onReset}
     >
       <label
         htmlFor={props.getInputProps().id}

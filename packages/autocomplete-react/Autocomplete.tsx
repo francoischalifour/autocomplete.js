@@ -54,22 +54,9 @@ export function Autocomplete<TItem extends {}>(
         status={state.status}
         getInputProps={autocomplete.current.getInputProps}
         completion={autocomplete.current.getCompletion()}
-        onReset={event => {
-          const { onReset } = autocomplete.current.getFormProps();
-          onReset(event);
-
-          if (inputRef.current) {
-            inputRef.current.focus();
-          }
-        }}
-        onSubmit={event => {
-          const { onSubmit } = autocomplete.current.getFormProps();
-          onSubmit(event);
-
-          if (inputRef.current) {
-            inputRef.current.blur();
-          }
-        }}
+        {...autocomplete.current.getFormProps({
+          inputElement: inputRef.current,
+        })}
       />
 
       <Dropdown
