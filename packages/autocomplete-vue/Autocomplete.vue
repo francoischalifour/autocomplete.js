@@ -18,6 +18,14 @@
       :onReset="onReset"
       :onSubmit="() => {}"
     />
+
+    <dropdown
+      :suggestions="state.suggestions"
+      :isOpen="state.isOpen"
+      :status="state.status"
+      :getItemProps="autocomplete.getItemProps"
+      :getMenuProps="autocomplete.getMenuProps"
+    />
   </div>
 </template>
 
@@ -29,6 +37,7 @@ import {
   AutocompleteOptions,
 } from '../autocomplete-core/types';
 import SearchBox from './SearchBox.vue';
+import Dropdown from './Dropdown.vue';
 
 export default {
   props: {
@@ -100,13 +109,11 @@ export default {
      */
     shouldDropdownOpen: { type: Function },
   },
-  components: { SearchBox },
-  created() {
-    this.state = this.computedProps.initialState;
-  },
+  components: { SearchBox, Dropdown },
   data() {
     return {
       state: undefined,
+      autocomplete: undefined,
     };
   },
   computed: {
@@ -118,24 +125,10 @@ export default {
           return acc;
         }, {});
     },
-    computedProps() {
-      return getDefaultProps(this.providedProps);
-    },
-    autocomplete() {
-      return createAutocomplete({
-        props: this.providedProps,
-        onStateChange({ state }) {
-          this.state = state;
-          if (this.onStateChange) {
-            this.onStateChange({ state });
-          }
-        },
-      });
-    },
   },
   methods: {
     onReset(event) {
-      const { onReset } = autocomplete.current.getResetProps();
+      const { onReset } = this.autocomplete.getResetProps();
       onReset(event);
       if (this.$refs.searchBox) {
         this.$refs.searchBox.focus();
@@ -143,8 +136,23 @@ export default {
     },
   },
   watch: {
-    computedProps() {
-      this.state = this.computedProps.initialState;
+    providedProps: {
+      immediate: true,
+      handler() {
+        this.state = getDefaultProps(this.providedProps).initialState;
+        this.autocomplete = createAutocomplete({
+          ...this.providedProps,
+          onStateChange: ({ state }) => {
+            this.state = state;
+            if (this.onStateChange) {
+              this.onStateChange({ state });
+            }
+          },
+        });
+      },
+    },
+    state() {
+      console.log('### state changed', this.state);
     },
   },
 };

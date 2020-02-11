@@ -54,6 +54,7 @@ export type GetInputProps = (props?: {
   onInput(event: InputEvent): void;
   onKeyDown(event: KeyboardEvent): void;
   onBlur(event: FocusEvent): void;
+  onFocus(event: FocusEvent): void;
 };
 
 export type GetResetProps = (props?: {

@@ -57,22 +57,13 @@
 
       <input
         ref="input"
-        className="algolia-autocomplete-input"
-        v-bind="
-          getInputProps({
-            type: 'search',
-            maxLength: '512',
-            // When the dropdown is closed and you click on the input while
-            // the input is focused, the `onFocus` event is not triggered.
-            // We mimic this event by catching the `onClick` event which
-            // triggers the `onFocus` for the dropdown to open.
-            // onClick: () => {
-            //   if (!props.isOpen) {
-            //     props.onFocus();
-            //   }
-            // },
-          })
-        "
+        class="algolia-autocomplete-input"
+        v-bind="inputProps"
+        :value="query"
+        @blur="onBlur"
+        @focus="onFocus"
+        @input="onInput"
+        @keydown="onKeyDown"
       />
     </div>
 
@@ -125,11 +116,51 @@ export default {
       required: true,
     },
   },
+  data() {
+    return {
+      onBlur: undefined,
+      onFocus: undefined,
+      onInput: undefined,
+      onKeyDown: undefined,
+      inputProps: {},
+    };
+  },
   methods: {
     focus() {
       if (this.$refs.input) {
         this.$refs.input.focus();
       }
+    },
+  },
+  watch: {
+    getInputProps: {
+      immediate: true,
+      handler() {
+        const {
+          onBlur,
+          onFocus,
+          onInput,
+          onKeyDown,
+          ...inputProps
+        } = this.getInputProps({
+          type: 'search',
+          maxLength: '512',
+          // When the dropdown is closed and you click on the input while
+          // the input is focused, the `onFocus` event is not triggered.
+          // We mimic this event by catching the `onClick` event which
+          // triggers the `onFocus` for the dropdown to open.
+          // onClick: () => {
+          //   if (!props.isOpen) {
+          //     props.onFocus();
+          //   }
+          // },
+        });
+        this.onBlur = onBlur;
+        this.onFocus = onFocus;
+        this.onInput = onInput;
+        this.onKeyDown = onKeyDown;
+        this.inputProps = inputProps;
+      },
     },
   },
 };
