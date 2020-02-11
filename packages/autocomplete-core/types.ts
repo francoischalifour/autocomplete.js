@@ -36,8 +36,9 @@ export type GetRootProps = (props?: {
   'aria-labelledby': string;
 };
 
-export type GetInputProps = (props?: {
+export type GetInputProps = (props: {
   [key: string]: unknown;
+  inputElement: HTMLInputElement;
 }) => {
   id: string;
   value: string;

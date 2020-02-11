@@ -123,7 +123,11 @@ export function getPropGetters({
         // case.
         // We mimic this event by catching the `onClick` event which
         // triggers the `onFocus` for the dropdown to open.
-        if (!store.getState().isOpen) {
+        if (
+          rest.inputElement === props.environment.document.activeElement &&
+          !store.getState().isOpen &&
+          store.getState().query.length >= props.minLength
+        ) {
           onFocus();
         }
       },

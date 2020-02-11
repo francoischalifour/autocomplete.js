@@ -79,6 +79,7 @@ export function SearchBox(props: SearchBoxProps) {
           className="algolia-autocomplete-input"
           {...props.getInputProps({
             ref: props.onInputRef,
+            inputElement: (props.onInputRef as any).current,
             placeholder: props.placeholder,
             type: 'search',
             maxLength: '512',
