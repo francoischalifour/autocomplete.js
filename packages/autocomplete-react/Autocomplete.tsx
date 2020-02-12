@@ -1,22 +1,64 @@
 /** @jsx h */
 
 import { h } from 'preact';
-import { useRef, useState } from 'preact/hooks';
+import { useRef, useState, useLayoutEffect } from 'preact/hooks';
+import { createPortal } from 'preact/compat';
+import { createPopper } from '@popperjs/core/lib/popper-lite';
+import offsetModifier from '@popperjs/core/lib/modifiers/offset';
 
 import { createAutocomplete } from '../autocomplete-core';
 import { getDefaultProps } from '../autocomplete-core/defaultProps';
+import { getHTMLElement } from './getHTMLElement';
 import { SearchBox } from './SearchBox';
 import { Dropdown } from './Dropdown';
 
 import {
-  PublicAutocompleteOptions,
   AutocompleteState,
+  AutocompleteOptions,
 } from '../autocomplete-core/types/index';
 
+interface PublicRendererProps {
+  dropdownContainer?: string | HTMLElement;
+  dropdownPlacement?: 'start' | 'end';
+}
+
+interface RendererProps extends Required<PublicRendererProps> {
+  dropdownContainer: HTMLElement;
+}
+
+interface PublicProps<TItem>
+  extends AutocompleteOptions<TItem>,
+    RendererProps {}
+
+export function getDefaultRendererProps(
+  rendererProps: PublicRendererProps,
+  autocompleteProps: AutocompleteOptions<any>
+): RendererProps {
+  return {
+    dropdownContainer: rendererProps.dropdownContainer
+      ? getHTMLElement(
+          rendererProps.dropdownContainer,
+          autocompleteProps.environment
+        )
+      : autocompleteProps.environment.document.body,
+    dropdownPlacement: rendererProps.dropdownPlacement ?? 'start',
+  };
+}
+
 export function Autocomplete<TItem extends {}>(
-  providedProps: PublicAutocompleteOptions<TItem>
+  providedProps: PublicProps<TItem>
 ) {
-  const props = getDefaultProps(providedProps);
+  const {
+    dropdownContainer,
+    dropdownPlacement,
+    ...autocompleteProps
+  } = providedProps;
+  const props = getDefaultProps(autocompleteProps);
+  const rendererProps = getDefaultRendererProps(
+    { dropdownContainer, dropdownPlacement },
+    props
+  );
+
   const [state, setState] = useState<AutocompleteState<TItem>>(
     props.initialState
   );
@@ -24,6 +66,7 @@ export function Autocomplete<TItem extends {}>(
   const inputRef = useRef<HTMLInputElement | null>(null);
   const searchBoxRef = useRef<HTMLFormElement | null>(null);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
+  const popper = useRef<ReturnType<typeof createPopper> | null>(null);
   const autocomplete = useRef(
     createAutocomplete<TItem>({
       ...props,
@@ -35,6 +78,27 @@ export function Autocomplete<TItem extends {}>(
     })
   );
 
+  useLayoutEffect(() => {
+    if (searchBoxRef.current && dropdownRef.current) {
+      popper.current = createPopper(searchBoxRef.current, dropdownRef.current, {
+        placement:
+          rendererProps.dropdownPlacement === 'end'
+            ? 'bottom-end'
+            : 'bottom-start',
+        modifiers: [{ ...offsetModifier, options: { offset: [0, 5] } }],
+      });
+    }
+
+    return () => {
+      popper.current?.destroy();
+    };
+  }, [searchBoxRef, dropdownRef, rendererProps.dropdownPlacement]);
+
+  useLayoutEffect(() => {
+    if (state.isOpen) {
+      popper.current?.update();
+    }
+  }, [state.isOpen]);
 
   return (
     <div
@@ -48,6 +112,7 @@ export function Autocomplete<TItem extends {}>(
       {...autocomplete.current.getRootProps()}
     >
       <SearchBox
+        searchBoxRef={searchBoxRef}
         inputRef={inputRef}
         placeholder={props.placeholder}
         query={state.query}
@@ -61,14 +126,16 @@ export function Autocomplete<TItem extends {}>(
         })}
       />
 
-      {state.isOpen && (
+      {createPortal(
         <Dropdown
+          dropdownRef={dropdownRef}
           suggestions={state.suggestions}
           isOpen={state.isOpen}
           status={state.status}
           getItemProps={autocomplete.current.getItemProps}
           getMenuProps={autocomplete.current.getMenuProps}
-        />
+        />,
+        rendererProps.dropdownContainer
       )}
     </div>
   );
