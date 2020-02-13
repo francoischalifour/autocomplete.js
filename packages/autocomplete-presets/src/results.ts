@@ -1,4 +1,4 @@
-import { version } from './package.json';
+import { version } from '../package.json';
 import { flatten } from './utils';
 
 type SearchClient = any;
