@@ -10,6 +10,9 @@
   "umd:main": "dist/umd/autocomplete-presets.js",
   "unpkg": "dist/umd/autocomplete-presets.js",
   "jsdelivr": "dist/umd/autocomplete-presets.js",
+  "scripts": {
+    "build": "rm -rf ./dist && rollup --config"
+  },
   "homepage": "https://github.com/algolia/autocomplete.js",
   "repository": "algolia/autocomplete.js",
   "author": {
@@ -19,5 +22,14 @@
   "sideEffects": false,
   "files": [
     "dist/"
-  ]
+  ],
+  "devDependencies": {
+    "@babel/cli": "7.8.4",
+    "@babel/preset-env": "7.8.4",
+    "@babel/preset-typescript": "7.8.3",
+    "@rollup/plugin-json": "4.0.2",
+    "@rollup/plugin-node-resolve": "7.1.1",
+    "rollup": "1.31.0",
+    "rollup-plugin-babel": "4.3.3"
+  }
 }

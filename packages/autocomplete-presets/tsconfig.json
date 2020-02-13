@@ -1,0 +1,3 @@
+{
+  "extends": "../autocomplete-core/tsconfig"
+}
