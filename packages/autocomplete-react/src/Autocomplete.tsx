@@ -3,15 +3,14 @@
 import { h } from 'preact';
 import { useRef, useState } from 'preact/hooks';
 
-import { createAutocomplete } from '../autocomplete-core';
-import { getDefaultProps } from '../autocomplete-core/defaultProps';
-import { SearchBox } from './SearchBox';
-import { Dropdown } from './Dropdown';
-
 import {
+  createAutocomplete,
+  getDefaultProps,
   PublicAutocompleteOptions,
   AutocompleteState,
-} from '../autocomplete-core/types/index';
+} from '@francoischalifour/autocomplete-core';
+import { SearchBox } from './SearchBox';
+import { Dropdown } from './Dropdown';
 
 export function Autocomplete<TItem extends {}>(
   providedProps: PublicAutocompleteOptions<TItem>
@@ -34,7 +33,6 @@ export function Autocomplete<TItem extends {}>(
       },
     })
   );
-
 
   return (
     <div

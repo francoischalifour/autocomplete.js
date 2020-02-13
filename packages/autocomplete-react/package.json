@@ -10,6 +10,9 @@
   "umd:main": "dist/umd/autocomplete-react.js",
   "unpkg": "dist/umd/autocomplete-react.js",
   "jsdelivr": "dist/umd/autocomplete-react.js",
+  "scripts": {
+    "build": "rm -rf ./dist && rollup --config"
+  },
   "homepage": "https://github.com/algolia/autocomplete.js",
   "repository": "algolia/autocomplete.js",
   "author": {
@@ -21,6 +24,18 @@
     "dist/"
   ],
   "dependencies": {
-    "preact": "^10.3.1"
+    "preact": "^10.3.1",
+    "@francoischalifour/autocomplete-core": "1.0.0-alpha.10",
+    "@francoischalifour/autocomplete-presets": "1.0.0-alpha.10"
+  },
+  "devDependencies": {
+    "@babel/cli": "7.8.4",
+    "@babel/plugin-transform-react-jsx": "7.8.3",
+    "@babel/preset-env": "7.8.4",
+    "@babel/preset-typescript": "7.8.3",
+    "@rollup/plugin-json": "4.0.2",
+    "@rollup/plugin-node-resolve": "7.1.1",
+    "rollup": "1.31.0",
+    "rollup-plugin-babel": "4.3.3"
   }
 }
