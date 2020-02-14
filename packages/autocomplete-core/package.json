@@ -14,7 +14,7 @@
   "repository": "algolia/autocomplete.js",
   "scripts": {
     "build": "rm -rf ./dist && rollup --config && yarn build:types",
-    "build:types": "tsc -p tsconfig.declaration.json --outDir ./dist/es; echo ''"
+    "build:types": "tsc -p tsconfig.declaration.json --outDir ./dist/es"
   },
   "author": {
     "name": "Algolia, Inc.",
