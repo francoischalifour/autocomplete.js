@@ -22,7 +22,6 @@ export default [
     output: {
       file: 'dist/es/index.js',
       format: 'es',
-      sourcemap: true,
     },
     plugins,
   },
@@ -31,7 +30,6 @@ export default [
     output: {
       file: 'dist/cjs/index.js',
       format: 'cjs',
-      sourcemap: true,
     },
     plugins,
   },
