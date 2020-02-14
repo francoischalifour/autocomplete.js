@@ -3,9 +3,9 @@ import babel from 'rollup-plugin-babel';
 import replace from '@rollup/plugin-replace';
 import { name } from './package.json';
 
-const createPlugins = ({ format }) => [
+const plugins = [
   replace({
-    __DEV__: format === 'umd' ? false : 'process.env.NODE_ENV !== "production"',
+    __DEV__: JSON.stringify(process.env.NODE_ENV === 'development'),
   }),
   resolve({
     extensions: ['.js', '.ts'],
@@ -24,7 +24,7 @@ export default [
       format: 'es',
       sourcemap: true,
     },
-    plugins: createPlugins({ format: 'es' }),
+    plugins,
   },
   {
     input: 'src/index.ts',
@@ -33,7 +33,7 @@ export default [
       format: 'cjs',
       sourcemap: true,
     },
-    plugins: createPlugins({ format: 'cjs' }),
+    plugins,
   },
   {
     input: 'src/index.ts',
@@ -43,6 +43,6 @@ export default [
       sourcemap: true,
       name,
     },
-    plugins: createPlugins({ format: 'umd' }),
+    plugins,
   },
 ];
