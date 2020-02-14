@@ -1,19 +1,7 @@
 {
+  "extends": "../../tsconfig",
   "compilerOptions": {
-    "allowSyntheticDefaultImports": true,
     "jsx": "react",
-    "jsxFactory": "h",
-    "module": "es2015",
-    "moduleResolution": "node",
-    "noFallthroughCasesInSwitch": true,
-    "noImplicitAny": false,
-    "noImplicitReturns": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "resolveJsonModule": true,
-    "skipLibCheck": true,
-    "strict": true,
-    "target": "ESNEXT"
-  },
-  "exclude": ["dist", "node_modules"]
+    "jsxFactory": "h"
+  }
 }

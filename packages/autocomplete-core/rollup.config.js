@@ -20,14 +20,6 @@ export default [
   {
     input: 'src/index.ts',
     output: {
-      file: 'dist/es/index.js',
-      format: 'es',
-    },
-    plugins,
-  },
-  {
-    input: 'src/index.ts',
-    output: {
       file: 'dist/umd/index.js',
       format: 'umd',
       sourcemap: true,

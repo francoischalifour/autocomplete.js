@@ -1,5 +1,7 @@
 /* eslint-disable import/no-commonjs */
 
+const { version } = require(`${process.cwd()}/package.json`);
+
 module.exports = api => {
   const isTest = api.env('test');
   const modules = isTest ? 'commonjs' : false;
@@ -12,6 +14,7 @@ module.exports = api => {
   }
 
   return {
+    ignore: ['**/__tests__/**/*', '**/__mocks__/**/*', '**/__fixtures__/**/*'],
     presets: [
       '@babel/preset-typescript',
       [
@@ -19,6 +22,22 @@ module.exports = api => {
         {
           modules,
           targets,
+        },
+      ],
+    ],
+    plugins: [
+      !isTest && [
+        // When testing, __DEV__ is replaced by Jest(jest.config.js)
+        'inline-replace-variables',
+        {
+          __DEV__: {
+            type: 'node',
+            replacement: "process.env.NODE_ENV === 'development'",
+          },
+          __VERSION__: {
+            type: 'node',
+            replacement: JSON.stringify(version),
+          },
         },
       ],
     ],
