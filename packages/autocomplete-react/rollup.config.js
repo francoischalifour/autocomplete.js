@@ -26,14 +26,6 @@ export default [
   {
     input: 'src/index.ts',
     output: {
-      file: 'dist/cjs/index.js',
-      format: 'cjs',
-    },
-    plugins,
-  },
-  {
-    input: 'src/index.ts',
-    output: {
       file: 'dist/umd/index.js',
       format: 'umd',
       sourcemap: true,
