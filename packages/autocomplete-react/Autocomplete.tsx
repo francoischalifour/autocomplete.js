@@ -85,20 +85,19 @@ export function Autocomplete<TItem extends {}>(
             ? 'bottom-end'
             : 'bottom-start',
         modifiers: [
-          // By default, Popper overrides the `margin` style to 0 because it
+          // By default, Popper overrides the `margin` style to `0` because it
           // is known to cause issues when computing the position.
           // We consider this as a problem in Autocomplete because it prevents
           // users from setting different desktop/mobile styles in CSS.
-          // If we leave Popper overriding the margin, users would have to use
-          // the `!important` CSS keyword or we would have to expose a
-          // JavaScript API.
-          // See https://github.com/francoischalifour/autocomplete.js/pull/25.
+          // If we leave Popper override `margin`, users would have to use the
+          // `!important` CSS keyword or we would have to expose a JavaScript
+          // API.
+          // See https://github.com/francoischalifour/autocomplete.js/pull/25
           {
             name: 'unsetMargins',
             enabled: true,
             fn: ({ state }) => {
-              // @ts-ignore Popper's `CSSStyleDeclaration` is mistyped.
-              state.styles.popper.margin = null;
+              state.styles.popper.margin = '';
             },
             requires: ['computeStyles'],
             phase: 'beforeWrite',
