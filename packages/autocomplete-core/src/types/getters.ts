@@ -1,6 +1,7 @@
 import { AutocompleteSource } from './api';
 
 export interface AutocompleteAccessibilityGetters<TItem> {
+  getEnvironmentProps: GetEnvironmentProps;
   getRootProps: GetRootProps;
   getFormProps: GetFormProps;
   getInputProps: GetInputProps;
@@ -8,6 +9,16 @@ export interface AutocompleteAccessibilityGetters<TItem> {
   getLabelProps: GetLabelProps;
   getMenuProps: GetMenuProps;
 }
+
+export type GetEnvironmentProps = (props: {
+  [key: string]: unknown;
+  searchBoxElement: HTMLElement;
+  dropdownElement: HTMLElement;
+  inputElement: HTMLInputElement;
+}) => {
+  mouseUp(event: MouseEvent): void;
+  onScroll(event: Event): void;
+};
 
 export type GetRootProps = (props?: {
   [key: string]: unknown;
@@ -30,6 +41,7 @@ export type GetFormProps = (props: {
 export type GetInputProps = (props: {
   [key: string]: unknown;
   inputElement: HTMLInputElement;
+  dropdownElement: HTMLElement;
 }) => {
   id: string;
   value: string;
@@ -46,7 +58,6 @@ export type GetInputProps = (props: {
   onInput(event: Event): void;
   onKeyDown(event: KeyboardEvent): void;
   onFocus(): void;
-  onBlur(): void;
   onClick(event: MouseEvent): void;
 };
 
