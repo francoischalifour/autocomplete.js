@@ -4,7 +4,6 @@ import { h } from 'preact';
 import { useRef, useState, useLayoutEffect } from 'preact/hooks';
 import { createPortal } from 'preact/compat';
 import { createPopper } from '@popperjs/core/lib/popper-lite';
-import offsetModifier from '@popperjs/core/lib/modifiers/offset';
 
 import { createAutocomplete } from '../autocomplete-core';
 import { getDefaultProps } from '../autocomplete-core/defaultProps';
@@ -85,7 +84,26 @@ export function Autocomplete<TItem extends {}>(
           rendererProps.dropdownPlacement === 'end'
             ? 'bottom-end'
             : 'bottom-start',
-        modifiers: [{ ...offsetModifier, options: { offset: [0, 5] } }],
+        modifiers: [
+          // By default, Popper overrides the `margin` style to 0 because it
+          // is known to cause issues when computing the position.
+          // We consider this as a problem in Autocomplete because it prevents
+          // users from setting different desktop/mobile styles in CSS.
+          // If we leave Popper overriding the margin, users would have to use
+          // the `!important` CSS keyword or we would have to expose a
+          // JavaScript API.
+          // See https://github.com/francoischalifour/autocomplete.js/pull/25.
+          {
+            name: 'unsetMargins',
+            enabled: true,
+            fn: ({ state }) => {
+              // @ts-ignore Popper's `CSSStyleDeclaration` is mistyped.
+              state.styles.popper.margin = null;
+            },
+            requires: ['computeStyles'],
+            phase: 'beforeWrite',
+          },
+        ],
       });
     }
 
