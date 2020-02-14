@@ -18,7 +18,7 @@
     "build:types": "lerna run build:types --scope @francoischalifour/autocomplete-*",
     "build": "lerna run build --scope @francoischalifour/autocomplete-*",
     "watch": "lerna run watch --parallel --scope @francoischalifour/autocomplete-*",
-    "dev": "yarn build:clean && yarn build:esm && yarn watch-and-storybook",
+    "dev": "yarn build && yarn watch-and-storybook",
     "watch-and-storybook": "concurrently \"yarn run watch\" \"yarn run storybook\"",
     "type-check": "tsc --noEmit",
     "website:build": "yarn run build && yarn run storybook:build",
