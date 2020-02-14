@@ -25,7 +25,7 @@
   ],
   "dependencies": {
     "preact": "^10.3.1",
-    "@francoischalifour/autocomplete-core": "1.0.0-alpha.10",
-    "@francoischalifour/autocomplete-presets": "1.0.0-alpha.10"
+    "@francoischalifour/autocomplete-core": "^1.0.0-alpha.10",
+    "@francoischalifour/autocomplete-presets": "^1.0.0-alpha.10"
   }
 }
