@@ -5,6 +5,7 @@ import {
   AutocompleteSource,
   GetSources,
   AutocompleteSuggestion,
+  AutocompleteOptions,
 } from './types';
 
 export const noop = () => {};
@@ -51,6 +52,7 @@ function normalizeSource<TItem>(
     onSelect({ setIsOpen }) {
       setIsOpen(false);
     },
+    onHighlight: noop,
     ...source,
   };
 }
@@ -69,36 +71,40 @@ export function normalizeGetSources<TItem>(
   };
 }
 
-export function getNextHighlightedIndex(
+export function getNextHighlightedIndex<TItem>(
   moveAmount: number,
-  baseIndex: number,
-  itemCount: number
-) {
-  const itemsLastIndex = itemCount - 1;
-
-  if (
-    typeof baseIndex !== 'number' ||
-    baseIndex < 0 ||
-    baseIndex >= itemCount
-  ) {
-    baseIndex = moveAmount > 0 ? -1 : itemsLastIndex + 1;
+  baseIndex: number | null,
+  itemCount: number,
+  defaultHighlightedIndex: AutocompleteOptions<TItem>['defaultHighlightedIndex']
+): number | null {
+  // We allow circular keyboard navigation from the base index.
+  // The base index can either be `null` (nothing is highlighted) or `0`
+  // (the first item is highlighted).
+  // The base index is allowed to get assigned `null` only if
+  // `props.defaultHighlightedIndex` is `null`. This pattern allows to "stop"
+  // by the actual query before navigating to other suggestions as seen on
+  // Google or Amazon.
+  if (baseIndex === null && moveAmount < 0) {
+    return itemCount - 1;
   }
 
-  let newIndex = baseIndex + moveAmount;
-
-  if (newIndex < 0) {
-    newIndex = itemsLastIndex;
-  } else if (newIndex > itemsLastIndex) {
-    newIndex = 0;
+  if (defaultHighlightedIndex !== null && baseIndex === 0 && moveAmount < 0) {
+    return itemCount - 1;
   }
 
-  return newIndex;
+  const numericIndex = (baseIndex === null ? -1 : baseIndex) + moveAmount;
+
+  if (numericIndex <= -1 || numericIndex >= itemCount) {
+    return defaultHighlightedIndex === null ? null : 0;
+  }
+
+  return numericIndex;
 }
 
 // We don't have access to the autocomplete source when we call `onKeyDown`
 // or `onClick` because those are native browser events.
 // However, we can get the source from the suggestion index.
-export function getSuggestionFromHighlightedIndex<TItem>({
+function getSuggestionFromHighlightedIndex<TItem>({
   state,
 }: {
   state: AutocompleteState<TItem>;
@@ -119,7 +125,7 @@ export function getSuggestionFromHighlightedIndex<TItem>({
 
   // Based on the accumulated counts, we can infer the index of the suggestion.
   const suggestionIndex = accumulatedSuggestionsCount.reduce((acc, current) => {
-    if (current <= state.highlightedIndex) {
+    if (current <= state.highlightedIndex!) {
       return acc + 1;
     }
 
@@ -139,7 +145,13 @@ export function getSuggestionFromHighlightedIndex<TItem>({
  *         (absolute: 3, relative: 1)
  * @param param0
  */
-export function getRelativeHighlightedIndex({ state, suggestion }): number {
+function getRelativeHighlightedIndex<TItem>({
+  state,
+  suggestion,
+}: {
+  state: AutocompleteState<TItem>;
+  suggestion: AutocompleteSuggestion<TItem>;
+}): number {
   let isOffsetFound = false;
   let counter = 0;
   let previousItemsOffset = 0;
@@ -157,5 +169,25 @@ export function getRelativeHighlightedIndex({ state, suggestion }): number {
     counter++;
   }
 
-  return state.highlightedIndex - previousItemsOffset;
+  return state.highlightedIndex! - previousItemsOffset;
+}
+
+export function getHighlightedItem<TItem>({
+  state,
+}: {
+  state: AutocompleteState<TItem>;
+}) {
+  const suggestion = getSuggestionFromHighlightedIndex({ state });
+  const item =
+    suggestion.items[getRelativeHighlightedIndex({ state, suggestion })];
+  const source = suggestion.source;
+  const itemValue = source.getInputValue({ suggestion: item, state });
+  const itemUrl = source.getSuggestionUrl({ suggestion: item, state });
+
+  return {
+    item,
+    itemValue,
+    itemUrl,
+    source,
+  };
 }

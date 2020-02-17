@@ -1,7 +1,7 @@
 import { stateReducer } from './stateReducer';
 import { onInput } from './onInput';
 import { onKeyDown } from './onKeyDown';
-import { isSpecialClick } from './utils';
+import { isSpecialClick, getHighlightedItem } from './utils';
 
 import {
   GetRootProps,
@@ -62,7 +62,6 @@ export function getPropGetters<TItem>({
         store.setState(
           stateReducer(store.getState(), { type: 'submit', value: null }, props)
         );
-        props.onStateChange({ state: store.getState() });
 
         if (providedProps.inputElement) {
           providedProps.inputElement.blur();
@@ -88,7 +87,6 @@ export function getPropGetters<TItem>({
         store.setState(
           stateReducer(store.getState(), { type: 'reset', value: {} }, props)
         );
-        props.onStateChange({ state: store.getState() });
 
         if (providedProps.inputElement) {
           providedProps.inputElement.focus();
@@ -119,7 +117,6 @@ export function getPropGetters<TItem>({
       store.setState(
         stateReducer(store.getState(), { type: 'focus', value: {} }, props)
       );
-      props.onStateChange({ state: store.getState() });
     }
 
     const { inputElement, ...rest } = providedProps;
@@ -127,7 +124,7 @@ export function getPropGetters<TItem>({
     return {
       'aria-autocomplete': props.showCompletion ? 'both' : 'list',
       'aria-activedescendant':
-        store.getState().isOpen && store.getState().highlightedIndex >= 0
+        store.getState().isOpen && store.getState().highlightedIndex !== null
           ? `${props.id}-item-${store.getState().highlightedIndex}`
           : null,
       'aria-controls': store.getState().isOpen ? `${props.id}-menu` : null,
@@ -180,7 +177,6 @@ export function getPropGetters<TItem>({
             props
           )
         );
-        props.onStateChange({ state: store.getState() });
       },
       onClick: () => {
         // When the dropdown is closed and you click on the input while
@@ -211,7 +207,7 @@ export function getPropGetters<TItem>({
       role: 'option',
       'aria-selected':
         store.getState().highlightedIndex === item.__autocomplete_id,
-      onMouseMove() {
+      onMouseMove(event) {
         if (item.__autocomplete_id === store.getState().highlightedIndex) {
           return;
         }
@@ -226,7 +222,27 @@ export function getPropGetters<TItem>({
             props
           )
         );
-        props.onStateChange({ state: store.getState() });
+
+        if (store.getState().highlightedIndex !== null) {
+          const { item, itemValue, itemUrl, source } = getHighlightedItem({
+            state: store.getState(),
+          });
+
+          source.onHighlight({
+            suggestion: item,
+            suggestionValue: itemValue,
+            suggestionUrl: itemUrl,
+            source,
+            state: store.getState(),
+            setHighlightedIndex,
+            setQuery,
+            setSuggestions,
+            setIsOpen,
+            setStatus,
+            setContext,
+            event,
+          });
+        }
       },
       onMouseDown(event: MouseEvent) {
         // Prevents the `activeElement` from being changed to the item so it
@@ -239,11 +255,13 @@ export function getPropGetters<TItem>({
           return;
         }
 
+        const inputValue = source.getInputValue({
+          suggestion: item,
+          state: store.getState(),
+        });
+
         onInput({
-          query: source.getInputValue({
-            suggestion: item,
-            state: store.getState(),
-          }),
+          query: inputValue,
           store,
           props,
           setHighlightedIndex,
@@ -255,9 +273,25 @@ export function getPropGetters<TItem>({
           nextState: {
             isOpen: false,
           },
+        }).then(() => {
+          source.onSelect({
+            suggestion: item,
+            suggestionValue: inputValue,
+            suggestionUrl: source.getSuggestionUrl({
+              suggestion: item,
+              state: store.getState(),
+            }),
+            source,
+            state: store.getState(),
+            setHighlightedIndex,
+            setQuery,
+            setSuggestions,
+            setIsOpen,
+            setStatus,
+            setContext,
+            event,
+          });
         });
-
-        props.onStateChange({ state: store.getState() });
       },
       ...rest,
     };
@@ -287,7 +321,6 @@ export function getPropGetters<TItem>({
             props
           )
         );
-        props.onStateChange({ state: store.getState() });
       },
       ...rest,
     };

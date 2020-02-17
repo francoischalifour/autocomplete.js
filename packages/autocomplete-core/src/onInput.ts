@@ -32,7 +32,7 @@ export function onInput<TItem>({
   setStatus,
   setContext,
   nextState = {},
-}: OnInputOptions<TItem>): void {
+}: OnInputOptions<TItem>): Promise<void> {
   if (lastStalledId) {
     clearTimeout(lastStalledId);
   }
@@ -49,10 +49,10 @@ export function onInput<TItem>({
       }))
     );
     setIsOpen(
-      nextState.isOpen ?? props.shouldDropdownOpen({ state: store.getState() })
+      nextState.isOpen ?? props.shouldDropdownShow({ state: store.getState() })
     );
 
-    return;
+    return Promise.resolve();
   }
 
   setStatus('loading');
@@ -61,7 +61,7 @@ export function onInput<TItem>({
     setStatus('stalled');
   }, props.stallThreshold);
 
-  props
+  return props
     .getSources({
       query,
       state: store.getState(),
@@ -103,7 +103,7 @@ export function onInput<TItem>({
           setIsOpen(
             nextState.isOpen ??
               (query.length >= props.minLength &&
-                props.shouldDropdownOpen({ state: store.getState() }))
+                props.shouldDropdownShow({ state: store.getState() }))
           );
         })
         .catch(error => {

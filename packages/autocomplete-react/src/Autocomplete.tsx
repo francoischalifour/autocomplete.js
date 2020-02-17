@@ -1,38 +1,75 @@
 /** @jsx h */
 
 import { h } from 'preact';
-import { useRef, useState } from 'preact/hooks';
+import { useRef } from 'preact/hooks';
+import { createPortal } from 'preact/compat';
 
 import {
-  createAutocomplete,
   getDefaultProps,
+  AutocompleteOptions,
   PublicAutocompleteOptions,
-  AutocompleteState,
 } from '@francoischalifour/autocomplete-core';
+import { getHTMLElement } from './getHTMLElement';
 import { SearchBox } from './SearchBox';
 import { Dropdown } from './Dropdown';
 
+import { useAutocomplete } from './useAutocomplete';
+import { useDropdown } from './useDropdown';
+
+interface PublicRendererProps {
+  /**
+   * The container for the autocomplete dropdown.
+   */
+  dropdownContainer?: string | HTMLElement;
+  /**
+   * The dropdown placement related to the container.
+   */
+  dropdownPlacement?: 'start' | 'end';
+}
+
+export interface RendererProps extends Required<PublicRendererProps> {
+  dropdownContainer: HTMLElement;
+}
+
+interface PublicProps<TItem>
+  extends PublicAutocompleteOptions<TItem>,
+    PublicRendererProps {}
+
+export function getDefaultRendererProps<TItem>(
+  rendererProps: PublicRendererProps,
+  autocompleteProps: AutocompleteOptions<TItem>
+): RendererProps {
+  return {
+    dropdownContainer: rendererProps.dropdownContainer
+      ? getHTMLElement(
+          rendererProps.dropdownContainer,
+          autocompleteProps.environment
+        )
+      : autocompleteProps.environment.document.body,
+    dropdownPlacement: rendererProps.dropdownPlacement ?? 'start',
+  };
+}
+
 export function Autocomplete<TItem extends {}>(
-  providedProps: PublicAutocompleteOptions<TItem>
+  providedProps: PublicProps<TItem>
 ) {
-  const props = getDefaultProps(providedProps);
-  const [state, setState] = useState<AutocompleteState<TItem>>(
-    props.initialState
+  const {
+    dropdownContainer,
+    dropdownPlacement,
+    ...autocompleteProps
+  } = providedProps;
+  const props = getDefaultProps(autocompleteProps);
+  const rendererProps = getDefaultRendererProps(
+    { dropdownContainer, dropdownPlacement },
+    props
   );
 
   const inputRef = useRef<HTMLInputElement | null>(null);
   const searchBoxRef = useRef<HTMLFormElement | null>(null);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
-  const autocomplete = useRef(
-    createAutocomplete<TItem>({
-      ...props,
-      onStateChange({ state }) {
-        setState(state as any);
 
-        props.onStateChange({ state });
-      },
-    })
-  );
+  const [state, autocomplete] = useAutocomplete<TItem>(props);
+  useDropdown<TItem>(rendererProps, state, searchBoxRef, dropdownRef);
 
   return (
     <div
@@ -43,30 +80,33 @@ export function Autocomplete<TItem extends {}>(
       ]
         .filter(Boolean)
         .join(' ')}
-      {...autocomplete.current.getRootProps()}
+      {...autocomplete.getRootProps()}
     >
       <SearchBox
+        searchBoxRef={searchBoxRef}
         inputRef={inputRef}
         placeholder={props.placeholder}
         query={state.query}
         isOpen={state.isOpen}
         status={state.status}
-        getLabelProps={autocomplete.current.getLabelProps}
-        getInputProps={autocomplete.current.getInputProps}
-        completion={autocomplete.current.getCompletion()}
-        {...autocomplete.current.getFormProps({
+        getLabelProps={autocomplete.getLabelProps}
+        getInputProps={autocomplete.getInputProps}
+        completion={autocomplete.getCompletion()}
+        {...autocomplete.getFormProps({
           inputElement: inputRef.current,
         })}
       />
 
-      {state.isOpen && (
+      {createPortal(
         <Dropdown
+          dropdownRef={dropdownRef}
           suggestions={state.suggestions}
           isOpen={state.isOpen}
           status={state.status}
-          getItemProps={autocomplete.current.getItemProps}
-          getMenuProps={autocomplete.current.getMenuProps}
-        />
+          getItemProps={autocomplete.getItemProps}
+          getMenuProps={autocomplete.getMenuProps}
+        />,
+        rendererProps.dropdownContainer
       )}
     </div>
   );

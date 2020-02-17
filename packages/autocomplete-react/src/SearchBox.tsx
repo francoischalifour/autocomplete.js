@@ -18,6 +18,7 @@ export interface SearchBoxProps {
   getInputProps: GetInputProps;
   getLabelProps: GetLabelProps;
   inputRef: Ref<HTMLInputElement>;
+  searchBoxRef: Ref<HTMLFormElement>;
 }
 
 export function SearchBox(props: SearchBoxProps) {
@@ -29,6 +30,7 @@ export function SearchBox(props: SearchBoxProps) {
       className="algolia-autocomplete-form"
       onSubmit={props.onSubmit}
       onReset={props.onReset}
+      ref={props.searchBoxRef}
     >
       <label
         className="algolia-autocomplete-magnifierLabel"

@@ -11,7 +11,7 @@ interface SearchParameters {
   params?: QueryParameters;
 }
 
-interface GetAlgoliaSourceOptions {
+interface GetAlgoliaSourceParams {
   searchClient: SearchClient;
   queries: SearchParameters[];
 }
@@ -19,7 +19,7 @@ interface GetAlgoliaSourceOptions {
 export function getAlgoliaSource({
   searchClient,
   queries,
-}: GetAlgoliaSourceOptions) {
+}: GetAlgoliaSourceParams) {
   if (typeof (searchClient as Client).addAlgoliaAgent === 'function') {
     if (__DEV__) {
       (searchClient as Client).addAlgoliaAgent(
@@ -53,7 +53,7 @@ export function getAlgoliaSource({
 export function getAlgoliaResults({
   searchClient,
   queries,
-}: GetAlgoliaSourceOptions): Promise<SearchResponse['results']> {
+}: GetAlgoliaSourceParams): Promise<SearchResponse['results']> {
   return getAlgoliaSource({ searchClient, queries }).then(response => {
     return response.results;
   });
@@ -62,7 +62,7 @@ export function getAlgoliaResults({
 export function getAlgoliaHits({
   searchClient,
   queries,
-}: GetAlgoliaSourceOptions): Promise<SearchResponse['hits']> {
+}: GetAlgoliaSourceParams): Promise<SearchResponse['hits']> {
   return getAlgoliaSource({ searchClient, queries }).then(response => {
     const results = response.results;
 
