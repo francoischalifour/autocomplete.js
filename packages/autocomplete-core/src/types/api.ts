@@ -1,7 +1,6 @@
-import { AutocompleteAccessibilityGetters } from './propGetters';
+import { AutocompleteAccessibilityGetters } from './getters';
 import { AutocompleteSetters } from './setters';
 import { AutocompleteState } from './state';
-import { EventHandlerParams, ItemEventHandlerParams } from './events';
 
 export interface AutocompleteApi<TItem>
   extends AutocompleteSetters<TItem>,
@@ -14,9 +13,30 @@ export interface AutocompleteSuggestion<TItem> {
   items: TItem[];
 }
 
-export interface GetSourcesOptions<TItem> extends AutocompleteSetters<TItem> {
+export interface GetSourcesParams<TItem> extends AutocompleteSetters<TItem> {
   query: string;
   state: AutocompleteState<TItem>;
+}
+
+interface ItemParams<TItem> {
+  suggestion: TItem;
+  suggestionValue: ReturnType<AutocompleteSource<TItem>['getInputValue']>;
+  suggestionUrl: ReturnType<AutocompleteSource<TItem>['getSuggestionUrl']>;
+  source: AutocompleteSource<TItem>;
+}
+
+interface OnSelectParams<TItem>
+  extends ItemParams<TItem>,
+    AutocompleteSetters<TItem> {
+  state: AutocompleteState<TItem>;
+  event: Event;
+}
+
+type OnHighlightParams<TItem> = OnSelectParams<TItem>;
+
+interface OnSubmitParams<TItem> extends AutocompleteSetters<TItem> {
+  state: AutocompleteState<TItem>;
+  event: Event;
 }
 
 export interface PublicAutocompleteSource<TItem> {
@@ -45,14 +65,21 @@ export interface PublicAutocompleteSource<TItem> {
    * Function called when the input changes. You can use this function to filter/search the items based on the query.
    */
   getSuggestions(
-    options: GetSourcesOptions<TItem>
+    params: GetSourcesParams<TItem>
   ):
     | Array<AutocompleteSuggestion<TItem>>
     | Promise<Array<AutocompleteSuggestion<TItem>>>;
   /**
-   * Called when an item is selected.
+   * Function called when an item is selected.
    */
-  onSelect?: (options: ItemEventHandlerParams<TItem>) => void;
+  onSelect?(params: OnSelectParams<TItem>): void;
+  /**
+   * Function called when an item is highlighted.
+   *
+   * An item is highlighted either via keyboard navigation or via mouse over.
+   * You can trigger different behaviors based on the event `type`.
+   */
+  onHighlight?(params: OnHighlightParams<TItem>): void;
 }
 
 export type AutocompleteSource<TItem> = {
@@ -62,7 +89,7 @@ export type AutocompleteSource<TItem> = {
 };
 
 export type GetSources<TItem> = (
-  options: GetSourcesOptions<TItem>
+  params: GetSourcesParams<TItem>
 ) => Promise<Array<AutocompleteSource<TItem>>>;
 
 export interface Environment {
@@ -128,13 +155,9 @@ export interface PublicAutocompleteOptions<TItem> {
   /**
    * The default item index to pre-select.
    *
-   * @default 0
+   * @default null
    */
-  defaultHighlightedIndex?: number;
-  /**
-   * The function called when an item is selected.
-   */
-  // onSelect(): void;
+  defaultHighlightedIndex?: number | null;
   /**
    * Whether to show the highlighted suggestion as completion in the input.
    *
@@ -162,7 +185,7 @@ export interface PublicAutocompleteOptions<TItem> {
    * The sources to get the suggestions from.
    */
   getSources(
-    options: GetSourcesOptions<TItem>
+    params: GetSourcesParams<TItem>
   ):
     | Array<PublicAutocompleteSource<TItem>>
     | Promise<Array<PublicAutocompleteSource<TItem>>>;
@@ -181,11 +204,11 @@ export interface PublicAutocompleteOptions<TItem> {
   /**
    * The function called to determine whether the dropdown should open.
    */
-  shouldDropdownOpen?(options: { state: AutocompleteState<TItem> }): boolean;
+  shouldDropdownShow?(params: { state: AutocompleteState<TItem> }): boolean;
   /**
    * The function called when the autocomplete form is submitted.
    */
-  onSubmit?(params: EventHandlerParams<TItem>): void;
+  onSubmit?(params: OnSubmitParams<TItem>): void;
 }
 
 // Props manipulated internally with default values.
@@ -194,7 +217,7 @@ export interface AutocompleteOptions<TItem> {
   onStateChange<TItem>(props: { state: AutocompleteState<TItem> }): void;
   placeholder: string;
   autoFocus: boolean;
-  defaultHighlightedIndex: number;
+  defaultHighlightedIndex: number | null;
   showCompletion: boolean;
   minLength: number;
   stallThreshold: number;
@@ -202,6 +225,6 @@ export interface AutocompleteOptions<TItem> {
   getSources: GetSources<TItem>;
   environment: Environment;
   navigator: Navigator<TItem>;
-  shouldDropdownOpen(options: { state: AutocompleteState<TItem> }): boolean;
-  onSubmit(params: EventHandlerParams<TItem>): void;
+  shouldDropdownShow(params: { state: AutocompleteState<TItem> }): boolean;
+  onSubmit(params: OnSubmitParams<TItem>): void;
 }
