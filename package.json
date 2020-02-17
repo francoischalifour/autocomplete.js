@@ -6,7 +6,7 @@
   ],
   "scripts": {
     "prepare": "yarn run build",
-    "start": "yarn run storybook",
+    "start": "yarn run dev",
     "test": "jest",
     "test:size": "bundlesize",
     "lint": "eslint --ext .js,.ts,.tsx .",
