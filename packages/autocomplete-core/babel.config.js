@@ -1,6 +1,6 @@
 /* eslint-disable import/no-commonjs */
 
-const { version } = require(`${process.cwd()}/package.json`);
+const { version } = require('./package.json');
 
 module.exports = api => {
   const isTest = api.env('test');
