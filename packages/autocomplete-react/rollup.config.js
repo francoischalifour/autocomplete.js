@@ -3,17 +3,6 @@ import babel from 'rollup-plugin-babel';
 import json from '@rollup/plugin-json';
 import { name } from './package.json';
 
-const plugins = [
-  resolve({
-    extensions: ['.js', '.jsx', '.ts', '.tsx'],
-  }),
-  json(),
-  babel({
-    exclude: 'node_modules/**',
-    extensions: ['.js', '.jsx', '.ts', '.tsx'],
-  }),
-];
-
 export default [
   {
     input: 'src/index.ts',
@@ -23,6 +12,15 @@ export default [
       sourcemap: true,
       name,
     },
-    plugins,
+    plugins: [
+      resolve({
+        extensions: ['.js', '.jsx', '.ts', '.tsx'],
+      }),
+      json(),
+      babel({
+        exclude: 'node_modules/**',
+        extensions: ['.js', '.jsx', '.ts', '.tsx'],
+      }),
+    ],
   },
 ];

@@ -3,19 +3,6 @@ import babel from 'rollup-plugin-babel';
 import replace from '@rollup/plugin-replace';
 import { name } from './package.json';
 
-const plugins = [
-  replace({
-    __DEV__: JSON.stringify(process.env.NODE_ENV === 'development'),
-  }),
-  resolve({
-    extensions: ['.js', '.ts'],
-  }),
-  babel({
-    exclude: 'node_modules/**',
-    extensions: ['.js', '.ts'],
-  }),
-];
-
 export default [
   {
     input: 'src/index.ts',
@@ -25,6 +12,17 @@ export default [
       sourcemap: true,
       name,
     },
-    plugins,
+    plugins: [
+      replace({
+        __DEV__: JSON.stringify(process.env.NODE_ENV === 'development'),
+      }),
+      resolve({
+        extensions: ['.js', '.ts'],
+      }),
+      babel({
+        exclude: 'node_modules/**',
+        extensions: ['.js', '.ts'],
+      }),
+    ],
   },
 ];
