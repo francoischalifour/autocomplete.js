@@ -58,6 +58,7 @@ export type GetInputProps = (props: {
   onInput(event: Event): void;
   onKeyDown(event: KeyboardEvent): void;
   onFocus(): void;
+  onBlur(): void;
   onClick(event: MouseEvent): void;
 };
 
