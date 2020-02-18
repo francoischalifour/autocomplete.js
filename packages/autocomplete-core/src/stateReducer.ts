@@ -16,6 +16,7 @@ type ActionType =
   | 'submit'
   | 'reset'
   | 'focus'
+  | 'blur'
   | 'mousemove'
   | 'mouseleave'
   | 'click'
@@ -147,10 +148,12 @@ export const stateReducer = <TItem>(
       };
     }
 
+    case 'blur':
     case 'outerclick': {
       return {
         ...state,
         isOpen: false,
+        highlightedIndex: null,
       };
     }
 

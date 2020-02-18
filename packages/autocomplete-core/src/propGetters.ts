@@ -31,6 +31,8 @@ export function getPropGetters<TItem>({
   setStatus,
   setContext,
 }: GetPropGettersOptions<TItem>) {
+  const isTouchDevice = 'ontouchstart' in props.environment;
+
   const getEnvironmentProps: GetEnvironmentProps = getterProps => {
     return {
       mouseUp(event) {
@@ -70,20 +72,16 @@ export function getPropGetters<TItem>({
           props.onStateChange({ state: store.getState() });
         }
       },
+      // When scrolling on touch devices (mobiles, tablets, etc.), we want to
+      // mimic the native platform behavior where the input is blurred to
+      // hide the virtual keyboard. This gives more vertical space to
+      // discover all the suggestions showing up in the dropdown.
       onScroll() {
         if (store.getState().isOpen === false) {
           return;
         }
 
-        const isTouchDevice = 'ontouchstart' in props.environment;
-
-        // When scrolling on touch devices (mobiles, tablets, etc.), we want to
-        // mimic the native platform behavior where the input is blurred to
-        // hide the virtual keyboard. This gives more vertical space to
-        // discover all the suggestions showing up in the dropdown.
-        if (isTouchDevice) {
-          getterProps.inputElement.blur();
-        }
+        getterProps.inputElement.blur();
       },
     };
   };
@@ -224,6 +222,20 @@ export function getPropGetters<TItem>({
         });
       },
       onFocus,
+      onBlur: () => {
+        if (!isTouchDevice) {
+          store.setState(
+            stateReducer(
+              store.getState(),
+              {
+                type: 'blur',
+                value: null,
+              },
+              props
+            )
+          );
+        }
+      },
       onClick: () => {
         // When the dropdown is closed and you click on the input while
         // the input is focused, the `onFocus` event is not triggered
