@@ -1,7 +1,7 @@
 import { stateReducer } from './stateReducer';
 import { onInput } from './onInput';
 import { onKeyDown } from './onKeyDown';
-import { isSpecialClick, getHighlightedItem, isOrContainsNode } from './utils';
+import { isSpecialClick, getHighlightedItem } from './utils';
 
 import {
   GetEnvironmentProps,
@@ -35,49 +35,15 @@ export function getPropGetters<TItem>({
 
   const getEnvironmentProps: GetEnvironmentProps = getterProps => {
     return {
-      mouseUp(event) {
-        // We do not rely on the native `blur` event of the input to close
-        // the dropdown, but rather on a custom `mouseup` event outside
-        // of the autocomplete elements.
-        // This ensures a working experience on mobile because we blur the input
-        // on touch devices when the user starts scrolling.
-        const isTargetWithinAutocomplete = [
-          getterProps.searchBoxElement,
-          getterProps.dropdownElement,
-        ].some(contextNode => {
-          return (
-            contextNode &&
-            (isOrContainsNode(contextNode, event.target as Node) ||
-              isOrContainsNode(
-                contextNode,
-                props.environment.document.activeElement!
-              ))
-          );
-        });
-
-        if (
-          store.getState().isOpen === true &&
-          isTargetWithinAutocomplete === false
-        ) {
-          store.setState(
-            stateReducer(
-              store.getState(),
-              {
-                type: 'outerclick',
-                value: null,
-              },
-              props
-            )
-          );
-          props.onStateChange({ state: store.getState() });
-        }
-      },
       // When scrolling on touch devices (mobiles, tablets, etc.), we want to
       // mimic the native platform behavior where the input is blurred to
       // hide the virtual keyboard. This gives more vertical space to
       // discover all the suggestions showing up in the dropdown.
-      onScroll() {
-        if (store.getState().isOpen === false) {
+      onTouchMove() {
+        if (
+          store.getState().isOpen === false ||
+          getterProps.inputElement !== props.environment.document.activeElement
+        ) {
           return;
         }
 

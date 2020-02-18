@@ -19,8 +19,7 @@ type ActionType =
   | 'blur'
   | 'mousemove'
   | 'mouseleave'
-  | 'click'
-  | 'outerclick';
+  | 'click';
 
 interface Action {
   type: ActionType;
@@ -148,8 +147,7 @@ export const stateReducer = <TItem>(
       };
     }
 
-    case 'blur':
-    case 'outerclick': {
+    case 'blur': {
       return {
         ...state,
         isOpen: false,
