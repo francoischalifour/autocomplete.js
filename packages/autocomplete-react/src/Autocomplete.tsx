@@ -76,15 +76,17 @@ export function Autocomplete<TItem extends {}>(
       return undefined;
     }
 
-    const { onTouchMove } = autocomplete.getEnvironmentProps({
+    const { onTouchStart, onTouchMove } = autocomplete.getEnvironmentProps({
       searchBoxElement: searchBoxRef.current,
       dropdownElement: dropdownRef.current,
       inputElement: inputRef.current,
     });
 
+    props.environment.addEventListener('touchstart', onTouchStart);
     props.environment.addEventListener('touchmove', onTouchMove);
 
     return () => {
+      props.environment.removeEventListener('touchstart', onTouchStart);
       props.environment.removeEventListener('touchmove', onTouchMove);
     };
   }, [autocomplete, searchBoxRef, dropdownRef, inputRef, props.environment]);

@@ -1,7 +1,7 @@
 import { stateReducer } from './stateReducer';
 import { onInput } from './onInput';
 import { onKeyDown } from './onKeyDown';
-import { isSpecialClick, getHighlightedItem } from './utils';
+import { isSpecialClick, getHighlightedItem, isOrContainsNode } from './utils';
 
 import {
   GetEnvironmentProps,
@@ -35,6 +35,43 @@ export function getPropGetters<TItem>({
 
   const getEnvironmentProps: GetEnvironmentProps = getterProps => {
     return {
+      // On touch devices, we do not rely on the native `blur` event of the
+      // input to close the dropdown, but rather on a custom `touchstart` event
+      // outside of the autocomplete elements.
+      // This ensures a working experience on mobile because we blur the input
+      // on touch devices when the user starts scrolling (`ontouchmove`).
+      onTouchStart(event) {
+        if (store.getState().isOpen === false) {
+          return;
+        }
+
+        const isTargetWithinAutocomplete = [
+          getterProps.searchBoxElement,
+          getterProps.dropdownElement,
+        ].some(contextNode => {
+          return (
+            contextNode &&
+            (isOrContainsNode(contextNode, event.target as Node) ||
+              isOrContainsNode(
+                contextNode,
+                props.environment.document.activeElement!
+              ))
+          );
+        });
+
+        if (isTargetWithinAutocomplete === false) {
+          store.setState(
+            stateReducer(
+              store.getState(),
+              {
+                type: 'blur',
+                value: null,
+              },
+              props
+            )
+          );
+        }
+      },
       // When scrolling on touch devices (mobiles, tablets, etc.), we want to
       // mimic the native platform behavior where the input is blurred to
       // hide the virtual keyboard. This gives more vertical space to

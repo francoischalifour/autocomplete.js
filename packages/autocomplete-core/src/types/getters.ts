@@ -16,7 +16,8 @@ export type GetEnvironmentProps = (props: {
   dropdownElement: HTMLElement;
   inputElement: HTMLInputElement;
 }) => {
-  onTouchMove(event: Event): void;
+  onTouchStart(event: TouchEvent): void;
+  onTouchMove(event: TouchEvent): void;
 };
 
 export type GetRootProps = (props?: {
