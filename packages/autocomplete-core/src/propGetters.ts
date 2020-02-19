@@ -39,7 +39,7 @@ export function getPropGetters<TItem>({
       // input to close the dropdown, but rather on a custom `touchstart` event
       // outside of the autocomplete elements.
       // This ensures a working experience on mobile because we blur the input
-      // on touch devices when the user starts scrolling (`ontouchmove`).
+      // on touch devices when the user starts scrolling (`touchmove`).
       onTouchStart(event) {
         if (store.getState().isOpen === false) {
           return;
@@ -226,6 +226,8 @@ export function getPropGetters<TItem>({
       },
       onFocus,
       onBlur: () => {
+        // We do rely on the `blur` event on touch devices.
+        // See explanation in `onTouchStart`.
         if (!isTouchDevice) {
           store.setState(
             stateReducer(
