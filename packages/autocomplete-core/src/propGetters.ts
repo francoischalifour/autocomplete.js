@@ -117,19 +117,17 @@ export function getPropGetters<TItem>({
       onReset: event => {
         event.preventDefault();
 
-        if (props.minLength === 0) {
-          onInput({
-            query: '',
-            store,
-            props,
-            setHighlightedIndex,
-            setQuery,
-            setSuggestions,
-            setIsOpen,
-            setStatus,
-            setContext,
-          });
-        }
+        onInput({
+          query: '',
+          store,
+          props,
+          setHighlightedIndex,
+          setQuery,
+          setSuggestions,
+          setIsOpen,
+          setStatus,
+          setContext,
+        });
 
         store.send('reset', null);
 
@@ -143,9 +141,9 @@ export function getPropGetters<TItem>({
 
   const getInputProps: GetInputProps = providedProps => {
     function onFocus() {
-      // We want to trigger a query when `minLength` is reached because the
-      // dropdown should open with the current query.
-      if (store.getState().query.length >= props.minLength) {
+      // We want to trigger a query when `openOnFocus` is true
+      // because the dropdown should open with the current query.
+      if (props.openOnFocus) {
         onInput({
           query: store.getState().query,
           store,
@@ -228,7 +226,7 @@ export function getPropGetters<TItem>({
           providedProps.inputElement ===
             props.environment.document.activeElement &&
           !store.getState().isOpen &&
-          store.getState().query.length >= props.minLength
+          props.openOnFocus
         ) {
           onFocus();
         }
