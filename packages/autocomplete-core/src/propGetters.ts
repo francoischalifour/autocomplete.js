@@ -226,8 +226,7 @@ export function getPropGetters<TItem>({
         if (
           providedProps.inputElement ===
             props.environment.document.activeElement &&
-          !store.getState().isOpen &&
-          (props.openOnFocus || store.getState().query.length > 0)
+          !store.getState().isOpen
         ) {
           onFocus();
         }
