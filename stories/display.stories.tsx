@@ -122,6 +122,7 @@ storiesOf('Display', module)
                 (event.key === 'Escape' && isShowing) ||
                 (event.key === 'k' && (event.metaKey || event.ctrlKey))
               ) {
+                event.preventDefault();
                 toggleModal();
               }
             }
