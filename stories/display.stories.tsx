@@ -118,23 +118,10 @@ storiesOf('Display', module)
 
           useEffect(() => {
             function onKeyDown(event: KeyboardEvent) {
-              const element = event.target as HTMLElement;
-              const tagName = element.tagName;
-
-              if (event.key === 'Escape' && isShowing) {
-                toggleModal();
-              }
-
               if (
-                element.isContentEditable ||
-                tagName === 'INPUT' ||
-                tagName === 'SELECT' ||
-                tagName === 'TEXTAREA'
+                (event.key === 'Escape' && isShowing) ||
+                (event.key === 'k' && (event.metaKey || event.ctrlKey))
               ) {
-                return;
-              }
-
-              if (event.key === 'k' && (event.metaKey || event.ctrlKey)) {
                 toggleModal();
               }
             }
