@@ -251,7 +251,7 @@ storiesOf('React', module)
           placeholder="Search items…"
           showCompletion={true}
           dropdownContainer={dropdownContainer}
-          defaultHighlightedIndex={null}
+          defaultHighlightedIndex={0}
           openOnFocus={true}
           getSources={() => {
             return [

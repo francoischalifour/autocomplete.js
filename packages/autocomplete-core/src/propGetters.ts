@@ -117,18 +117,19 @@ export function getPropGetters<TItem>({
       onReset: event => {
         event.preventDefault();
 
-        onInput({
-          query: '',
-          store,
-          props,
-          setHighlightedIndex,
-          setQuery,
-          setSuggestions,
-          setIsOpen,
-          setStatus,
-          setContext,
-        });
-
+        if (props.openOnFocus) {
+          onInput({
+            query: '',
+            store,
+            props,
+            setHighlightedIndex,
+            setQuery,
+            setSuggestions,
+            setIsOpen,
+            setStatus,
+            setContext,
+          });
+        }
         store.send('reset', null);
 
         if (providedProps.inputElement) {
