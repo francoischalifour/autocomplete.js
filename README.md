@@ -213,7 +213,7 @@ Whether to show the highlighted suggestion as completion in the input.
 
 > `boolean` | defaults to `false`
 
-Whether to open the dropdown on focus.
+Whether to open the dropdown on focus when there's no query.
 
 #### `autoFocus`
 
