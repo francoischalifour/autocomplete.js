@@ -55,6 +55,21 @@ export function onInput<TItem>({
   setHighlightedIndex(props.defaultHighlightedIndex);
   setQuery(query);
 
+  if (query.length === 0 && props.openOnFocus === false) {
+    setStatus('idle');
+    setSuggestions(
+      store.getState().suggestions.map(suggestion => ({
+        ...suggestion,
+        items: [],
+      }))
+    );
+    setIsOpen(
+      nextState.isOpen ?? props.shouldDropdownShow({ state: store.getState() })
+    );
+
+    return Promise.resolve();
+  }
+
   setStatus('loading');
 
   lastStalledId = props.environment.setTimeout(() => {
