@@ -168,7 +168,7 @@ export interface PublicAutocompleteOptions<TItem> {
    */
   showCompletion?: boolean;
   /**
-   * Whether to open the dropdown on focus.
+   * Whether to open the dropdown on focus when there's no query.
    *
    * @default false
    */
