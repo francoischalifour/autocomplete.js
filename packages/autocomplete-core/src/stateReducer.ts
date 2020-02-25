@@ -121,7 +121,7 @@ export const stateReducer: Reducer = (action, state, props) => {
       return {
         ...state,
         highlightedIndex: props.defaultHighlightedIndex,
-        isOpen: props.openOnFocus,
+        isOpen: props.openOnFocus || state.query.length > 0,
       };
     }
 

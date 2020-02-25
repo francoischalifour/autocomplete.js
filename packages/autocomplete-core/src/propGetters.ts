@@ -144,7 +144,7 @@ export function getPropGetters<TItem>({
     function onFocus() {
       // We want to trigger a query when `openOnFocus` is true
       // because the dropdown should open with the current query.
-      if (props.openOnFocus) {
+      if (props.openOnFocus || store.getState().query.length > 0) {
         onInput({
           query: store.getState().query,
           store,
@@ -227,7 +227,7 @@ export function getPropGetters<TItem>({
           providedProps.inputElement ===
             props.environment.document.activeElement &&
           !store.getState().isOpen &&
-          props.openOnFocus
+          (props.openOnFocus || store.getState().query.length > 0)
         ) {
           onFocus();
         }

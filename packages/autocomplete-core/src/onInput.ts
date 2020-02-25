@@ -117,7 +117,7 @@ export function onInput<TItem>({
           setSuggestions(suggestions as any);
           setIsOpen(
             nextState.isOpen ??
-              (props.openOnFocus ||
+              ((query.length === 0 && props.openOnFocus) ||
                 props.shouldDropdownShow({ state: store.getState() }))
           );
         })
