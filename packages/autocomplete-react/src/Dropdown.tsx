@@ -56,14 +56,19 @@ export const Dropdown = (props: DropdownProps) => {
                             tabIndex: 0,
                           })}
                         >
-                          <div
-                            dangerouslySetInnerHTML={{
-                              __html: reverseHighlightAlgoliaHit({
-                                hit: item,
-                                attribute: 'query',
-                              }),
-                            }}
-                          />
+                          {/* The templating API is hardcoded for now */}
+                          {item._highlightResult ? (
+                            <div
+                              dangerouslySetInnerHTML={{
+                                __html: reverseHighlightAlgoliaHit({
+                                  hit: item,
+                                  attribute: 'query',
+                                }),
+                              }}
+                            />
+                          ) : (
+                            item.query
+                          )}
                         </li>
                       );
                     })}
