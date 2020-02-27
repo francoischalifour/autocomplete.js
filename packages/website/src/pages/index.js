@@ -8,38 +8,37 @@ import styles from './styles.module.css';
 
 const features = [
   {
-    title: <>Easy to Use</>,
-    imageUrl: 'img/undraw_docusaurus_mountain.svg',
+    title: <>Powered by Algolia</>,
+    imageUrl: 'img/undraw_algolia_msba.svg',
     description: (
       <>
-        Docusaurus was designed from the ground up to be easily installed and
-        used to get your website up and running quickly.
+        Autocomplete helps you to leverage the full power of Algolia. You will
+        be able to create a complete discovery experience with no pain.
       </>
     ),
   },
   {
-    title: <>Focus on What Matters</>,
-    imageUrl: 'img/undraw_docusaurus_tree.svg',
+    title: <>Search with recommended guidelines</>,
+    imageUrl: 'img/undraw_file_searching_duff.svg',
     description: (
       <>
-        Docusaurus lets you focus on your docs, and we&apos;ll do the chores. Go
-        ahead and move your docs into the <code>docs</code> directory.
+        Empowered by our expertise, Autocomplete helps to create a
+        state-of-the-art search experience on your website.
       </>
     ),
   },
   {
-    title: <>Powered by React</>,
-    imageUrl: 'img/undraw_docusaurus_react.svg',
+    title: <>Experimental work</>,
+    imageUrl: 'img/undraw_maker_launch_crhe.svg',
     description: (
       <>
-        Extend or customize your website layout by reusing React. Docusaurus can
-        be extended while reusing the same header and footer.
+        This project is experimental yet. Stay tuned, it will be shipped soon.
       </>
     ),
   },
 ];
 
-function Feature({imageUrl, title, description}) {
+function Feature({ imageUrl, title, description }) {
   const imgUrl = useBaseUrl(imageUrl);
   return (
     <div className={classnames('col col--4', styles.feature)}>
@@ -56,11 +55,12 @@ function Feature({imageUrl, title, description}) {
 
 function Home() {
   const context = useDocusaurusContext();
-  const {siteConfig = {}} = context;
+  const { siteConfig = {} } = context;
   return (
     <Layout
       title={`Hello from ${siteConfig.title}`}
-      description="Description will go into a meta tag in <head />">
+      description="Description will go into a meta tag in <head />"
+    >
       <header className={classnames('hero hero--primary', styles.heroBanner)}>
         <div className="container">
           <h1 className="hero__title">{siteConfig.title}</h1>
@@ -69,9 +69,10 @@ function Home() {
             <Link
               className={classnames(
                 'button button--outline button--secondary button--lg',
-                styles.getStarted,
+                styles.getStarted
               )}
-              to={useBaseUrl('docs/doc1')}>
+              to={useBaseUrl('docs/doc1')}
+            >
               Get Started
             </Link>
           </div>
