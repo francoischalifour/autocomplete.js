@@ -1,16 +1,18 @@
+/* eslint-disable import/no-commonjs */
+
 module.exports = {
-  title: 'Autocomplete-experimental',
+  title: 'Autocomplete',
   tagline: 'The new Algolia Autocomplete discovering experience 🔎',
   url: 'https://autocomplete-experimental.netlify.com',
   baseUrl: '/',
   favicon: 'img/favicon.ico',
-  organizationName: 'algolia', // Usually your GitHub org/user name.
-  projectName: 'autocomplete', // Usually your repo name.
+  organizationName: 'algolia',
+  projectName: 'autocomplete',
   themeConfig: {
     navbar: {
-      title: 'Autocomplete-experimental',
+      title: 'Autocomplete',
       logo: {
-        alt: 'Autocomplete-experimental',
+        alt: 'Autocomplete',
         src: 'img/logo.svg',
       },
       links: [
@@ -73,7 +75,7 @@ module.exports = {
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} • Designed and Built by Algolia.`,
+      copyright: `Copyright © ${new Date().getFullYear()} • Designed and built by Algolia`,
     },
   },
   presets: [

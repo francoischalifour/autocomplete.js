@@ -10,38 +10,28 @@ import styles from './styles.module.css';
 
 const features = [
   {
-    title: <>Powered by Algolia</>,
+    title: 'Powered by Algolia',
     imageUrl: 'img/undraw_algolia_msba.svg',
-    description: (
-      <>
-        Autocomplete helps you to leverage the full power of Algolia. You will
-        be able to create a complete discovery experience with no pain.
-      </>
-    ),
+    description:
+      'Autocomplete helps you to leverage the full power of Algolia. You will be able to create a complete discovery experience with no pain.',
   },
   {
-    title: <>Search with recommended guidelines</>,
+    title: 'Search with recommended guidelines',
     imageUrl: 'img/undraw_file_searching_duff.svg',
-    description: (
-      <>
-        Empowered by our expertise, Autocomplete helps to create a
-        state-of-the-art search experience on your website.
-      </>
-    ),
+    description:
+      'Empowered by our expertise, Autocomplete helps you create a state-of-the-art search experience on your website.',
   },
   {
-    title: <>Experimental work</>,
+    title: 'Experimental work',
     imageUrl: 'img/undraw_maker_launch_crhe.svg',
-    description: (
-      <>
-        This project is experimental yet. Stay tuned, it will be shipped soon.
-      </>
-    ),
+    description:
+      'This project is experimental yet. Stay tuned, it will be shipped soon.',
   },
 ];
 
 function Feature({ imageUrl, title, description }) {
   const imgUrl = useBaseUrl(imageUrl);
+
   return (
     <div className={classnames('col col--4', styles.feature)}>
       {imgUrl && (
@@ -58,11 +48,9 @@ function Feature({ imageUrl, title, description }) {
 function Home() {
   const context = useDocusaurusContext();
   const { siteConfig = {} } = context;
+
   return (
-    <Layout
-      title={`Hello from ${siteConfig.title}`}
-      description="Description will go into a meta tag in <head />"
-    >
+    <Layout title={siteConfig.title} description={siteConfig.tagline}>
       <header className={classnames('hero hero--primary', styles.heroBanner)}>
         <div className="container">
           <h1 className="hero__title">{siteConfig.title}</h1>
@@ -80,13 +68,14 @@ function Home() {
           </div>
         </div>
       </header>
+
       <main>
         {features && features.length && (
           <section className={styles.features}>
             <div className="container">
               <div className="row">
-                {features.map((props, idx) => (
-                  <Feature key={idx} {...props} />
+                {features.map((props, index) => (
+                  <Feature key={index} {...props} />
                 ))}
               </div>
             </div>
