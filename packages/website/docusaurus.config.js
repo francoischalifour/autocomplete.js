@@ -85,7 +85,7 @@ module.exports = {
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
           editUrl:
-            'https://github.com/facebook/docusaurus/edit/master/website/',
+            'https://github.com/francoischalifour/autocomplete.js/edit/next/packages/website/',
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
