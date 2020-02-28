@@ -84,7 +84,7 @@ export function getPropGetters<TItem>({
       role: 'combobox',
       'aria-expanded': store.getState().isOpen,
       'aria-haspopup': 'listbox',
-      'aria-owns': store.getState().isOpen ? `${props.id}-menu` : null,
+      'aria-owns': store.getState().isOpen ? `${props.id}-menu` : undefined,
       'aria-labelledby': `${props.id}-label`,
       ...rest,
     };
@@ -168,8 +168,8 @@ export function getPropGetters<TItem>({
       'aria-activedescendant':
         store.getState().isOpen && store.getState().highlightedIndex !== null
           ? `${props.id}-item-${store.getState().highlightedIndex}`
-          : null,
-      'aria-controls': store.getState().isOpen ? `${props.id}-menu` : null,
+          : undefined,
+      'aria-controls': store.getState().isOpen ? `${props.id}-menu` : undefined,
       'aria-labelledby': `${props.id}-label`,
       value: store.getState().query,
       id: `${props.id}-input`,
@@ -177,11 +177,11 @@ export function getPropGetters<TItem>({
       autoCorrect: 'off',
       autoCapitalize: 'off',
       spellCheck: false,
-      autofocus: props.autoFocus,
+      autoFocus: props.autoFocus,
       placeholder: props.placeholder,
       // @TODO: see if this accessibility attribute is necessary
       // 'aria-expanded': store.getStore().isOpen,
-      onInput: (event: InputEvent) => {
+      onChange: event => {
         onInput({
           query: (event.currentTarget as HTMLInputElement).value,
           store,
@@ -194,7 +194,7 @@ export function getPropGetters<TItem>({
           setContext,
         });
       },
-      onKeyDown: (event: KeyboardEvent) => {
+      onKeyDown: event => {
         onKeyDown({
           event,
           store,
@@ -271,12 +271,12 @@ export function getPropGetters<TItem>({
           });
         }
       },
-      onMouseDown(event: MouseEvent) {
+      onMouseDown(event) {
         // Prevents the `activeElement` from being changed to the item so it
         // can remain with the current `activeElement`.
         event.preventDefault();
       },
-      onClick(event: MouseEvent) {
+      onClick(event) {
         // We ignore all modified clicks to support default browsers' behavior.
         if (isSpecialClick(event)) {
           return;

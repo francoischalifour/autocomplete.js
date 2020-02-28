@@ -1,23 +1,29 @@
 import { AutocompleteSource } from './api';
 
-export interface AutocompleteAccessibilityGetters<TItem> {
-  getEnvironmentProps: GetEnvironmentProps;
+export interface AutocompleteAccessibilityGetters<
+  TItem,
+  TEvent = Event,
+  TMouseEvent = MouseEvent,
+  TKeyboardEvent = KeyboardEvent,
+  TTouchEvent = TouchEvent
+> {
+  getEnvironmentProps: GetEnvironmentProps<TTouchEvent>;
   getRootProps: GetRootProps;
-  getFormProps: GetFormProps;
-  getInputProps: GetInputProps;
-  getItemProps: GetItemProps<TItem>;
+  getFormProps: GetFormProps<TEvent>;
+  getInputProps: GetInputProps<TEvent, TMouseEvent, TKeyboardEvent>;
+  getItemProps: GetItemProps<TItem, TMouseEvent>;
   getLabelProps: GetLabelProps;
   getMenuProps: GetMenuProps;
 }
 
-export type GetEnvironmentProps = (props: {
+export type GetEnvironmentProps<TTouchEvent = TouchEvent> = (props: {
   [key: string]: unknown;
   searchBoxElement: HTMLElement;
   dropdownElement: HTMLElement;
   inputElement: HTMLInputElement;
 }) => {
-  onTouchStart(event: TouchEvent): void;
-  onTouchMove(event: TouchEvent): void;
+  onTouchStart(event: TTouchEvent): void;
+  onTouchMove(event: TTouchEvent): void;
 };
 
 export type GetRootProps = (props?: {
@@ -25,43 +31,56 @@ export type GetRootProps = (props?: {
 }) => {
   role: string;
   'aria-expanded': boolean;
-  'aria-haspopup': string;
-  'aria-owns': string | null;
+  'aria-haspopup':
+    | boolean
+    | 'dialog'
+    | 'menu'
+    | 'true'
+    | 'false'
+    | 'grid'
+    | 'listbox'
+    | 'tree'
+    | undefined;
+  'aria-owns': string | undefined;
   'aria-labelledby': string;
 };
 
-export type GetFormProps = (props: {
+export type GetFormProps<TEvent = Event> = (props: {
   [key: string]: unknown;
   inputElement: HTMLInputElement | null;
 }) => {
-  onSubmit(event: Event): void;
-  onReset(event: Event): void;
+  onSubmit(event: TEvent): void;
+  onReset(event: TEvent): void;
 };
 
-export type GetInputProps = (props: {
+export type GetInputProps<
+  TEvent = Event,
+  TMouseEvent = MouseEvent,
+  TKeyboardEvent = KeyboardEvent
+> = (props: {
   [key: string]: unknown;
   inputElement: HTMLInputElement;
 }) => {
   id: string;
   value: string;
-  autofocus: boolean;
+  autoFocus: boolean;
   placeholder: string;
   autoComplete: 'on' | 'off';
   autoCorrect: 'on' | 'off';
   autoCapitalize: 'on' | 'off';
   spellCheck: boolean;
   'aria-autocomplete': 'none' | 'inline' | 'list' | 'both';
-  'aria-activedescendant': string | null;
-  'aria-controls': string | null;
+  'aria-activedescendant': string | undefined;
+  'aria-controls': string | undefined;
   'aria-labelledby': string;
-  onInput(event: Event): void;
-  onKeyDown(event: KeyboardEvent): void;
+  onChange(event: TEvent): void;
+  onKeyDown(event: TKeyboardEvent): void;
   onFocus(): void;
   onBlur(): void;
-  onClick(event: MouseEvent): void;
+  onClick(event: TMouseEvent): void;
 };
 
-export type GetItemProps<TItem> = (props: {
+export type GetItemProps<TItem, TMouseEvent = MouseEvent> = (props: {
   [key: string]: unknown;
   item: TItem;
   source: AutocompleteSource<TItem>;
@@ -69,9 +88,9 @@ export type GetItemProps<TItem> = (props: {
   id: string;
   role: string;
   'aria-selected': boolean;
-  onMouseMove(event: MouseEvent): void;
-  onMouseDown(event: MouseEvent): void;
-  onClick(event: MouseEvent): void;
+  onMouseMove(event: TMouseEvent): void;
+  onMouseDown(event: TMouseEvent): void;
+  onClick(event: TMouseEvent): void;
 };
 
 export type GetLabelProps = (props?: {

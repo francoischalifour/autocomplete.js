@@ -27,14 +27,14 @@ interface OnSelectParams<TItem>
   extends ItemParams<TItem>,
     AutocompleteSetters<TItem> {
   state: AutocompleteState<TItem>;
-  event: Event;
+  event: any;
 }
 
 type OnHighlightParams<TItem> = OnSelectParams<TItem>;
 
 interface OnSubmitParams<TItem> extends AutocompleteSetters<TItem> {
   state: AutocompleteState<TItem>;
-  event: Event;
+  event: any;
 }
 
 interface OnInputParams<TItem> extends AutocompleteSetters<TItem> {
