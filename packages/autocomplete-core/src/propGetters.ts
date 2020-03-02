@@ -50,10 +50,7 @@ export function getPropGetters<TItem, TEvent, TMouseEvent, TKeyboardEvent>({
         ].some(contextNode => {
           return (
             contextNode &&
-            (isOrContainsNode(
-              contextNode,
-              ((event as unknown) as TouchEvent).target as Node
-            ) ||
+            (isOrContainsNode(contextNode, event.target as Node) ||
               isOrContainsNode(
                 contextNode,
                 props.environment.document.activeElement!
