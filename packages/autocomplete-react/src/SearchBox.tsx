@@ -1,4 +1,4 @@
-import React, { MutableRefObject, MouseEvent, KeyboardEvent } from 'react';
+import React from 'react';
 
 import {
   GetInputProps,
@@ -11,13 +11,17 @@ export interface SearchBoxProps {
   isOpen: boolean;
   status: string;
   query: string;
-  onReset: (event: any) => void;
-  onSubmit: (event: any) => void;
-  getInputProps: GetInputProps;
+  onReset(event: React.FormEvent): void;
+  onSubmit(event: React.FormEvent): void;
+  getInputProps: GetInputProps<
+    React.ChangeEvent,
+    React.MouseEvent,
+    React.KeyboardEvent
+  >;
   getLabelProps: GetLabelProps;
-  inputRef: MutableRefObject<HTMLInputElement | null>;
-  searchBoxRef: MutableRefObject<HTMLFormElement | null>;
-  dropdownRef: MutableRefObject<HTMLElement | null>;
+  inputRef: React.MutableRefObject<HTMLInputElement | null>;
+  searchBoxRef: React.MutableRefObject<HTMLFormElement | null>;
+  dropdownRef: React.MutableRefObject<HTMLElement | null>;
 }
 
 export function SearchBox(props: SearchBoxProps) {
@@ -80,7 +84,7 @@ export function SearchBox(props: SearchBoxProps) {
 
         <input
           className="algolia-autocomplete-input"
-          {...props.getInputProps<MouseEvent, KeyboardEvent>({
+          {...props.getInputProps({
             ref: props.inputRef,
             inputElement: (props.inputRef as any).current,
             type: 'search',

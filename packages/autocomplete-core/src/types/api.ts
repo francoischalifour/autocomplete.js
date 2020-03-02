@@ -2,9 +2,19 @@ import { AutocompleteAccessibilityGetters } from './getters';
 import { AutocompleteSetters } from './setters';
 import { AutocompleteState } from './state';
 
-export interface AutocompleteApi<TItem>
+export interface AutocompleteApi<
+  TItem,
+  TEvent = Event,
+  TMouseEvent = MouseEvent,
+  TKeyboardEvent = KeyboardEvent
+>
   extends AutocompleteSetters<TItem>,
-    AutocompleteAccessibilityGetters<TItem> {}
+    AutocompleteAccessibilityGetters<
+      TItem,
+      TEvent,
+      TMouseEvent,
+      TKeyboardEvent
+    > {}
 
 export interface AutocompleteSuggestion<TItem> {
   source: AutocompleteSource<TItem>;

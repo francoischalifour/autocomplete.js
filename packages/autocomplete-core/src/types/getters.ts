@@ -4,10 +4,9 @@ export interface AutocompleteAccessibilityGetters<
   TItem,
   TEvent = Event,
   TMouseEvent = MouseEvent,
-  TKeyboardEvent = KeyboardEvent,
-  TTouchEvent = TouchEvent
+  TKeyboardEvent = KeyboardEvent
 > {
-  getEnvironmentProps: GetEnvironmentProps<TTouchEvent>;
+  getEnvironmentProps: GetEnvironmentProps;
   getRootProps: GetRootProps;
   getFormProps: GetFormProps<TEvent>;
   getInputProps: GetInputProps<TEvent, TMouseEvent, TKeyboardEvent>;
@@ -16,14 +15,14 @@ export interface AutocompleteAccessibilityGetters<
   getMenuProps: GetMenuProps;
 }
 
-export type GetEnvironmentProps<TTouchEvent = TouchEvent> = (props: {
+export type GetEnvironmentProps = (props: {
   [key: string]: unknown;
   searchBoxElement: HTMLElement;
   dropdownElement: HTMLElement;
   inputElement: HTMLInputElement;
 }) => {
-  onTouchStart(event: TTouchEvent): void;
-  onTouchMove(event: TTouchEvent): void;
+  onTouchStart(event: TouchEvent): void;
+  onTouchMove(event: TouchEvent): void;
 };
 
 export type GetRootProps = (props?: {
@@ -53,11 +52,7 @@ export type GetFormProps<TEvent = Event> = (props: {
   onReset(event: TEvent): void;
 };
 
-export type GetInputProps<
-  TEvent = Event,
-  TMouseEvent = MouseEvent,
-  TKeyboardEvent = KeyboardEvent
-> = (props: {
+export type GetInputProps<TEvent, TMouseEvent, TKeyboardEvent> = (props: {
   [key: string]: unknown;
   inputElement: HTMLInputElement;
 }) => {

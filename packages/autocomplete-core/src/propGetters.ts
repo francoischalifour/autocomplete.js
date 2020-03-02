@@ -20,7 +20,7 @@ interface GetPropGettersOptions<TItem> extends AutocompleteSetters<TItem> {
   props: AutocompleteOptions<TItem>;
 }
 
-export function getPropGetters<TItem>({
+export function getPropGetters<TItem, TEvent, TMouseEvent, TKeyboardEvent>({
   store,
   props,
   setHighlightedIndex,
@@ -50,7 +50,10 @@ export function getPropGetters<TItem>({
         ].some(contextNode => {
           return (
             contextNode &&
-            (isOrContainsNode(contextNode, event.target as Node) ||
+            (isOrContainsNode(
+              contextNode,
+              ((event as unknown) as TouchEvent).target as Node
+            ) ||
               isOrContainsNode(
                 contextNode,
                 props.environment.document.activeElement!
@@ -90,12 +93,12 @@ export function getPropGetters<TItem>({
     };
   };
 
-  const getFormProps: GetFormProps = providedProps => {
+  const getFormProps: GetFormProps<TEvent> = providedProps => {
     const { inputElement, ...rest } = providedProps;
 
     return {
       onSubmit: event => {
-        event.preventDefault();
+        ((event as unknown) as Event).preventDefault();
 
         props.onSubmit({
           state: store.getState(),
@@ -115,7 +118,7 @@ export function getPropGetters<TItem>({
         }
       },
       onReset: event => {
-        event.preventDefault();
+        ((event as unknown) as Event).preventDefault();
 
         if (props.openOnFocus) {
           onInput({
@@ -140,7 +143,11 @@ export function getPropGetters<TItem>({
     };
   };
 
-  const getInputProps: GetInputProps = providedProps => {
+  const getInputProps: GetInputProps<
+    TEvent,
+    TMouseEvent,
+    TKeyboardEvent
+  > = providedProps => {
     function onFocus() {
       // We want to trigger a query when `openOnFocus` is true
       // because the dropdown should open with the current query.
@@ -183,7 +190,8 @@ export function getPropGetters<TItem>({
       // 'aria-expanded': store.getStore().isOpen,
       onChange: event => {
         onInput({
-          query: (event.currentTarget as HTMLInputElement).value,
+          query: (((event as unknown) as Event)
+            .currentTarget as HTMLInputElement).value,
           store,
           props,
           setHighlightedIndex,
@@ -196,7 +204,7 @@ export function getPropGetters<TItem>({
       },
       onKeyDown: event => {
         onKeyDown({
-          event,
+          event: (event as unknown) as KeyboardEvent,
           store,
           props,
           setHighlightedIndex,
@@ -235,7 +243,7 @@ export function getPropGetters<TItem>({
     };
   };
 
-  const getItemProps: GetItemProps<any> = providedProps => {
+  const getItemProps: GetItemProps<any, TMouseEvent> = providedProps => {
     const { item, source, ...rest } = providedProps;
 
     return {
@@ -274,11 +282,11 @@ export function getPropGetters<TItem>({
       onMouseDown(event) {
         // Prevents the `activeElement` from being changed to the item so it
         // can remain with the current `activeElement`.
-        event.preventDefault();
+        ((event as unknown) as MouseEvent).preventDefault();
       },
       onClick(event) {
         // We ignore all modified clicks to support default browsers' behavior.
-        if (isSpecialClick(event)) {
+        if (isSpecialClick((event as unknown) as MouseEvent)) {
           return;
         }
 
