@@ -1,7 +1,14 @@
 import React from 'react';
 
-export const DocSearch = () => (
-  <div className="docsearch-container">
+export const DocSearch = ({ onClose }) => (
+  <div
+    className="docsearch-container"
+    onClick={event => {
+      if (event.target === event.currentTarget) {
+        onClose && onClose();
+      }
+    }}
+  >
     <div className="docsearch-popup">
       <div className="docsearch-searchbox">
         <label className="docsearch-magnifier-icon">
