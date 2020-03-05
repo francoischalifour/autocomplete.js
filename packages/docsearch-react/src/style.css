@@ -14,5 +14,30 @@
   margin-top: 20vh;
   width: 50vw;
   min-height: 20rem;
-  background-color: #f0f0f0;
+  background-color: #f8f8f8;
+  border-radius: 8px;
+  box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, 0.2);
+}
+
+.docsearch-searchbox {
+  display: flex;
+  padding: 1rem 1rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.docsearch-magnifier-icon {
+  margin-top: 0.5rem;
+}
+
+.docsearch-magnifier-icon svg {
+  width: 1rem;
+}
+
+.docsearch-input {
+  margin: 0;
+  padding: 0.5rem 1rem;
+  background-color: transparent;
+  width: 100%;
+  border: none;
+  font-size: 1rem;
 }
