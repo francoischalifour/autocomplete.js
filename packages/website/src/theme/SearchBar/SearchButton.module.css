@@ -1,0 +1,20 @@
+.button {
+  margin-left: 1rem;
+  border-radius: 0.5rem;
+  background-color: rgb(247, 250, 252);
+  border: 1px solid rgb(215, 215, 215);
+  padding: 0.2rem 0.7rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.text {
+  color: rgb(151, 151, 151);
+  font-size: 0.8rem;
+  padding-right: 0.5rem;
+}
+
+.kbd {
+  color: #898ba2;
+}

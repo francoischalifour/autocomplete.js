@@ -1,0 +1,18 @@
+.docsearch-container {
+  background-color: rgba(0, 0, 0, 0.2);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.docsearch-popup {
+  margin-top: 20vh;
+  width: 50vw;
+  min-height: 20rem;
+  background-color: #f0f0f0;
+}
