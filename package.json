@@ -2,8 +2,7 @@
   "name": "@francoischalifour/autocomplete-monorepo",
   "private": true,
   "workspaces": [
-    "packages/*",
-    "website"
+    "packages/*"
   ],
   "scripts": {
     "prepare": "yarn run build",

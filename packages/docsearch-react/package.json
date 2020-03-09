@@ -2,6 +2,16 @@
   "name": "docsearch-react",
   "version": "1.0.0-alpha.10",
   "license": "MIT",
+  "homepage": "https://github.com/algolia/autocomplete.js",
+  "repository": "algolia/autocomplete.js",
+  "author": {
+    "name": "Algolia, Inc.",
+    "url": "https://www.algolia.com"
+  },
+  "sideEffects": false,
+  "files": [
+    "dist/"
+  ],
   "source": "src/index.ts",
   "types": "dist/esm/index.d.ts",
   "module": "dist/esm/index.js",
@@ -22,19 +32,10 @@
     "build:clean": "rm -rf ./dist",
     "watch": "concurrently \"yarn build:esm:watch\" \"yarn build:types:watch\" \"yarn build:css:watch\""
   },
-  "homepage": "https://github.com/algolia/autocomplete.js",
-  "repository": "algolia/autocomplete.js",
-  "author": {
-    "name": "Algolia, Inc.",
-    "url": "https://www.algolia.com"
-  },
-  "sideEffects": false,
-  "files": [
-    "dist/"
-  ],
   "dependencies": {
     "@francoischalifour/autocomplete-core": "^1.0.0-alpha.10",
-    "@francoischalifour/autocomplete-preset-algolia": "^1.0.0-alpha.10"
+    "@francoischalifour/autocomplete-preset-algolia": "^1.0.0-alpha.10",
+    "algoliasearch": "^4.0.0"
   },
   "peerDependencies": {
     "react": "^16.8.0",

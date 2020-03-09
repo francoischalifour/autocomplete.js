@@ -5,7 +5,7 @@ import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 
 import SearchButton from './SearchButton';
 
-let DocSearchComp = null;
+let DocSearch = null;
 
 export default function SearchBar() {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -16,7 +16,7 @@ export default function SearchBar() {
     indexName,
     appId,
     apiKey,
-    algoliaOptions,
+    searchParameters,
   } = siteConfig.themeConfig.algolia;
 
   const load = React.useCallback(
@@ -27,8 +27,8 @@ export default function SearchBar() {
       Promise.all([
         import('docsearch-react'),
         import('docsearch-react/dist/esm/style.css'),
-      ]).then(([{ DocSearch }]) => {
-        DocSearchComp = DocSearch;
+      ]).then(([{ DocSearch: DocSearchComp }]) => {
+        DocSearch = DocSearchComp;
         setIsLoaded(true);
       });
     },
@@ -50,6 +50,7 @@ export default function SearchBar() {
         (event.key === 'k' && (event.metaKey || event.ctrlKey))
       ) {
         event.preventDefault();
+
         if (isShowing) {
           setIsShowing(!isShowing);
         } else {
@@ -74,11 +75,11 @@ export default function SearchBar() {
       />
 
       {isLoaded && isShowing && (
-        <DocSearchComp
-          indexName={indexName}
+        <DocSearch
           appId={appId}
           apiKey={apiKey}
-          algoliaOptions={algoliaOptions}
+          indexName={indexName}
+          searchParameters={searchParameters}
           onClose={() => setIsShowing(false)}
         />
       )}
