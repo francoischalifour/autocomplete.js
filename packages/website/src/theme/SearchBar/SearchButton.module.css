@@ -1,20 +1,31 @@
 .button {
   margin-left: 1rem;
-  border-radius: 0.5rem;
-  background-color: rgb(247, 250, 252);
-  border: 1px solid rgb(215, 215, 215);
-  padding: 0.2rem 0.7rem;
+  padding: .8em;
+  background: rgb(235, 237, 240);
+  border: none;
   cursor: pointer;
   display: flex;
   align-items: center;
+  border-radius: 5px;
+}
+
+.icon {
+  margin: 0 0.8em 0 0.2em;
+  color: var(--ifm-color-primary);
 }
 
 .text {
-  color: rgb(151, 151, 151);
-  font-size: 0.8rem;
-  padding-right: 0.5rem;
+  color: rgb(126, 123, 123);
+  font-size: 0.9rem;
+  padding: 0 1rem 0 0;
 }
 
 .kbd {
-  color: #898ba2;
+  font-size: .9em;
+  color: rgb(126, 123, 123);
+  border: none;
+  background-color: rgb(213, 215, 225);
+  line-height: 2.4em;
+  padding: 0 .6em;
+  box-shadow: none;
 }
