@@ -9,7 +9,7 @@ import {
 
 import { AlgoliaLogo } from './AlgoliaLogo';
 
-const noop = () => {};
+const noop = () => { };
 
 interface DocSearchProps {
   appId?: string;
@@ -223,13 +223,138 @@ export function DocSearch({
             })}
           </div>
         </div>
-
         <div className="DocSearch-Footer">
           <ul className="DocSearch-Commands">
-            <li>Navigate</li>
-            <li>Select</li>
+            <li>
+              <svg viewBox="0 0 16 16">
+                <defs>
+                  <path
+                    id="enter-a"
+                    d="M7,1.33333333 L7,3.66666667 C7,4.6 6.26564673,5.33333333 5.3310153,5.33333333 L2.12656467,5.33333333 L3.22809458,6.43333333 C3.36161335,6.56666667 3.36161335,6.76666667 3.22809458,6.9 C3.16133519,6.96666667 3.0945758,7 2.99443672,7 C2.89429764,7 2.82753825,6.96666667 2.76077886,6.9 L1.09179416,5.23333333 C1.05841446,5.2 1.02503477,5.16666667 1.02503477,5.13333333 C0.991655076,5.06666667 0.991655076,4.96666667 1.02503477,4.86666667 C1.05841446,4.83333333 1.05841446,4.8 1.09179416,4.76666667 L2.76077886,3.1 C2.89429764,2.96666667 3.0945758,2.96666667 3.22809458,3.1 C3.36161335,3.23333333 3.36161335,3.43333333 3.22809458,3.56666667 L2.12656467,4.66666667 L5.3310153,4.66666667 C5.8984701,4.66666667 6.33240612,4.23333333 6.33240612,3.66666667 L6.33240612,1.33333333 C6.33240612,1.13333333 6.4659249,1 6.66620306,1 C6.86648122,1 7,1.13333333 7,1.33333333 Z"
+                  />
+                </defs>
+                <g fill="none" fillRule="evenodd">
+                  <rect
+                    width="15"
+                    height="15"
+                    x=".5"
+                    y=".5"
+                    stroke="currentColor"
+                    rx="2"
+                    className="algolia-autocomplete-commands-border"
+                  />
+                  <g transform="translate(4 4)">
+                    <mask id="enter-b" fill="currentColor">
+                      <use xlinkHref="#enter-a" />
+                    </mask>
+                    <use
+                      fill="currentColor"
+                      fillRule="nonzero"
+                      xlinkHref="#enter-a"
+                    />
+                    <g fill="currentColor" mask="url(#enter-b)">
+                      <rect width="8" height="8" />
+                    </g>
+                  </g>
+                </g>
+              </svg>
+              <span className="algolia-autocomplete-commands-description">
+                to select
+              </span>
+            </li>
+            <li>
+              <svg viewBox="0 0 16 16">
+                <defs>
+                  <path
+                    id="a"
+                    d="M3.67 2.47L1.9 4.24a.33.33 0 0 1-.47-.48l2.33-2.33a.33.33 0 0 1 .48 0l2.33 2.33a.33.33 0 1 1-.47.48L4.33 2.47v3.86a.33.33 0 1 1-.66 0V2.47z"
+                  />
+                </defs>
+                <g fill="none" fillRule="evenodd">
+                  <rect
+                    width="15"
+                    height="15"
+                    x=".5"
+                    y=".5"
+                    stroke="currentColor"
+                    rx="2"
+                    className="algolia-autocomplete-commands-border"
+                  />
+                  <g transform="translate(4 4)">
+                    <mask id="b" fill="currentColor">
+                      <use xlinkHref="#a" />
+                    </mask>
+                    <use
+                      fill="currentColor"
+                      fillRule="nonzero"
+                      xlinkHref="#a"
+                    />
+                    <g fill="currentColor" mask="url(#b)">
+                      <path d="M0 0h8v8H0z" />
+                    </g>
+                  </g>
+                </g>
+              </svg>
+              <svg viewBox="0 0 16 16">
+                <defs>
+                  <path
+                    id="a"
+                    d="M3.67 2.47L1.9 4.24a.33.33 0 0 1-.47-.48l2.33-2.33a.33.33 0 0 1 .48 0l2.33 2.33a.33.33 0 1 1-.47.48L4.33 2.47v3.86a.33.33 0 1 1-.66 0V2.47z"
+                  />
+                </defs>
+                <g fill="none" fillRule="evenodd">
+                  <rect
+                    width="15"
+                    height="15"
+                    x=".5"
+                    y=".5"
+                    stroke="currentColor"
+                    rx="2"
+                    className="algolia-autocomplete-commands-border"
+                  />
+                  <g transform="matrix(1 0 0 -1 4 12)">
+                    <mask id="b" fill="currentColor">
+                      <use xlinkHref="#a" />
+                    </mask>
+                    <use
+                      fill="currentColor"
+                      fillRule="nonzero"
+                      xlinkHref="#a"
+                    />
+                    <g fill="currentColor" mask="url(#b)">
+                      <path d="M0 0h8v8H0z" />
+                    </g>
+                  </g>
+                </g>
+              </svg>
+              <span className="algolia-autocomplete-commands-description">
+                to navigate
+              </span>
+            </li>
+            <li>
+              <svg viewBox="0 0 16 16">
+                <g fill="none" fillRule="evenodd">
+                  <path
+                    fill="currentColor"
+                    fillRule="nonzero"
+                    d="M4.16 10.07c-1.07 0-1.73-.76-1.73-1.93v-.46c0-1.08.62-1.85 1.7-1.85 1.07 0 1.69.77 1.69 1.9v.38H3.1v.08c0 .78.4 1.31 1.06 1.31.48 0 .8-.23.92-.62h.67c-.15.68-.7 1.19-1.6 1.19zM3.1 7.57h2.03v-.01c0-.65-.4-1.17-1.01-1.17-.63 0-1.02.52-1.02 1.17v.01zm3.55-.5c0-.87.73-1.24 1.52-1.24.97 0 1.46.55 1.46 1.23h-.62c-.02-.31-.22-.68-.86-.68-.49 0-.84.21-.84.62 0 .46.54.56 1.01.64.77.14 1.42.35 1.42 1.15 0 .82-.66 1.28-1.63 1.28-.9 0-1.53-.44-1.53-1.18h.66c.06.38.38.63.93.63.62 0 .91-.3.91-.65 0-.46-.46-.55-1.03-.67-.77-.15-1.4-.39-1.4-1.13zm3.88 1.06v-.4c0-1.1.64-1.9 1.7-1.9.96 0 1.53.63 1.57 1.26h-.66a.89.89 0 0 0-.86-.67c-.68 0-1.08.5-1.08 1.33v.39c0 .8.43 1.33 1.08 1.33.51 0 .82-.27.89-.6h.66c-.14.7-.65 1.2-1.6 1.2-1.08 0-1.7-.84-1.7-1.94z"
+                  />
+                  <rect
+                    width="15"
+                    height="15"
+                    x=".5"
+                    y=".5"
+                    stroke="currentColor"
+                    rx="2"
+                    className="algolia-autocomplete-commands-border"
+                  />
+                </g>
+              </svg>
+              <span className="algolia-autocomplete-commands-description">
+                to close
+              </span>
+            </li>
           </ul>
-
           <div className="DocSearch-Logo">
             <AlgoliaLogo />
           </div>

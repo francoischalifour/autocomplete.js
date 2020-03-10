@@ -202,3 +202,28 @@
   font-weight: normal;
   margin: 0.2rem 0;
 }
+
+.DocSearch-Commands {
+  display: flex;
+  color: var(--docsearch-docsearch-text-color);
+}
+.algolia-autocomplete-commands-border {
+  color: var(--docsearch-autocomplete-border-color);
+}
+.algolia-autocomplete-commands-description {
+  font-size: 0.75rem;
+  letter-spacing: 0;
+  margin-left: 0.25rem;
+}
+.DocSearch-Commands li {
+  display: flex;
+  align-items: center;
+  margin-right: 1rem;
+}
+.DocSearch-Commands svg {
+  height: 1rem;
+  width: 1rem;
+}
+.DocSearch-Commands svg + svg {
+  margin-left: 0.125rem;
+}

@@ -16,7 +16,7 @@ export default function SearchButton({ onClick }) {
         ></path>
       </svg>
       <span className={styles.text}>Search docs...</span>
-      <kbd className={styles.kbd}>Cmd+K</kbd>
+      <span className={styles.kbd}>⌘+K</span>
     </button>
   );
 }
