@@ -34,7 +34,7 @@
   },
   "dependencies": {
     "@francoischalifour/autocomplete-core": "^1.0.0-alpha.10",
-    "@francoischalifour/autocomplete-preset-algolia": "^1.0.0-alpha.10",
+    "@francoischalifour/autocomplete-react": "^1.0.0-alpha.10",
     "algoliasearch": "^4.0.0"
   },
   "peerDependencies": {

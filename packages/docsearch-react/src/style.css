@@ -194,3 +194,10 @@
   background-color: var(--docsearch-background-highlight-color);
   border-radius: 8px;
 }
+
+.DocSearch-Lvl0,
+.DocSearch-Lvl1 {
+  font-size: inherit;
+  font-weight: normal;
+  margin: 0.2rem 0;
+}

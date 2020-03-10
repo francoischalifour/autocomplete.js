@@ -3,9 +3,9 @@ import algoliasearch from 'algoliasearch/lite';
 
 import { createAutocomplete } from '@francoischalifour/autocomplete-core';
 import {
-  highlightAlgoliaHit,
+  Highlight,
   getAlgoliaHits,
-} from '@francoischalifour/autocomplete-preset-algolia';
+} from '@francoischalifour/autocomplete-react';
 
 import { AlgoliaLogo } from './AlgoliaLogo';
 
@@ -201,22 +201,18 @@ export function DocSearch({
                           })}
                         >
                           <a href={item.url}>
-                            <div
-                              dangerouslySetInnerHTML={{
-                                __html: highlightAlgoliaHit({
-                                  hit: item,
-                                  attribute: 'hierarchy.lvl0',
-                                }),
-                              }}
-                            />
-                            <div
-                              dangerouslySetInnerHTML={{
-                                __html: highlightAlgoliaHit({
-                                  hit: item,
-                                  attribute: 'hierarchy.lvl1',
-                                }),
-                              }}
-                            />
+                            <h1 className="DocSearch-Lvl0">
+                              <Highlight
+                                hit={item}
+                                attribute="hierarchy.lvl0"
+                              />
+                            </h1>
+                            <h2 className="DocSearch-Lvl1">
+                              <Highlight
+                                hit={item}
+                                attribute="hierarchy.lvl1"
+                              />
+                            </h2>
                           </a>
                         </li>
                       );
