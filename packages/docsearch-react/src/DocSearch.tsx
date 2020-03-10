@@ -189,11 +189,7 @@ export function DocSearch({
 
               return (
                 <section key={`result-${index}`} className="DocSearch-Hits">
-                  <ul
-                    {...getMenuProps({
-                      onMouseLeave() {},
-                    })}
-                  >
+                  <ul {...getMenuProps()}>
                     {items.map((item, index) => {
                       return (
                         <li
