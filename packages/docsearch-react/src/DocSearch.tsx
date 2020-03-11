@@ -5,6 +5,7 @@ import { createAutocomplete } from '@francoischalifour/autocomplete-core';
 import {
   Highlight,
   getAlgoliaHits,
+  Snippet
 } from '@francoischalifour/autocomplete-react';
 
 import { AlgoliaLogo } from './AlgoliaLogo';
@@ -72,11 +73,143 @@ export function DocSearch({
                       params: {
                         highlightPreTag: '<mark>',
                         highlightPostTag: '</mark>',
-                        hitsPerPage: 5,
+                        hitsPerPage: 10,
                         ...searchParameters,
                       },
                     },
                   ],
+                }).then(async hits => {
+
+                  let visitedTitles = [];
+                  let treeLvl1 = [];
+
+                  //collect levels 0 & 1 from hits
+                  hits.map(hit => {
+                    //add lvl1 if doesn't exists
+                    if (!treeLvl1.includes(hit.hierarchy.lvl1)) {
+                      treeLvl1.push(hit.hierarchy.lvl1);
+                    }
+                    //add lvl0 if doesn't exists
+                    if (visitedTitles.includes(hit.hierarchy.lvl0)) {
+                    } else {
+                      visitedTitles.push(hit.hierarchy.lvl0);
+                    }
+                  });
+
+                  // collect All levels 0 & 1 from index
+                  const allLvl1 = await getLvl1(searchClient, treeLvl1);
+
+                  // merge hits and top levels hits
+                  const concatenedList = [...hits, ...allLvl1];
+
+                  const treeList = concatenedList.filter(
+                    (thing, index, self) =>
+                      index ===
+                      self.findIndex(
+                        t =>
+                          t.type === thing.type &&
+                          t.hierarchy.lvl1 === thing.hierarchy.lvl1
+                      )
+                  );
+
+                  // group results by lvl0
+                  const groupedResults = groupBy(
+                    treeList,
+                    item => item.hierarchy.lvl0
+                  );
+
+                  const sortedResults = Object.entries(groupedResults).map(
+                    ([lvl0, sectionHits]) => {
+                      const groupedSectionHits = groupBy(
+                        sectionHits,
+                        item => item.hierarchy.lvl1
+                      );
+                      let sortedSectionHits = Object.entries(
+                        groupedSectionHits
+                      ).map(([lvl1, subSectionHits]) => {
+                        return subSectionHits.sort(
+                          hit =>
+                            hit.type === 'lvl1' &&
+                              hit.hierarchy.lvl1 === lvl1
+                              ? -1
+                              : 1
+                        );
+                      });
+
+                      sortedSectionHits = Object.values(
+                        sortedSectionHits
+                      ).flat();
+
+                      return sortedSectionHits.sort(hit => {
+                        if (
+                          hit.type !== 'lvl1' &&
+                          hit.hierarchy.lvl0 !== lvl0
+                        ) {
+                          return -1;
+                        }
+                        return 1;
+                      });
+                    }
+                  );
+
+                  visitedTitles = [];
+                  treeLvl1 = [];
+
+                  const flatSortedResults = Object.values(sortedResults).flat();
+                  let latestLvl0 = null;
+                  let iteratorLvl0 = 0;
+                  let reachedLvl0 = false;
+
+                  return flatSortedResults.map((hit, index) => {
+                    if (latestLvl0 !== hit.hierarchy.lvl0) {
+                      reachedLvl0 = false;
+                      iteratorLvl0 = 0;
+                    }
+
+                    if (hit.type === 'lvl1') {
+                      iteratorLvl0++;
+                    }
+
+                    latestLvl0 = hit.hierarchy.lvl0;
+
+                    if (reachedLvl0) {
+                      hit.lastLvl0 = 'DSV3-lastLvl0';
+                    }
+
+                    if (
+                      hit.type === 'lvl1' &&
+                      latestLvl0 &&
+                      iteratorLvl0 ==
+                      groupedResults[hit.hierarchy.lvl0].filter(
+                        hit => hit.type === 'lvl1'
+                      ).length
+                    ) {
+                      hit.lastLvl0 = 'DSV3-lastLvl0';
+                      reachedLvl0 = true;
+                    }
+
+                    if (
+                      flatSortedResults.length === index + 1 ||
+                      (hit.type !== 'lvl1' &&
+                        flatSortedResults[index + 1] &&
+                        flatSortedResults[index + 1].hierarchy.lvl1 !==
+                        hit.hierarchy.lvl1)
+                    ) {
+                      hit.lastLvl1 = 'DSV3-lastLvl';
+                    }
+
+                    hit.position = index;
+                    if (!treeLvl1.includes(hit.hierarchy.lvl1)) {
+                      treeLvl1.push(hit.hierarchy.lvl1);
+                    }
+                    if (visitedTitles.includes(hit.hierarchy.lvl0)) {
+                      return hit;
+                    } else {
+                      visitedTitles.push(hit.hierarchy.lvl0);
+                      return { ...hit, _show: 'DSV3-firstLvl0' };
+                    }
+
+                  });
                 });
               },
             },
@@ -85,6 +218,39 @@ export function DocSearch({
       }),
     [indexName, searchParameters, searchClient]
   );
+
+  function groupBy(values, predicate) {
+    return values.reduce(function (obj, item) {
+      const key = predicate(item);
+      if (!obj.hasOwnProperty(key)) {
+        obj[key] = [];
+      }
+      obj[key].push(item);
+      return obj;
+    }, {});
+  }
+
+  function getLvl1(searchClient, treeLvl1) {
+    return searchClient
+      .search([
+        {
+          indexName: 'docsearch',
+          query: '',
+          params: {
+            facetFilters: ['type:lvl1'],
+            hitsPerPage: 1000,
+            attributesToRetrieve: '*',
+            attributesToSnippet: '*',
+            highlightPreTag: '<mark>',
+            highlightPostTag: '</mark>',
+          },
+        },
+      ])
+      .then(results => {
+        const lvl1Hits = results.results[0].hits;
+        return lvl1Hits.filter(hit => !!treeLvl1.includes(hit.hierarchy.lvl1));
+      });
+  }
 
   const inputRef = React.useRef<HTMLInputElement | null>(null);
   const { onSubmit, onReset } = getFormProps({
@@ -184,8 +350,8 @@ export function DocSearch({
 
         <div className="DocSearch-Dropdown">
           <div className="DocSearch-Dropdown-Container">
-            {state.suggestions.map((suggestion, index) => {
-              const { source, items } = suggestion;
+            {state.suggestions.map((hit, index) => {
+              const { source, items } = hit;
 
               return (
                 <section key={`result-${index}`} className="DocSearch-Hits">
@@ -201,18 +367,85 @@ export function DocSearch({
                           })}
                         >
                           <a href={item.url}>
-                            <h1 className="DocSearch-Lvl0">
-                              <Highlight
-                                hit={item}
-                                attribute="hierarchy.lvl0"
-                              />
-                            </h1>
-                            <h2 className="DocSearch-Lvl1">
-                              <Highlight
-                                hit={item}
-                                attribute="hierarchy.lvl1"
-                              />
-                            </h2>
+
+                            {item._show && (
+                              <div className="DSV3-cat-separator">
+                                <Highlight
+                                  hit={item}
+                                  attribute="hierarchy.lvl0"
+                                />
+                              </div>
+                            )}
+
+                            <div
+                              className={
+                                `DSV3-${item.type}` +
+                                ' ' +
+                                (item.lastLvl1 || '') +
+                                ' ' +
+                                (item.lastLvl0 || '') +
+                                ' ' +
+                                (item._show || '')
+                              }
+                            >
+                              {item.hierarchy[item.type] && (
+                                <div>
+                                  {item.type === 'lvl1' && (
+                                    <div>
+                                      <Highlight
+                                        hit={item}
+                                        attribute="hierarchy.lvl1"
+                                        className="DSV3-title"
+                                      />
+                                      {item.content && (
+                                        <Snippet
+                                          hit={item}
+                                          attribute="content"
+                                          className="DSV3-text"
+                                        />
+                                      )}
+                                    </div>
+                                  )}
+
+                                  {(item.type === 'lvl2' ||
+                                    item.type === 'lvl3') && (
+                                      <div>
+                                        <Highlight
+                                          hit={item}
+                                          attribute={'hierarchy.' + item.type}
+                                          className="DSV3-title"
+                                        />
+                                        {item.content && (
+                                          <Snippet
+                                            hit={item}
+                                            attribute="content"
+                                            className="DSV3-text"
+                                          />
+                                        )}
+                                      </div>
+                                    )}
+                                </div>
+                              )}
+
+                              {!item.hierarchy[item.type] &&
+                                item.type === 'content' && (
+                                  <div>
+                                    <span className="DSV3-title">
+                                      {item.hierarchy.lvl3 ||
+                                        item.hierarchy.lvl2 ||
+                                        '#'}
+                                    </span>
+                                    {item.content && (
+                                      <Snippet
+                                      hit={item}
+                                      attribute="content"
+                                      className="DSV3-text"
+                                    />
+                                    )}
+                                  </div>
+                                )}
+
+                            </div>
                           </a>
                         </li>
                       );
@@ -241,7 +474,7 @@ export function DocSearch({
                     y=".5"
                     stroke="currentColor"
                     rx="2"
-                    className="algolia-autocomplete-commands-border"
+                    className="DocSearch-Commands-border"
                   />
                   <g transform="translate(4 4)">
                     <mask id="enter-b" fill="currentColor">
@@ -258,7 +491,7 @@ export function DocSearch({
                   </g>
                 </g>
               </svg>
-              <span className="algolia-autocomplete-commands-description">
+              <span className="DocSearch-Commands-description">
                 to select
               </span>
             </li>
@@ -278,7 +511,7 @@ export function DocSearch({
                     y=".5"
                     stroke="currentColor"
                     rx="2"
-                    className="algolia-autocomplete-commands-border"
+                    className="DocSearch-Commands-border"
                   />
                   <g transform="translate(4 4)">
                     <mask id="b" fill="currentColor">
@@ -310,7 +543,7 @@ export function DocSearch({
                     y=".5"
                     stroke="currentColor"
                     rx="2"
-                    className="algolia-autocomplete-commands-border"
+                    className="DocSearch-Commands-border"
                   />
                   <g transform="matrix(1 0 0 -1 4 12)">
                     <mask id="b" fill="currentColor">
@@ -327,7 +560,7 @@ export function DocSearch({
                   </g>
                 </g>
               </svg>
-              <span className="algolia-autocomplete-commands-description">
+              <span className="DocSearch-Commands-description">
                 to navigate
               </span>
             </li>
@@ -346,11 +579,11 @@ export function DocSearch({
                     y=".5"
                     stroke="currentColor"
                     rx="2"
-                    className="algolia-autocomplete-commands-border"
+                    className="DocSearch-Commands-border"
                   />
                 </g>
               </svg>
-              <span className="algolia-autocomplete-commands-description">
+              <span className="DocSearch-Commands-description">
                 to close
               </span>
             </li>
