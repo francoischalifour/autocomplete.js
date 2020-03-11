@@ -12,7 +12,7 @@
 }
 
 .DocSearch-Container {
-  background-color: rgba(0, 0, 0, 0.16);
+  background-color: rgba(34, 38, 51, .4);
   height: 100vh;
   left: 0;
   position: fixed;
@@ -21,7 +21,7 @@
 }
 
 .DocSearch-Modal {
-  background-color: #f8f8f8;
+  background-color:white;
   border-radius: 8px;
   box-shadow: 0px 2px 8px 0 rgba(0, 0, 0, 0.16);
   margin: 60px auto auto auto;
@@ -35,11 +35,12 @@
 
 .DocSearch-Footer {
   align-items: center;
-  background: #eee;
   display: flex;
   font-size: 0.9rem;
   justify-content: space-between;
-  padding: 8px;
+  padding: 8px 16px;
+  color: rgb(150, 146, 146);
+  border-top: solid 1px #eee;
 }
 
 .DocSearch-Commands {
@@ -270,6 +271,7 @@ html[data-theme='dark'] {
   background: var(--ifm-background-color);
   color: var(--algolia-docsearch-lvl0-color);
 }
+
 .DSV3-cat-separator::after {
   display: block;
   width: 100%;
