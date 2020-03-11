@@ -178,18 +178,15 @@
   position: relative;
 }
 
-/* .DocSearch-Hits mark {
+.DocSearch-Hits mark {
   background: none;
-  color: #5468ff;
   color: var(--docsearch-highlight-color);
-  font-weight: 700;
 }
 
 .DocSearch-Hit[aria-selected='true'] {
   background-color: rgba(218, 219, 234, 0.4);
   background-color: var(--docsearch-background-highlight-color);
-  border-radius: 8px;
-} */
+}
 
 .DocSearch-Hit a {
   color: inherit;
@@ -265,10 +262,11 @@ html[data-theme='dark'] {
 
 .DSV3-cat-separator {
   width: 100%;
-  font-size: 0.85em;
+  font-size: 0.8em;
   font-weight: 500;
-  margin-top: 1.2em;
-  background: var(--ifm-background-color);
+  text-transform: uppercase;
+  margin-top: 1em;
+  background: white;
   color: var(--algolia-docsearch-lvl0-color);
 }
 
@@ -281,7 +279,7 @@ html[data-theme='dark'] {
 }
 
 .DSV3-title {
-  font-size: 0.95em;
+  font-size: 0.9em;
   display: block;
   overflow: hidden;
   width: 100%;
@@ -292,16 +290,16 @@ html[data-theme='dark'] {
 
 .DSV3-title::before {
   display: inline-block;
-  width: 0.6em;
-  height: 0.9em;
-  margin-right: 0.2em;
+  width: .8rem;
+  height: 1em;
+  margin-right: .2rem;
   vertical-align: top;
   content: '';
 }
 
 .DSV3-text {
   display: block;
-  margin-left: 1.2em;
+  margin-left: 1.2rem;
   padding-bottom: .4em;
   line-height: 1em;
   font-size: 0.75em;
@@ -312,12 +310,15 @@ html[data-theme='dark'] {
   line-height: 1.6em;
   border-left: solid 1px var(--algolia-docsearch-tree-color);
 }
+
 .DSV3-lvl1 .DSV3-title::before {
   border-bottom: solid 1px var(--algolia-docsearch-tree-color);
 }
+
 .DSV3-lvl1.DSV3-lastLvl0 .DSV3-title {
   border-left: none;
 }
+
 .DSV3-lvl1.DSV3-lastLvl0 .DSV3-title::before {
   border-left: solid 1px var(--algolia-docsearch-tree-color);
 }
@@ -325,15 +326,17 @@ html[data-theme='dark'] {
 .DSV3-lvl2,
 .DSV3-lvl3,
 .DSV3-content {
-  line-height: 1.8em;
-  padding-left: 1em;
+  line-height: 1.6em;
+  padding-left: 1.2rem;
   border-left: solid 1px var(--algolia-docsearch-tree-color);
 }
+
 .DSV3-lvl2 .DSV3-title,
 .DSV3-lvl3 .DSV3-title,
 .DSV3-content .DSV3-title {
   border-left: solid 1px var(--algolia-docsearch-tree-color);
 }
+
 .DSV3-lvl2 .DSV3-title::before,
 .DSV3-lvl3 .DSV3-title::before,
 .DSV3-content .DSV3-title::before {
@@ -341,7 +344,7 @@ html[data-theme='dark'] {
 }
 
 .DSV3-lastLvl {
-  padding-bottom: .3em;
+  padding-bottom: .2em;
 }
 
 .DSV3-lastLvl0 {

@@ -73,7 +73,7 @@ export function DocSearch({
                       params: {
                         highlightPreTag: '<mark>',
                         highlightPostTag: '</mark>',
-                        hitsPerPage: 10,
+                        hitsPerPage: 15,
                         ...searchParameters,
                       },
                     },
