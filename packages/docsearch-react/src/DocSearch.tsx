@@ -73,7 +73,7 @@ export function DocSearch({
                       params: {
                         highlightPreTag: '<mark>',
                         highlightPostTag: '</mark>',
-                        hitsPerPage: 15,
+                        hitsPerPage: 5,
                         ...searchParameters,
                       },
                     },
@@ -97,7 +97,7 @@ export function DocSearch({
                   });
 
                   // collect All levels 0 & 1 from index
-                  const allLvl1 = await getLvl1(searchClient, treeLvl1);
+                  const allLvl1 = [];
 
                   // merge hits and top levels hits
                   const concatenedList = [...hits, ...allLvl1];
@@ -388,10 +388,14 @@ export function DocSearch({
                                 (item._show || '')
                               }
                             >
+                              {/* {item.type} */}
+
+                              <span className="DSV3-icon">📄</span>
+
                               {item.hierarchy[item.type] && (
                                 <div>
                                   {item.type === 'lvl1' && (
-                                    <div>
+                                    <div className="DSV3-content-wrapper">
                                       <Highlight
                                         hit={item}
                                         attribute="hierarchy.lvl1"
@@ -409,42 +413,45 @@ export function DocSearch({
 
                                   {(item.type === 'lvl2' ||
                                     item.type === 'lvl3') && (
-                                      <div>
+                                      <div className="DSV3-content-wrapper">
                                         <Highlight
                                           hit={item}
                                           attribute={'hierarchy.' + item.type}
                                           className="DSV3-title"
                                         />
-                                        {item.content && (
-                                          <Snippet
+                                        <span>
+                                          <span className="DSV3-separator">—</span>
+                                          <Highlight
                                             hit={item}
-                                            attribute="content"
+                                            attribute="hierarchy.lvl1"
                                             className="DSV3-text"
                                           />
-                                        )}
+                                        </span>
                                       </div>
                                     )}
                                 </div>
                               )}
 
-                              {!item.hierarchy[item.type] &&
-                                item.type === 'content' && (
-                                  <div>
-                                    <span className="DSV3-title">
-                                      {item.hierarchy.lvl3 ||
-                                        item.hierarchy.lvl2 ||
-                                        '#'}
-                                    </span>
-                                    {item.content && (
-                                      <Snippet
+                              {item.type === 'content' && (
+                                <div className="DSV3-content-wrapper">
+                                  {/* <span className="DSV3-separator">...</span> */}
+                                  <Snippet
+                                    hit={item}
+                                    attribute="content"
+                                    className="DSV3-title"
+                                  />
+                                  <span className="DSV3-separator">...</span>
+                                  <br/>
+                                  <span>
+                                    <span className="DSV3-separator">—</span>
+                                    <Highlight
                                       hit={item}
-                                      attribute="content"
+                                      attribute="hierarchy.lvl1"
                                       className="DSV3-text"
                                     />
-                                    )}
-                                  </div>
-                                )}
-
+                                  </span>
+                                </div>
+                              )}
                             </div>
                           </a>
                         </li>
