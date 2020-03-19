@@ -28,6 +28,8 @@ module.exports = {
       exec(`yarn workspace ${package} add ${depsWithVersion}`);
     };
 
+    // Ship.js read json and write like fs.writeFileSync(JSON.stringify(json, null, 2));
+    // It causes a lint error with lerna.json file.
     exec('eslint lerna.json --fix');
 
     update({
