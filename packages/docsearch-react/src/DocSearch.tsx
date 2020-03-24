@@ -382,7 +382,7 @@ export function DocSearch({
               <span className="DocSearch-Commands-key">
                 <IconKey icon="enter" />
               </span>
-              <span className="DocSearch-Hint">
+              <span className="DocSearch-Label">
                 to select
               </span>
             </li>
@@ -394,7 +394,7 @@ export function DocSearch({
               <span className="DocSearch-Commands-key">
                 <IconKey icon="arrow-up" />
               </span>
-              <span className="DocSearch-Hint">
+              <span className="DocSearch-Label">
                 to navigate
               </span>
             </li>
@@ -402,7 +402,7 @@ export function DocSearch({
               <span className="DocSearch-Commands-key">
                 <IconKey icon="escape" />
               </span>
-              <span className="DocSearch-Hint">
+              <span className="DocSearch-Label">
                 to close
               </span>
             </li>

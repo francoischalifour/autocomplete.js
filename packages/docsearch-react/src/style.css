@@ -1,26 +1,31 @@
 /* Variables */
 
 :root {
-  --docsearch-placeholder-color: rgb(149, 165, 190);
+  --docsearch-input-color: var(--ifm-color-emphasis-800);
   --docsearch-highlight-color: var(--ifm-color-primary);
+  --docsearch-placeholder-color: rgb(149, 165, 190);
   --docsearch-container-background: rgb(60, 72, 96, 0.5);
   --docsearch-modal-background: var(--ifm-color-emphasis-100);
   --docsearch-modal-shadow: inset 1px 1px 0px 0px rgba(255, 255, 255, 0.5),
   0px 3px 8px 0px rgba(116, 134, 169, 0.54);
   --docsearch-searchbox-background: rgb(212, 217, 225);
   --docsearch-searchbox-shadow: inset 1px 2px 6px 0px rgb(192, 196, 230),
-    inset 0px 1px 1px 0px rgb(134, 146, 221), 1px 1px 0px 0px rgb(255, 255, 255);
+  inset 0px 1px 1px 0px rgb(134, 146, 221), 1px 1px 0px 0px rgb(255, 255, 255);
+  --docsearch-hit-color: var(--ifm-color-emphasis-800);
+  --docsearch-hit-active-color: white;
+  --docsearch-hit-icon-color: var(--ifm-color-emphasis-500);
   --docsearch-hit-background: white;
   --docsearch-hit-shadow: 0px 2px 6px 0px rgb(212, 217, 225);
   --docsearch-key-gradient: linear-gradient(
     -225deg,
     rgb(213, 219, 228) 0%,
     rgb(248, 248, 248) 100%
-  );
-  --docsearch-key-shadow: inset 0px -2px 0px 0px rgb(205, 208, 231),
+    );
+    --docsearch-key-shadow: inset 0px -2px 0px 0px rgb(205, 208, 231),
     inset 0px 0px 1px 1px white, 0px 1px 2px 1px rgba(29, 37, 89, 0.38);
-  --docsearch-footer-background: white;
-  --docsearch-footer-shadow: 0px -5px 7px 0px rgba(69, 98, 155, 0.12);
+    --docsearch-footer-background: white;
+    --docsearch-footer-shadow: 0px -5px 7px 0px rgba(69, 98, 155, 0.12);
+    --docsearch-label-color: var(--ifm-color-emphasis-500);
 }
 
 /* Darkmode */
@@ -33,21 +38,23 @@ html[data-theme='dark'] {
   0px 3px 8px 0px rgb(0, 3, 9);
   --docsearch-searchbox-background: rgb(9, 10, 17);
   --docsearch-searchbox-shadow: inset 0px 0px 1px 1px rgba(84, 104, 255, 0.6);
+  --docsearch-hit-color: var(--ifm-color-emphasis-500);
+  --docsearch-hit-icon-color: var(--ifm-color-emphasis-300);
   --docsearch-hit-shadow: none;
-  --docsearch-hit-background: rgb(48, 51, 84);
+  --docsearch-hit-background: rgb(9, 10, 17);
+  --docsearch-key-gradient: linear-gradient(-26.56505117707799deg, rgb(86, 88, 114) 0%, rgb(49, 53, 91) 100%);
+  --docsearch-key-shadow:inset 0px -2px 0px 0px rgb(40, 45, 85),
+  inset 0px 0px 1px 1px rgb(81, 87, 125),
+  0px 2px 2px 0px rgb(3, 4, 9);
   --docsearch-footer-background:rgb(30, 33, 54);
   --docsearch-footer-shadow: inset 0px 1px 0px 0px rgba(73, 76, 106, 0.52),
-0px -4px 8px 0px rgba(0, 0, 0, 0.34);
---docsearch-key-gradient: linear-gradient(-26.56505117707799deg, rgb(86, 88, 114) 0%, rgb(49, 53, 91) 100%);
-  --docsearch-key-shadow:inset 0px -2px 0px 0px rgb(40, 45, 85),
-inset 0px 0px 1px 1px rgb(81, 87, 125),
-0px 2px 2px 0px rgb(3, 4, 9);
+  0px -4px 8px 0px rgba(0, 0, 0, 0.34);
+  --docsearch-label-color: rgb(109, 113, 163);
 }
-
 
 /* Search Button */
 
-/* Container */
+/* Container & Modal */
 
 .DocSearch-Container,
 .DocSearch-Container * {
@@ -63,7 +70,9 @@ inset 0px 0px 1px 1px rgb(81, 87, 125),
   background-color: var(--docsearch-container-background);
 }
 
-/* Modal */
+.DocSearch-Container a {
+  text-decoration: none;
+}
 
 .DocSearch-Modal {
   display: flex;
@@ -76,11 +85,7 @@ inset 0px 0px 1px 1px rgb(81, 87, 125),
   box-shadow: var(--docsearch-modal-shadow)
 }
 
-.DocSearch-Modal a {
-  text-decoration: none;
-}
-
-/* Searchbox */
+/* Modal Searchbox */
 
 .DocSearch-SearchBar {
   display: flex;
@@ -110,6 +115,7 @@ inset 0px 0px 1px 1px rgb(81, 87, 125),
   border: none;
   outline: none;
   background: transparent;
+  color: var(--docsearch-input-color);
 }
 
 .DocSearch-Input::placeholder {
@@ -126,7 +132,6 @@ inset 0px 0px 1px 1px rgb(81, 87, 125),
 .DocSearch-LoadingIndicator,
 .DocSearch-MagnifierLabel,
 .DocSearch-Reset {
-  color: var(--docsearch-input-color);
   height: 30px;
   width: 30px;
   margin: 0;
@@ -153,11 +158,11 @@ inset 0px 0px 1px 1px rgb(81, 87, 125),
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  background: none;
+  right: 0;
   border: none;
   border-radius: 50%;
+  background: none;
   cursor: pointer;
-  right: 0;
 }
 
 .DocSearch-Reset[hidden] {
@@ -184,42 +189,39 @@ inset 0px 0px 1px 1px rgb(81, 87, 125),
   color: var(--docsearch-highlight-color);
 }
 
-/* Dropdown */
+/* Modal Dropdown */
 
 .DocSearch-Dropdown {
+  height: 380px;
   padding: 0 12px 20px;
   flex: 1 0 auto;
-  height: 380px;
   overflow-y: scroll;
-}
-
-.DocSearch-Dropdown::-webkit-scrollbar {
-  display: none;
+  letter-spacing: .02em;
 }
 
 .DocSearch-Dropdown ul {
-  list-style: none;
   margin: 0;
   padding: 0;
+  list-style: none;
 }
 
 .DocSearch-Dropdown-Container {
   position: relative;
 }
 
-/* Footer */
+/* Modal Footer */
 
 .DocSearch-Footer {
   display: flex;
-  height: 45px;
-  padding: 0 12px;
+  height: 40px;
   z-index: 9999;
+  padding: 0 12px;
   flex-shrink: 0;
   justify-content: space-between;
   align-items: center;
+  border-radius: 0 0 8px 8px;
   background: var(--docsearch-footer-background);
   box-shadow: var(--docsearch-footer-shadow);
-  border-radius: 0 0 8px 8px;
 }
 
 .DocSearch-Commands {
@@ -230,24 +232,12 @@ inset 0px 0px 1px 1px rgb(81, 87, 125),
 }
 
 .DocSearch-Commands li:not(:last-of-type) {
-  margin-right: 8px;
-}
-
-.DocSearch-Logo a {
-  display: flex;
-}
-.DocSearch-Logo svg {
-  margin-left: 8px;
+  margin-right: 12px;
 }
 
 .DocSearch-Commands {
   display: flex;
   color: var(--ifm-color-emphasis-600);
-}
-
-.DocSearch-Hint {
-  font-size: 0.8em;
-  color: var(--ifm-color-emphasis-500);
 }
 
 .DocSearch-Commands li {
@@ -262,9 +252,22 @@ inset 0px 0px 1px 1px rgb(81, 87, 125),
   width: 21px;
   height: 19px;
   border-radius: 2px;
-  margin-right: 4px;
+  margin-right: 6px;
   background: var(--docsearch-key-gradient);
   box-shadow: var(--docsearch-key-shadow);
+}
+
+.DocSearch-Logo a {
+  display: flex;
+}
+
+.DocSearch-Logo svg {
+  margin-left: 8px;
+}
+
+.DocSearch-Label {
+  font-size: 0.75em;
+  color: var(--docsearch-label-color);
 }
 
 /* Hit */
@@ -289,12 +292,14 @@ inset 0px 0px 1px 1px rgb(81, 87, 125),
 .DocSearch-Hit[aria-selected='true'] mark,
 .DocSearch-Hit[aria-selected='true'] .DocSearch-Hit-text,
 .DocSearch-Hit[aria-selected='true'] .DocSearch-Hit-path,
-.DocSearch-Hit[aria-selected='true'] .DocSearch-Hit-icon {
-  color: var(--ifm-alert-color) !important;
+.DocSearch-Hit[aria-selected='true'] .DocSearch-Hit-icon,
+.DocSearch-Hit[aria-selected='true'] .DocSearch-Hit-action {
+  color: var(--docsearch-hit-active-color) !important;
 }
 
+.DocSearch-Hit[aria-selected='true'] .DocSearch-Hit-path,
 .DocSearch-Hit[aria-selected='true'] .DocSearch-Hit-icon {
-  opacity: 0.5;
+  opacity: .5;
 }
 
 .DocSearch-Hit a {
@@ -309,12 +314,10 @@ inset 0px 0px 1px 1px rgb(81, 87, 125),
 }
 
 .DocSearch-Hit-source {
-  width: 100%;
-  font-size: 0.8em;
-  color: var(--docsearch-highlight-color);
   margin-bottom: 8px;
+  font-size: 0.9em;
   font-weight: 600;
-  letter-spacing: 0px;
+  color: var(--docsearch-highlight-color);
 }
 
 .DocSearch-Hit-lvl1,
@@ -322,18 +325,18 @@ inset 0px 0px 1px 1px rgb(81, 87, 125),
 .DocSearch-Hit-lvl3,
 .DocSearch-Hit-content {
   display: flex;
-  width: 100%;
   height: 60px;
   padding: 0 12px;
   flex-direction: row;
   align-items: center;
+  color: var(--docsearch-hit-color);
 }
 
 .DocSearch-Hit-icon {
   height: 20px;
   width: 20px;
   margin-right: 8px;
-  color: var(--ifm-color-emphasis-400);
+  color: var(--docsearch-hit-icon-color);
 }
 
 .DocSearch-Hit-content-wrapper {
@@ -344,32 +347,22 @@ inset 0px 0px 1px 1px rgb(81, 87, 125),
 .DocSearch-Hit-title {
   font-size: 0.9em;
   font-weight: 500;
-  color: var(--ifm-color-emphasis-800);
 }
 
 .DocSearch-Hit-path {
   font-size: 0.7em;
-  color: var(--ifm-color-emphasis-600);
+  opacity: .5;
 }
 
 .DocSearch-Hit-action {
   height: 20px;
   width: 20px;
   margin-left: 8px;
-  opacity: 50%;
-  color: var(--ifm-color-emphasis-400);
+  opacity: .5;
+  color: var(--docsearch-hit-icon-color);
 }
-
-.DocSearch-Hit-separator {
-  font-size: 0.7em;
-  margin: 0 0.2rem;
-  color: var(--ifm-color-emphasis-500);
-}
-
-
 
 /* Icons */
-
 
 
 /* Responsive */
