@@ -278,7 +278,7 @@ export function DocSearch({
                   {Object.entries<DocSearchHit[]>(itemsGroupedByLevel).map(
                     ([title, hits]) => (
                       <div key={title}>
-                        <div className="DSV3-source">{title}</div>
+                        <div className="DocSearch-Hit-source">{title}</div>
 
                         <ul {...getMenuProps()}>
                           {hits.map((item, index) => {
@@ -294,7 +294,7 @@ export function DocSearch({
                                 <a href={item.url}>
                                   <div
                                     className={
-                                      `DSV3-${item.type}` +
+                                      `DocSearch-Hit-${item.type}` +
                                       ' ' +
                                       (item.lastLvl1 || '') +
                                       ' ' +
@@ -303,63 +303,63 @@ export function DocSearch({
                                       (item._show || '')
                                     }
                                   >
-                                    <div className="DSV3-icon">
+                                    <div className="DocSearch-Hit-icon">
                                       <IconSource icon={item.type} />
                                     </div>
                                     {item.hierarchy[item.type] && item.type === 'lvl1' && (
-                                      <div className="DSV3-content-wrapper">
+                                      <div className="DocSearch-Hit-content-wrapper">
                                         <Highlight
                                           hit={item}
                                           attribute="hierarchy.lvl1"
-                                          className="DSV3-title"
+                                          className="DocSearch-Hit-title"
                                         />
                                         <br />
                                         {item.content && (
                                           <Snippet
                                             hit={item}
                                             attribute="content"
-                                            className="DSV3-path"
+                                            className="DocSearch-Hit-path"
                                           />
                                         )}
                                       </div>
                                     )}
                                     {item.hierarchy[item.type] && (item.type === 'lvl2' ||
                                       item.type === 'lvl3') && (
-                                        <div className="DSV3-content-wrapper">
+                                        <div className="DocSearch-Hit-content-wrapper">
                                           <Highlight
                                             hit={item}
                                             attribute={'hierarchy.' + item.type}
-                                            className="DSV3-title"
+                                            className="DocSearch-Hit-title"
                                           />
                                           <br />
                                           <span>
                                             <Highlight
                                               hit={item}
                                               attribute="hierarchy.lvl1"
-                                              className="DSV3-path"
+                                              className="DocSearch-Hit-path"
                                             />
                                           </span>
                                         </div>
                                       )}
                                     {item.type === 'content' && (
-                                      <div className="DSV3-content-wrapper">
+                                      <div className="DocSearch-Hit-content-wrapper">
                                         <Snippet
                                           hit={item}
                                           attribute="content"
-                                          className="DSV3-title"
+                                          className="DocSearch-Hit-title"
                                         />
-                                        <span className="DSV3-separator">...</span>
+                                        <span className="DocSearch-Hit-separator">...</span>
                                         <br />
                                         <span>
                                           <Highlight
                                             hit={item}
                                             attribute="hierarchy.lvl1"
-                                            className="DSV3-path"
+                                            className="DocSearch-Hit-path"
                                           />
                                         </span>
                                       </div>
                                     )}
-                                    <div className="DSV3-action"><IconAction icon="goto" /></div>
+                                    <div className="DocSearch-Hit-action"><IconAction icon="goto" /></div>
                                   </div>
                                 </a>
                               </li>
