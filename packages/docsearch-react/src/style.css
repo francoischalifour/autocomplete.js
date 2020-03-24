@@ -141,11 +141,8 @@ html[data-theme='dark'] {
 .DocSearch-Container--Stalled .DocSearch-LoadingIndicator,
 .DocSearch-MagnifierLabel,
 .DocSearch-Reset {
-  align-items: center;
-  -webkit-box-align: center;
-  -webkit-box-pack: center;
-  display: -webkit-box;
   display: flex;
+  align-items: center;
   justify-content: center;
 }
 
@@ -155,8 +152,6 @@ html[data-theme='dark'] {
 }
 
 .DocSearch-Reset {
-  -webkit-appearance: none;
-  -moz-appearance: none;
   appearance: none;
   right: 0;
   border: none;
@@ -213,7 +208,7 @@ html[data-theme='dark'] {
 
 .DocSearch-Footer {
   display: flex;
-  height: 40px;
+  height: 48px;
   z-index: 9999;
   padding: 0 12px;
   flex-shrink: 0;
@@ -284,7 +279,7 @@ html[data-theme='dark'] {
 }
 
 .DocSearch-Hit[aria-selected='true'] {
-  transition: all ease 0.2s;
+  transition: background-color ease 0.1s;
   background-color: var(--docsearch-highlight-color);
 }
 
@@ -315,9 +310,10 @@ html[data-theme='dark'] {
 
 .DocSearch-Hit-source {
   margin-bottom: 8px;
-  font-size: 0.9em;
+  font-size: 0.85em;
   font-weight: 600;
   color: var(--docsearch-highlight-color);
+  letter-spacing: 0;
 }
 
 .DocSearch-Hit-lvl1,
