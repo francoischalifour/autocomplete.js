@@ -313,7 +313,7 @@ export function DocSearch({
                                           attribute="hierarchy.lvl1"
                                           className="DocSearch-Hit-title"
                                         />
-                                        <br />
+
                                         {item.content && (
                                           <Snippet
                                             hit={item}
@@ -331,14 +331,11 @@ export function DocSearch({
                                             attribute={'hierarchy.' + item.type}
                                             className="DocSearch-Hit-title"
                                           />
-                                          <br />
-                                          <span>
                                             <Highlight
                                               hit={item}
                                               attribute="hierarchy.lvl1"
                                               className="DocSearch-Hit-path"
                                             />
-                                          </span>
                                         </div>
                                       )}
                                     {item.type === 'content' && (
@@ -348,15 +345,12 @@ export function DocSearch({
                                           attribute="content"
                                           className="DocSearch-Hit-title"
                                         />
-                                        <span className="DocSearch-Hit-separator">...</span>
-                                        <br />
-                                        <span>
+                                        {/* <span className="DocSearch-Hit-separator">...</span> */}
                                           <Highlight
                                             hit={item}
                                             attribute="hierarchy.lvl1"
                                             className="DocSearch-Hit-path"
                                           />
-                                        </span>
                                       </div>
                                     )}
                                     <div className="DocSearch-Hit-action"><IconAction icon="goto" /></div>

@@ -340,12 +340,15 @@ html[data-theme='dark'] {
 }
 
 .DocSearch-Hit-content-wrapper {
+  display: flex;
   flex: 1 0 auto;
-  line-height: 0.9em;
+  justify-content: center;
+  flex-direction: column;
+  line-height: 1.1em;
 }
 
 .DocSearch-Hit-title {
-  font-size: 0.9em;
+  font-size: .9em;
   font-weight: 500;
 }
 
