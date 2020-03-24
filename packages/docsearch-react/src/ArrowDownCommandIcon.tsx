@@ -2,7 +2,7 @@ import React from 'react';
 
 export function ArrowDownCommandIcon() {
   return (
-    <svg viewBox="0 0 16 16">
+    <svg width="16" height="16" viewBox="0 0 16 16">
       <defs>
         <path
           id="a"
@@ -10,15 +10,6 @@ export function ArrowDownCommandIcon() {
         />
       </defs>
       <g fill="none" fillRule="evenodd">
-        <rect
-          width="15"
-          height="15"
-          x=".5"
-          y=".5"
-          stroke="currentColor"
-          rx="2"
-          className="DocSearch-Commands-border"
-        />
         <g transform="matrix(1 0 0 -1 4 12)">
           <mask id="b" fill="currentColor">
             <use xlinkHref="#a" />
