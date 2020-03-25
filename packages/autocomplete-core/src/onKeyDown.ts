@@ -37,7 +37,10 @@ export function onKeyDown<TItem>({
     );
     nodeItem?.scrollIntoView(false);
 
-    if (store.getState().highlightedIndex !== null) {
+    if (
+      store.getState().highlightedIndex !== null &&
+      store.getState().suggestions.some(suggestion => suggestion.length > 0)
+    ) {
       const { item, itemValue, itemUrl, source } = getHighlightedItem({
         state: store.getState(),
       });
@@ -94,7 +97,10 @@ export function onKeyDown<TItem>({
   } else if (event.key === 'Enter') {
     // No item is selected, so we let the browser handle the native `onSubmit`
     // form event.
-    if (store.getState().highlightedIndex === null) {
+    if (
+      store.getState().highlightedIndex === null ||
+      store.getState().suggestions.every(suggestion => suggestion.length === 0)
+    ) {
       return;
     }
 
