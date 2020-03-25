@@ -54,13 +54,30 @@ html[data-theme='dark'] {
 
 /* Search Button */
 
-.button_src-theme-SearchBar-{
+.DocSearch-SearchButton {
   height: 44px;
   margin: 0 0 0 20px;
   padding: 0 16px 0 10px;
   border-radius: 22px;
   background: var(--docsearch-searchbox-background);
   box-shadow: var(--docsearch-searchbox-shadow);
+  margin-left: 1rem;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+
+}
+
+.DocSearch-SearchButton-Icon {
+  color: var(--docsearch-highlight-color);
+}
+
+.DocSearch-SearchButton-Placeholder {
+  margin: 0 8px;
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--docsearch-placeholder-color);
 }
 
 .DocSearch-SearchButton-KeySeparator{
@@ -77,6 +94,7 @@ html[data-theme='dark'] {
   border-radius: 3px;
   background: var(--docsearch-key-gradient);
   box-shadow: var(--docsearch-key-shadow);
+  color: var(--ifm-color-emphasis-600);
 }
 
 /* Container & Modal */
@@ -190,7 +208,6 @@ html[data-theme='dark'] {
 }
 
 .DocSearch-Reset:focus {
-  color: var(--docsearch-highlight-color);
   outline: none;
 }
 
