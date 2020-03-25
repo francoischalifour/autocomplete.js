@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import algoliasearch from 'algoliasearch/dist/algoliasearch-lite.esm.browser';
 import {
   createAutocomplete,
@@ -34,13 +34,17 @@ export function DocSearch({
     suggestions: [],
   } as any);
 
+  const searchBoxRef = useRef<HTMLDivElement | null>(null);
+  const dropdownRef = useRef<HTMLDivElement | null>(null);
+  const inputRef = useRef<HTMLInputElement | null>(null);
+
   const searchClient = React.useMemo(() => algoliasearch(appId, apiKey), [
     appId,
     apiKey,
   ]);
 
   const {
-    // getEnvironmentProps,
+    getEnvironmentProps,
     getRootProps,
     getFormProps,
     getLabelProps,
@@ -129,6 +133,26 @@ export function DocSearch({
     [indexName, searchParameters, searchClient, onClose]
   );
 
+  useEffect(() => {
+    if (!(searchBoxRef.current && dropdownRef.current && inputRef.current)) {
+      return undefined;
+    }
+
+    const { onTouchStart, onTouchMove } = getEnvironmentProps({
+      searchBoxElement: searchBoxRef.current,
+      dropdownElement: dropdownRef.current,
+      inputElement: inputRef.current,
+    });
+
+    window.addEventListener('touchstart', onTouchStart);
+    window.addEventListener('touchmove', onTouchMove);
+
+    return () => {
+      window.removeEventListener('touchstart', onTouchStart);
+      window.removeEventListener('touchmove', onTouchMove);
+    };
+  }, [getEnvironmentProps, searchBoxRef, dropdownRef, inputRef]);
+
   return (
     <div
       className={[
@@ -147,8 +171,9 @@ export function DocSearch({
       })}
     >
       <div className="DocSearch-Modal">
-        <header className="DocSearch-SearchBar">
+        <header className="DocSearch-SearchBar" ref={searchBoxRef}>
           <SearchBox
+            inputRef={inputRef}
             query={state.query}
             getFormProps={getFormProps}
             getLabelProps={getLabelProps}
@@ -156,7 +181,7 @@ export function DocSearch({
           />
         </header>
 
-        <div className="DocSearch-Dropdown">
+        <div className="DocSearch-Dropdown" ref={dropdownRef}>
           <Results
             suggestions={state.suggestions}
             getMenuProps={getMenuProps}

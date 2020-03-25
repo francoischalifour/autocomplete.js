@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { MutableRefObject } from 'react';
 import {
   GetFormProps,
   GetLabelProps,
@@ -18,13 +18,12 @@ interface SearchBoxProps {
     React.MouseEvent,
     React.KeyboardEvent
   >;
+  inputRef: MutableRefObject<HTMLInputElement | null>;
 }
 
 export function SearchBox(props: SearchBoxProps) {
-  const inputRef = useRef<HTMLInputElement | null>(null);
-
   const { onSubmit, onReset } = props.getFormProps({
-    inputElement: inputRef.current,
+    inputElement: props.inputRef.current,
   });
 
   return (
@@ -46,9 +45,9 @@ export function SearchBox(props: SearchBoxProps) {
 
       <input
         className="DocSearch-Input"
-        ref={inputRef}
+        ref={props.inputRef}
         {...props.getInputProps({
-          inputElement: inputRef.current!,
+          inputElement: props.inputRef.current!,
           type: 'search',
           maxLength: '512',
         })}
