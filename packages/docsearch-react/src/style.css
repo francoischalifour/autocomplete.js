@@ -25,6 +25,7 @@
     inset 0px 0px 1px 1px white, 0px 1px 2px 1px rgba(29, 37, 89, 0.38);
   --docsearch-footer-background: white;
   --docsearch-footer-shadow: 0px -5px 7px 0px rgba(69, 98, 155, 0.12);
+  --docsearch-logo-color: #5468ff;
   --docsearch-label-color: var(--ifm-color-emphasis-500);
 }
 
@@ -52,6 +53,7 @@ html[data-theme='dark'] {
   --docsearch-footer-background: rgb(30, 33, 54);
   --docsearch-footer-shadow: inset 0px 1px 0px 0px rgba(73, 76, 106, 0.52),
     0px -4px 8px 0px rgba(0, 0, 0, 0.34);
+  --docsearch-logo-color: #fff;
   --docsearch-label-color: rgb(109, 113, 163);
 }
 
@@ -307,6 +309,7 @@ html[data-theme='dark'] {
 
 .DocSearch-Logo svg {
   margin-left: 8px;
+  color: var(--docsearch-logo-color);
 }
 
 .DocSearch-Label {
