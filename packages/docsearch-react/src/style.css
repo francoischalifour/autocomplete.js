@@ -284,7 +284,7 @@ html[data-theme='dark'] {
   align-items: center;
 }
 
-.DocSearch-Commands-key {
+.DocSearch-Commands-Key {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -294,6 +294,11 @@ html[data-theme='dark'] {
   margin-right: 6px;
   background: var(--docsearch-key-gradient);
   box-shadow: var(--docsearch-key-shadow);
+}
+
+.DocSearch-Commands-Key svg {
+  width: 15px;
+  height: 15px;
 }
 
 .DocSearch-Logo a {

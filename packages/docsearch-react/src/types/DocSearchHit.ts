@@ -48,8 +48,8 @@ export interface DocSearchHit {
   type: ContentType;
   anchor: string | null;
   hierarchy: {
-    lvl0: string | null;
-    lvl1: string | null;
+    lvl0: string;
+    lvl1: string;
     lvl2: string | null;
     lvl3: string | null;
     lvl4: string | null;
