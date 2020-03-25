@@ -15,8 +15,10 @@ export default function SearchButton({ onClick }) {
           strokeLinejoin="round"
         ></path>
       </svg>
-      <span className={styles.text}>Search docs...</span>
-      <span className={styles.kbd}>⌘+K</span>
+        <span className={styles.text}>Search...</span>
+        <span className="DocSearch-SearchButton-Key">⌘</span>
+        <span className="DocSearch-SearchButton-KeySeparator">+</span>
+        <span className="DocSearch-SearchButton-Key">K</span>
     </button>
   );
 }

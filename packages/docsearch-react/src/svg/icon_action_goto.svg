@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <!-- Generator: sketchtool 55.2 (78181) - https://sketchapp.com -->
-    <title>0bbf3e84-a704-4009-b847-878bfff69b3a@1.00x</title>
+    <title>1c20c2f5-d737-495d-a54b-64fd79363595@1.00x</title>
     <desc>Created with sketchtool.</desc>
     <g id="autocomplete" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
         <g id="icon/action/goto" stroke="#7E8BA1" stroke-width="2">
-            <g id="Group-2" transform="translate(3.000000, 2.000000)">
-                <path d="M13.3010073,0.411306958 C13.3597759,2.19226304 13.3891602,3.78182748 13.3891602,5.18000026 C13.3891602,7.27725944 11.5303325,9.36000052 9.4699748,9.36000052 C8.09640302,9.36000052 5.15974476,9.36000052 0.660000041,9.36000052" id="Path-2"></path>
-                <polyline id="Path-3" points="4.8400003 14.2000008 0 9.36000052 4.8400003 4.52000022"></polyline>
+            <g id="Group" transform="translate(2.000000, 3.000000)">
+                <path d="M16,0 C16,1.33333333 16,2.66666667 16,4 C16,6 14,8 12,8 C10.6666667,8 6.66666667,8 0,8" id="Path-2"></path>
+                <polyline id="Path" points="6 14 2.27373675e-13 8 6 2"></polyline>
             </g>
         </g>
     </g>

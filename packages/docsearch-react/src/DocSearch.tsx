@@ -98,6 +98,19 @@ function IconAction(props) {
   }
 }
 
+function IconTree(props) {
+  switch (props.icon) {
+    case 'goto-external':
+      return (
+""
+      );
+    default:
+      return (
+""
+      );
+  }
+}
+
 function IconKey(props) {
   const icon = () => {
     switch (props.icon) {

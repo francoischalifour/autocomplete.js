@@ -10,7 +10,7 @@
   0px 3px 8px 0px rgba(116, 134, 169, 0.54);
   --docsearch-searchbox-background: rgb(212, 217, 225);
   --docsearch-searchbox-shadow: inset 1px 2px 6px 0px rgb(192, 196, 230),
-  inset 0px 1px 1px 0px rgb(134, 146, 221), 1px 1px 0px 0px rgb(255, 255, 255);
+  inset 0px 1px 1px 0px rgb(134, 146, 221), 1px 1px 0px 0px white;
   --docsearch-hit-color: var(--ifm-color-emphasis-800);
   --docsearch-hit-active-color: white;
   --docsearch-hit-icon-color: var(--ifm-color-emphasis-500);
@@ -53,6 +53,31 @@ html[data-theme='dark'] {
 }
 
 /* Search Button */
+
+.button_src-theme-SearchBar-{
+  height: 44px;
+  margin: 0 0 0 20px;
+  padding: 0 16px 0 10px;
+  border-radius: 22px;
+  background: var(--docsearch-searchbox-background);
+  box-shadow: var(--docsearch-searchbox-shadow);
+}
+
+.DocSearch-SearchButton-KeySeparator{
+  margin: 0 2px;
+  color: var(--docsearch-label-color);
+}
+
+.DocSearch-SearchButton-Key{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 21px;
+  height: 19px;
+  border-radius: 3px;
+  background: var(--docsearch-key-gradient);
+  box-shadow: var(--docsearch-key-shadow);
+}
 
 /* Container & Modal */
 
