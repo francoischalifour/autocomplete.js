@@ -46,7 +46,7 @@ function ContentIcon() {
   return (
     <svg width="20" height="20">
       <path
-        d="M17 5H3h14zm0 5H3h14zm0 6H3h14z"
+        d="M17 5H3h14zm0 5H3h14zm0 5H3h14z"
         stroke="currentColor"
         strokeWidth="2"
         fill="none"
