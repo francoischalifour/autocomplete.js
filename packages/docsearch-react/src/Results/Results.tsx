@@ -1,5 +1,5 @@
 import React from 'react';
-import { Highlight, Snippet } from '@francoischalifour/autocomplete-react';
+import { Snippet } from '@francoischalifour/autocomplete-react';
 import {
   GetMenuProps,
   GetItemProps,
@@ -70,7 +70,7 @@ export function Results(props: ResultsProps) {
 
                         {item.hierarchy[item.type] && item.type === 'lvl1' && (
                           <div className="DocSearch-Hit-content-wrapper">
-                            <Highlight
+                            <Snippet
                               hit={item}
                               attribute="hierarchy.lvl1"
                               className="DocSearch-Hit-title"
@@ -88,12 +88,12 @@ export function Results(props: ResultsProps) {
                         {item.hierarchy[item.type] &&
                           (item.type === 'lvl2' || item.type === 'lvl3') && (
                             <div className="DocSearch-Hit-content-wrapper">
-                              <Highlight
+                              <Snippet
                                 hit={item}
                                 attribute={`hierarchy.${item.type}`}
                                 className="DocSearch-Hit-title"
                               />
-                              <Highlight
+                              <Snippet
                                 hit={item}
                                 attribute="hierarchy.lvl1"
                                 className="DocSearch-Hit-path"
@@ -109,7 +109,7 @@ export function Results(props: ResultsProps) {
                               className="DocSearch-Hit-title"
                             />
                             {/* <span className="DocSearch-Hit-separator">...</span> */}
-                            <Highlight
+                            <Snippet
                               hit={item}
                               attribute="hierarchy.lvl1"
                               className="DocSearch-Hit-path"

@@ -74,6 +74,13 @@ export function DocSearch({
                 indexName,
                 query,
                 params: {
+                  attributesToSnippet: [
+                    'hierarchy.lvl1',
+                    'hierarchy.lvl2',
+                    'hierarchy.lvl3',
+                    'content',
+                  ],
+                  snippetEllipsisText: '…',
                   highlightPreTag: '<mark>',
                   highlightPostTag: '</mark>',
                   hitsPerPage: 10,
