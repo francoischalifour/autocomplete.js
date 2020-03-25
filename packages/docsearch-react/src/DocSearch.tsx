@@ -6,11 +6,11 @@ import {
 } from '@francoischalifour/autocomplete-core';
 import { getAlgoliaHits } from '@francoischalifour/autocomplete-react';
 
+import { DocSearchHit, InternalDocSearchHit } from './types';
 import { noop, groupBy } from './utils';
 import { SearchBox } from './SearchBox';
-import { Results } from './Results';
+import { Dropdown } from './Dropdown';
 import { Footer } from './Footer';
-import { DocSearchHit, InternalDocSearchHit } from './types';
 
 interface DocSearchProps {
   appId?: string;
@@ -189,8 +189,8 @@ export function DocSearch({
         </header>
 
         <div className="DocSearch-Dropdown" ref={dropdownRef}>
-          <Results
-            suggestions={state.suggestions}
+          <Dropdown
+            state={state}
             getMenuProps={getMenuProps}
             getItemProps={getItemProps}
           />
