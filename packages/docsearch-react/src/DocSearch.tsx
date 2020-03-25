@@ -22,6 +22,10 @@ interface DocSearchProps {
   onClose(): void;
 }
 
+type InternalDocSearchHit = DocSearchHit & {
+  __docsearch_parent: null | DocSearchHit;
+};
+
 function IconSource(props) {
   switch (props.icon) {
     case 'lvl1':
@@ -176,46 +180,66 @@ export function DocSearch({
         onStateChange({ state }) {
           setState(state as any);
         },
-        getSources() {
-          return [
-            {
-              onSelect() {
-                onClose();
+        getSources({ query }) {
+          return getAlgoliaHits({
+            searchClient,
+            queries: [
+              {
+                indexName,
+                query,
+                params: {
+                  highlightPreTag: '<mark>',
+                  highlightPostTag: '</mark>',
+                  hitsPerPage: 10,
+                  ...searchParameters,
+                },
               },
-              getSuggestionUrl({ suggestion }) {
-                return suggestion.url;
-              },
-              getSuggestions({ query }) {
-                return getAlgoliaHits({
-                  searchClient,
-                  queries: [
-                    {
-                      indexName,
-                      query,
-                      params: {
-                        highlightPreTag: '<mark>',
-                        highlightPostTag: '</mark>',
-                        hitsPerPage: 10,
-                        ...searchParameters,
-                      },
-                    },
-                  ],
-                }).then((hits: DocSearchHit[]) => {
-                  return hits.map(hit => {
-                    const url = new URL(hit.url);
+            ],
+          }).then((hits: DocSearchHit[]) => {
+            const formattedHits = hits.map(hit => {
+              const url = new URL(hit.url);
+              return {
+                ...hit,
+                url: hit.url
+                  .replace(url.origin, '')
+                  .replace('#__docusaurus', ''),
+              };
+            });
+            const sources = groupBy(formattedHits, hit => hit.hierarchy.lvl0);
 
-                    return {
-                      ...hit,
-                      // @TODO: Temporarily sanitize data for development
-                      url: hit.url
-                        .replace(url.origin, '')
-                        .replace('#__docusaurus', ''),
-                    };
-                  });
-                });
-              },
-            },
-          ];
+            return Object.values(sources).map(items => {
+              return {
+                onSelect() {
+                  onClose();
+                },
+                getSuggestionUrl({ suggestion }) {
+                  return suggestion.url;
+                },
+                getSuggestions() {
+                  return Object.values<DocSearchHit[]>(
+                    groupBy(items, item => item.hierarchy.lvl1)
+                  )
+                    .map(hits =>
+                      hits.map(item => {
+                        return {
+                          ...item,
+                          // eslint-disable-next-line @typescript-eslint/camelcase
+                          __docsearch_parent:
+                            item.type !== 'lvl1' &&
+                            hits.find(
+                              siblingItem =>
+                                siblingItem.type === 'lvl1' &&
+                                siblingItem.hierarchy.lvl1 ===
+                                  item.hierarchy.lvl1
+                            ),
+                        };
+                      })
+                    )
+                    .flat();
+                },
+              };
+            });
+          });
         },
       }),
     [indexName, searchParameters, searchClient, onClose]
@@ -285,150 +309,111 @@ export function DocSearch({
 
         <div className="DocSearch-Dropdown">
           <div className="DocSearch-Dropdown-Container">
-            {state.suggestions.map((suggestion, index) => {
-              const { source, items } = suggestion;
-
-              const itemsGroupedByLevel0 = groupBy(
-                items,
-                item => item.hierarchy.lvl0
-              );
-
-              const groupedItems = Object.entries<DocSearchHit[]>(
-                itemsGroupedByLevel0
-              ).map(([title, hits]) => {
-                return {
-                  title,
-                  items: Object.entries<DocSearchHit[]>(
-                    groupBy(hits, hit => hit.hierarchy.lvl1)
-                  )
-                    .map(([_title, hits]) => {
-                      return hits.map(item => {
-                        return {
-                          ...item,
-                          // eslint-disable-next-line @typescript-eslint/camelcase
-                          __docsearch_parent:
-                            item.type !== 'lvl1' &&
-                            hits.find(
-                              parentItem =>
-                                parentItem.type === 'lvl1' &&
-                                parentItem.hierarchy.lvl1 ===
-                                  item.hierarchy.lvl1
-                            ),
-                        };
-                      });
-                    })
-                    .flat(),
-                };
-              });
+            {state.suggestions.map(({ source, items }) => {
+              const title = items[0].hierarchy.lvl0;
 
               return (
-                <section key={`result-${index}`} className="DocSearch-Hits">
-                  {groupedItems.map(record => (
-                    <div key={record.title}>
-                      <div className="DocSearch-Hit-source">{record.title}</div>
+                <section key={title} className="DocSearch-Hits">
+                  <div className="DocSearch-Hit-source">{title}</div>
 
-                      <ul {...getMenuProps()}>
-                        {record.items.map((item, index) => {
-                          return (
-                            <li
-                              key={`item-${index}`}
-                              className={[
-                                'DocSearch-Hit',
-                                item.__docsearch_parent &&
-                                  'DocSearch-Hit--Child',
-                              ]
-                                .filter(Boolean)
-                                .join(' ')}
-                              {...getItemProps({
-                                item,
-                                source,
-                              })}
-                            >
-                              {item.__docsearch_parent && (
-                                <svg className="DocSearch-Hit-Tree">
-                                  <g
-                                    stroke="currentColor"
-                                    strokeWidth="2"
-                                    fill="none"
-                                    fillRule="evenodd"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                  >
-                                    {item.__docsearch_parent !==
-                                    record.items[index + 1]
-                                      ?.__docsearch_parent ? (
-                                      <path d="M8 8v22M26.5 30H8.3" />
-                                    ) : (
-                                      <path d="M8 8v44M26.5 30H8.3" />
-                                    )}
-                                  </g>
-                                </svg>
-                              )}
+                  <ul {...getMenuProps()}>
+                    {items.map((item: InternalDocSearchHit, index: number) => {
+                      return (
+                        <li
+                          key={`item-${index}`}
+                          className={[
+                            'DocSearch-Hit',
+                            item.__docsearch_parent && 'DocSearch-Hit--Child',
+                          ]
+                            .filter(Boolean)
+                            .join(' ')}
+                          {...getItemProps({
+                            item,
+                            source,
+                          })}
+                        >
+                          {item.__docsearch_parent && (
+                            <svg className="DocSearch-Hit-Tree">
+                              <g
+                                stroke="currentColor"
+                                strokeWidth="2"
+                                fill="none"
+                                fillRule="evenodd"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              >
+                                {item.__docsearch_parent !==
+                                items[index + 1]?.__docsearch_parent ? (
+                                  <path d="M8 8v22M26.5 30H8.3" />
+                                ) : (
+                                  <path d="M8 8v44M26.5 30H8.3" />
+                                )}
+                              </g>
+                            </svg>
+                          )}
 
-                              <a href={item.url}>
-                                <div className={`DocSearch-Hit-${item.type}`}>
-                                  <div className="DocSearch-Hit-icon">
-                                    <IconSource icon={item.type} />
-                                  </div>
-                                  {item.hierarchy[item.type] &&
-                                    item.type === 'lvl1' && (
-                                      <div className="DocSearch-Hit-content-wrapper">
-                                        <Highlight
-                                          hit={item}
-                                          attribute="hierarchy.lvl1"
-                                          className="DocSearch-Hit-title"
-                                        />
-                                        {item.content && (
-                                          <Snippet
-                                            hit={item}
-                                            attribute="content"
-                                            className="DocSearch-Hit-path"
-                                          />
-                                        )}
-                                      </div>
-                                    )}
-                                  {item.hierarchy[item.type] &&
-                                    (item.type === 'lvl2' ||
-                                      item.type === 'lvl3') && (
-                                      <div className="DocSearch-Hit-content-wrapper">
-                                        <Highlight
-                                          hit={item}
-                                          attribute={'hierarchy.' + item.type}
-                                          className="DocSearch-Hit-title"
-                                        />
-                                        <Highlight
-                                          hit={item}
-                                          attribute="hierarchy.lvl1"
-                                          className="DocSearch-Hit-path"
-                                        />
-                                      </div>
-                                    )}
-                                  {item.type === 'content' && (
-                                    <div className="DocSearch-Hit-content-wrapper">
+                          <a href={item.url}>
+                            <div className={`DocSearch-Hit-${item.type}`}>
+                              <div className="DocSearch-Hit-icon">
+                                <IconSource icon={item.type} />
+                              </div>
+                              {item.hierarchy[item.type] &&
+                                item.type === 'lvl1' && (
+                                  <div className="DocSearch-Hit-content-wrapper">
+                                    <Highlight
+                                      hit={item}
+                                      attribute="hierarchy.lvl1"
+                                      className="DocSearch-Hit-title"
+                                    />
+                                    {item.content && (
                                       <Snippet
                                         hit={item}
                                         attribute="content"
-                                        className="DocSearch-Hit-title"
-                                      />
-                                      {/* <span className="DocSearch-Hit-separator">...</span> */}
-                                      <Highlight
-                                        hit={item}
-                                        attribute="hierarchy.lvl1"
                                         className="DocSearch-Hit-path"
                                       />
-                                    </div>
-                                  )}
-                                  <div className="DocSearch-Hit-action">
-                                    <IconAction icon="goto" />
+                                    )}
                                   </div>
+                                )}
+                              {item.hierarchy[item.type] &&
+                                (item.type === 'lvl2' ||
+                                  item.type === 'lvl3') && (
+                                  <div className="DocSearch-Hit-content-wrapper">
+                                    <Highlight
+                                      hit={item}
+                                      attribute={'hierarchy.' + item.type}
+                                      className="DocSearch-Hit-title"
+                                    />
+                                    <Highlight
+                                      hit={item}
+                                      attribute="hierarchy.lvl1"
+                                      className="DocSearch-Hit-path"
+                                    />
+                                  </div>
+                                )}
+                              {item.type === 'content' && (
+                                <div className="DocSearch-Hit-content-wrapper">
+                                  <Snippet
+                                    hit={item}
+                                    attribute="content"
+                                    className="DocSearch-Hit-title"
+                                  />
+                                  {/* <span className="DocSearch-Hit-separator">...</span> */}
+                                  <Highlight
+                                    hit={item}
+                                    attribute="hierarchy.lvl1"
+                                    className="DocSearch-Hit-path"
+                                  />
                                 </div>
-                              </a>
-                            </li>
-                          );
-                        })}
-                      </ul>
-                    </div>
-                  ))}
+                              )}
+                              <div className="DocSearch-Hit-action">
+                                <IconAction icon="goto" />
+                              </div>
+                            </div>
+                          </a>
+                        </li>
+                      );
+                    })}
+                  </ul>
                 </section>
               );
             })}
