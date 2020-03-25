@@ -101,13 +101,9 @@ function IconAction(props) {
 function IconTree(props) {
   switch (props.icon) {
     case 'goto-external':
-      return (
-""
-      );
+      return '';
     default:
-      return (
-""
-      );
+      return '';
   }
 }
 
@@ -183,6 +179,9 @@ export function DocSearch({
         getSources() {
           return [
             {
+              onSelect() {
+                onClose();
+              },
               getSuggestionUrl({ suggestion }) {
                 return suggestion.url;
               },
@@ -201,36 +200,26 @@ export function DocSearch({
                       },
                     },
                   ],
+                }).then((hits: DocSearchHit[]) => {
+                  return hits.map(hit => {
+                    const url = new URL(hit.url);
+
+                    return {
+                      ...hit,
+                      // @TODO: Temporarily sanitize data for development
+                      url: hit.url
+                        .replace(url.origin, '')
+                        .replace('#__docusaurus', ''),
+                    };
+                  });
                 });
               },
             },
           ];
         },
       }),
-    [indexName, searchParameters, searchClient]
+    [indexName, searchParameters, searchClient, onClose]
   );
-
-  // function getLvl1(searchClient, treeLvl1) {
-  //   return searchClient
-  //     .search([
-  //       {
-  //         indexName: 'autocomplete',
-  //         query: '',
-  //         params: {
-  //           facetFilters: ['type:lvl1'],
-  //           hitsPerPage: 1000,
-  //           attributesToRetrieve: '*',
-  //           attributesToSnippet: '*',
-  //           highlightPreTag: '<mark>',
-  //           highlightPostTag: '</mark>',
-  //         },
-  //       },
-  //     ])
-  //     .then(results => {
-  //       const lvl1Hits = results.results[0].hits;
-  //       return lvl1Hits.filter(hit => !!treeLvl1.includes(hit.hierarchy.lvl1));
-  //     });
-  // }
 
   const inputRef = React.useRef<HTMLInputElement | null>(null);
   const { onSubmit, onReset } = getFormProps({
@@ -299,75 +288,114 @@ export function DocSearch({
             {state.suggestions.map((suggestion, index) => {
               const { source, items } = suggestion;
 
-              const itemsGroupedByLevel = groupBy(
+              const itemsGroupedByLevel0 = groupBy(
                 items,
                 item => item.hierarchy.lvl0
               );
 
+              const groupedItems = Object.entries<DocSearchHit[]>(
+                itemsGroupedByLevel0
+              ).map(([title, hits]) => {
+                return {
+                  title,
+                  items: Object.entries<DocSearchHit[]>(
+                    groupBy(hits, hit => hit.hierarchy.lvl1)
+                  )
+                    .map(([_title, hits]) => {
+                      return hits.map(item => {
+                        return {
+                          ...item,
+                          // eslint-disable-next-line @typescript-eslint/camelcase
+                          __docsearch_parent:
+                            item.type !== 'lvl1' &&
+                            hits.find(
+                              parentItem =>
+                                parentItem.type === 'lvl1' &&
+                                parentItem.hierarchy.lvl1 ===
+                                  item.hierarchy.lvl1
+                            ),
+                        };
+                      });
+                    })
+                    .flat(),
+                };
+              });
+
               return (
                 <section key={`result-${index}`} className="DocSearch-Hits">
-                  {Object.entries<DocSearchHit[]>(itemsGroupedByLevel).map(
-                    ([title, hits]) => (
-                      <div key={title}>
-                        <div className="DocSearch-Hit-source">{title}</div>
+                  {groupedItems.map(record => (
+                    <div key={record.title}>
+                      <div className="DocSearch-Hit-source">{record.title}</div>
 
-                        <ul {...getMenuProps()}>
-                          {hits.map((item, index) => {
-                            return (
-                              <li
-                                key={`item-${index}`}
-                                className="DocSearch-Hit"
-                                {...getItemProps({
-                                  item,
-                                  source,
-                                })}
-                              >
-                                <a href={item.url}>
-                                  <div className={`DocSearch-Hit-${item.type}`}>
-                                    <div className="DocSearch-Hit-icon">
-                                      <IconSource icon={item.type} />
-                                    </div>
-                                    {item.hierarchy[item.type] &&
-                                      item.type === 'lvl1' && (
-                                        <div className="DocSearch-Hit-content-wrapper">
-                                          <Highlight
-                                            hit={item}
-                                            attribute="hierarchy.lvl1"
-                                            className="DocSearch-Hit-title"
-                                          />
-                                          {item.content && (
-                                            <Snippet
-                                              hit={item}
-                                              attribute="content"
-                                              className="DocSearch-Hit-path"
-                                            />
-                                          )}
-                                        </div>
-                                      )}
-                                    {item.hierarchy[item.type] &&
-                                      (item.type === 'lvl2' ||
-                                        item.type === 'lvl3') && (
-                                        <div className="DocSearch-Hit-content-wrapper">
-                                          <Highlight
-                                            hit={item}
-                                            attribute={'hierarchy.' + item.type}
-                                            className="DocSearch-Hit-title"
-                                          />
-                                          <Highlight
-                                            hit={item}
-                                            attribute="hierarchy.lvl1"
-                                            className="DocSearch-Hit-path"
-                                          />
-                                        </div>
-                                      )}
-                                    {item.type === 'content' && (
+                      <ul {...getMenuProps()}>
+                        {record.items.map((item, index) => {
+                          return (
+                            <li
+                              key={`item-${index}`}
+                              className={[
+                                'DocSearch-Hit',
+                                item.__docsearch_parent &&
+                                  'DocSearch-Hit--Child',
+                              ]
+                                .filter(Boolean)
+                                .join(' ')}
+                              {...getItemProps({
+                                item,
+                                source,
+                              })}
+                            >
+                              {item.__docsearch_parent && (
+                                <svg className="DocSearch-Hit-Tree">
+                                  <g
+                                    stroke="currentColor"
+                                    strokeWidth="2"
+                                    fill="none"
+                                    fillRule="evenodd"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                  >
+                                    {item.__docsearch_parent !==
+                                    record.items[index + 1]
+                                      ?.__docsearch_parent ? (
+                                      <path d="M8 8v22M26.5 30H8.3" />
+                                    ) : (
+                                      <path d="M8 8v44M26.5 30H8.3" />
+                                    )}
+                                  </g>
+                                </svg>
+                              )}
+
+                              <a href={item.url}>
+                                <div className={`DocSearch-Hit-${item.type}`}>
+                                  <div className="DocSearch-Hit-icon">
+                                    <IconSource icon={item.type} />
+                                  </div>
+                                  {item.hierarchy[item.type] &&
+                                    item.type === 'lvl1' && (
                                       <div className="DocSearch-Hit-content-wrapper">
-                                        <Snippet
+                                        <Highlight
                                           hit={item}
-                                          attribute="content"
+                                          attribute="hierarchy.lvl1"
                                           className="DocSearch-Hit-title"
                                         />
-                                        {/* <span className="DocSearch-Hit-separator">...</span> */}
+                                        {item.content && (
+                                          <Snippet
+                                            hit={item}
+                                            attribute="content"
+                                            className="DocSearch-Hit-path"
+                                          />
+                                        )}
+                                      </div>
+                                    )}
+                                  {item.hierarchy[item.type] &&
+                                    (item.type === 'lvl2' ||
+                                      item.type === 'lvl3') && (
+                                      <div className="DocSearch-Hit-content-wrapper">
+                                        <Highlight
+                                          hit={item}
+                                          attribute={'hierarchy.' + item.type}
+                                          className="DocSearch-Hit-title"
+                                        />
                                         <Highlight
                                           hit={item}
                                           attribute="hierarchy.lvl1"
@@ -375,18 +403,32 @@ export function DocSearch({
                                         />
                                       </div>
                                     )}
-                                    <div className="DocSearch-Hit-action">
-                                      <IconAction icon="goto" />
+                                  {item.type === 'content' && (
+                                    <div className="DocSearch-Hit-content-wrapper">
+                                      <Snippet
+                                        hit={item}
+                                        attribute="content"
+                                        className="DocSearch-Hit-title"
+                                      />
+                                      {/* <span className="DocSearch-Hit-separator">...</span> */}
+                                      <Highlight
+                                        hit={item}
+                                        attribute="hierarchy.lvl1"
+                                        className="DocSearch-Hit-path"
+                                      />
                                     </div>
+                                  )}
+                                  <div className="DocSearch-Hit-action">
+                                    <IconAction icon="goto" />
                                   </div>
-                                </a>
-                              </li>
-                            );
-                          })}
-                        </ul>
-                      </div>
-                    )
-                  )}
+                                </div>
+                              </a>
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    </div>
+                  ))}
                 </section>
               );
             })}
