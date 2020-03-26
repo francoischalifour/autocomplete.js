@@ -470,7 +470,7 @@ html[data-theme='dark'] {
 /* @media only screen and (max-device-width: 1024px) { */
   @media (max-width: 750px){
     :root {
-      --docsearch-modal-height: 100vh;
+      --docsearch-modal-height: calc(100vh - 120px);
     }
     .DocSearch-SearchButton-KeySeparator,
     .DocSearch-SearchButton-Key {
