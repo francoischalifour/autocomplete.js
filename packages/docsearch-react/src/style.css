@@ -419,10 +419,7 @@ html[data-theme='dark'] {
   text-decoration: underline;
 }
 
-.DocSearch-Hit-lvl1,
-.DocSearch-Hit-lvl2,
-.DocSearch-Hit-lvl3,
-.DocSearch-Hit-content {
+.DocSearch-Hit-Container {
   display: flex;
   height: 60px;
   padding: 0 12px 0 0;

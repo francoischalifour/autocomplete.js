@@ -63,7 +63,7 @@ export function Results(props: ResultsProps) {
                     )}
 
                     <a href={item.url}>
-                      <div className={`DocSearch-Hit-${item.type}`}>
+                      <div className="DocSearch-Hit-Container">
                         <div className="DocSearch-Hit-icon">
                           <SourceIcon type={item.type} />
                         </div>
@@ -86,7 +86,11 @@ export function Results(props: ResultsProps) {
                         )}
 
                         {item.hierarchy[item.type] &&
-                          (item.type === 'lvl2' || item.type === 'lvl3') && (
+                          (item.type === 'lvl2' ||
+                            item.type === 'lvl3' ||
+                            item.type === 'lvl4' ||
+                            item.type === 'lvl5' ||
+                            item.type === 'lvl6') && (
                             <div className="DocSearch-Hit-content-wrapper">
                               <Snippet
                                 hit={item}
@@ -108,7 +112,6 @@ export function Results(props: ResultsProps) {
                               attribute="content"
                               className="DocSearch-Hit-title"
                             />
-                            {/* <span className="DocSearch-Hit-separator">...</span> */}
                             <Snippet
                               hit={item}
                               attribute="hierarchy.lvl1"
