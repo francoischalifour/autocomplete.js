@@ -1,13 +1,12 @@
 import React, { useRef, useEffect } from 'react';
-import algoliasearch from 'algoliasearch/dist/algoliasearch-lite.esm.browser';
 import {
   createAutocomplete,
   AutocompleteState,
 } from '@francoischalifour/autocomplete-core';
-import { getAlgoliaHits } from '@francoischalifour/autocomplete-react';
+import { getAlgoliaHits } from '@francoischalifour/autocomplete-preset-algolia';
 
 import { DocSearchHit, InternalDocSearchHit } from './types';
-import { noop, groupBy } from './utils';
+import { createSearchClient, groupBy, noop } from './utils';
 import { SearchBox } from './SearchBox';
 import { Dropdown } from './Dropdown';
 import { Footer } from './Footer';
@@ -39,7 +38,7 @@ export function DocSearch({
   const inputRef = useRef<HTMLInputElement | null>(null);
   const snipetLength = useRef<number>(10);
 
-  const searchClient = React.useMemo(() => algoliasearch(appId, apiKey), [
+  const searchClient = React.useMemo(() => createSearchClient(appId, apiKey), [
     appId,
     apiKey,
   ]);
