@@ -79,9 +79,9 @@ html[data-theme='dark'] {
 
 .DocSearch-SearchButton {
   display: flex;
-  height: 44px;
+  height: 40px;
   margin: 0 0 0 20px;
-  padding: 0 16px 0 10px;
+  padding: 0 14px 0 12px;
   margin-left: 1rem;
   border: none;
   border-radius: 22px;
@@ -113,6 +113,7 @@ html[data-theme='dark'] {
   justify-content: center;
   width: 21px;
   height: 19px;
+  padding-bottom: 2px;
   border-radius: 3px;
   background: var(--docsearch-key-gradient);
   box-shadow: var(--docsearch-key-shadow);
@@ -333,16 +334,13 @@ html[data-theme='dark'] {
   justify-content: center;
   width: 21px;
   height: 19px;
+  padding-bottom: 2px;
   border-radius: 2px;
   margin-right: 6px;
   background: var(--docsearch-key-gradient);
   box-shadow: var(--docsearch-key-shadow);
 }
 
-.DocSearch-Commands-Key svg {
-  width: 15px;
-  height: 15px;
-}
 
 .DocSearch-Logo a {
   display: flex;
@@ -355,6 +353,7 @@ html[data-theme='dark'] {
 
 .DocSearch-Label {
   font-size: 0.75em;
+  line-height: 1.8em;
   color: var(--docsearch-label-color);
 }
 
@@ -398,7 +397,7 @@ html[data-theme='dark'] {
 }
 
 .DocSearch-Hit[aria-selected='true'] {
-  transition: background-color ease 0.1s;
+  /* transition: background-color ease 0.1s; */
   background-color: var(--docsearch-highlight-color);
 }
 
@@ -413,8 +412,13 @@ html[data-theme='dark'] {
 
 .DocSearch-Hit[aria-selected='true'] .DocSearch-Hit-path,
 .DocSearch-Hit[aria-selected='true'] .DocSearch-Hit-icon {
-  opacity: 0.5;
+
 }
+
+.DocSearch-Hit[aria-selected='true'] .DocSearch-Hit-content-wrapper::after {
+  background: linear-gradient(90deg,transparent,var(--docsearch-highlight-color));
+}
+
 
 .DocSearch-Hit a {
   display: block;
@@ -449,9 +453,23 @@ html[data-theme='dark'] {
 .DocSearch-Hit-content-wrapper {
   display: flex;
   flex: 1 0 auto;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 80%;
   justify-content: center;
   flex-direction: column;
   line-height: 1.1em;
+  position: relative;
+}
+
+.DocSearch-Hit-content-wrapper::after {
+content:"";
+display: block;
+width: 40px;
+height: 40px;
+background-image: linear-gradient(90deg,rgba(255,255,255,0), white);
+right:0;
+position: absolute;
 }
 
 .DocSearch-Hit-title {
@@ -479,6 +497,7 @@ html[data-theme='dark'] {
 /* @media only screen and (max-device-width: 1024px) { */
   @media (max-width: 750px){
     :root {
+      /* quickfix https://stackoverflow.com/questions/37112218/css3-100vh-not-constant-in-mobile-browser */
       --docsearch-modal-height: calc(100vh - 120px);
     }
     .DocSearch-SearchButton-KeySeparator,

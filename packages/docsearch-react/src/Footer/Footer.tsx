@@ -49,7 +49,7 @@ interface CommandIconProps {
 
 function CommandIcon(props: CommandIconProps) {
   return (
-    <svg>
+    <svg width="15" height="15">
       <g
         fill="none"
         stroke="currentColor"
