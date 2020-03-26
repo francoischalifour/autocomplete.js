@@ -4,7 +4,7 @@ interface SearchButtonProps {
   onClick(): void;
 }
 
-const ACTION_KEY_DEFAULT = 'CTRL';
+const ACTION_KEY_DEFAULT = 'Ctrl';
 const ACTION_KEY_APPLE = '⌘';
 
 function isAppleDevice() {
