@@ -1,5 +1,15 @@
 /* Variables */
 
+/* primary
+secondary
+bg
+bg light
+bg dark
+text default
+text muted
+spacing
+font size */
+
 :root {
   --docsearch-input-color: var(--ifm-color-emphasis-800);
   --docsearch-highlight-color: var(--ifm-color-primary);
@@ -27,6 +37,12 @@
   --docsearch-footer-shadow: 0px -5px 7px 0px rgba(69, 98, 155, 0.12);
   --docsearch-logo-color: #5468ff;
   --docsearch-label-color: var(--ifm-color-emphasis-500);
+
+  --docsearch-modal-width: 590px;
+  --docsearch-modal-height: 500px;
+  --docsearch-searchbox-height: 60px;
+  --docsearch-footer-height: 48px;
+  --docsearch-spacing: 12px;
 }
 
 /* Darkmode */
@@ -60,17 +76,17 @@ html[data-theme='dark'] {
 /* Search Button */
 
 .DocSearch-SearchButton {
+  display: flex;
   height: 44px;
   margin: 0 0 0 20px;
   padding: 0 16px 0 10px;
-  border-radius: 22px;
-  background: var(--docsearch-searchbox-background);
-  box-shadow: var(--docsearch-searchbox-shadow);
   margin-left: 1rem;
   border: none;
+  border-radius: 22px;
   cursor: pointer;
-  display: flex;
   align-items: center;
+  box-shadow: var(--docsearch-searchbox-shadow);
+  background: var(--docsearch-searchbox-background);
 }
 
 .DocSearch-SearchButton-Icon {
@@ -125,7 +141,8 @@ html[data-theme='dark'] {
   display: flex;
   flex-direction: column;
   width: 100%;
-  max-width: 590px;
+  max-width: var(--docsearch-modal-width);
+  height: var(--docsearch-modal-height);
   margin: 60px auto auto auto;
   border-radius: 6px;
   background: var(--docsearch-modal-background);
@@ -143,7 +160,7 @@ html[data-theme='dark'] {
   display: flex;
   position: relative;
   width: 100%;
-  height: 60px;
+  height: var(--docsearch-searchbox-height);
   padding: 0 12px;
   margin: 12px;
   align-items: center;
@@ -233,7 +250,7 @@ html[data-theme='dark'] {
 /* Modal Dropdown */
 
 .DocSearch-Dropdown {
-  height: 380px;
+  height: calc(var(--docsearch-modal-height) - var(--docsearch-searchbox-height) - var(--docsearch-spacing)*2  - var(--docsearch-footer-height));
   padding: 0 12px 20px;
   flex: 1 0 auto;
   overflow-y: scroll;
@@ -254,9 +271,10 @@ html[data-theme='dark'] {
 
 .DocSearch-Footer {
   display: flex;
-  height: 48px;
+  height: var(--docsearch-footer-height);
   z-index: 9999;
   padding: 0 12px;
+  flex-direction: row-reverse;
   flex-shrink: 0;
   justify-content: space-between;
   align-items: center;
@@ -433,3 +451,25 @@ html[data-theme='dark'] {
 /* Icons */
 
 /* Responsive */
+
+
+/* @media only screen and (max-device-width: 1024px) { */
+  @media (max-width: 996px){
+    :root {
+      --docsearch-modal-height: 60vh;
+    }
+    .DocSearch-Modal {
+      margin: 0 auto;
+    }
+    .DocSearch-Commands {
+      display: none
+    }
+    .DocSearch-Hit {
+      letter-spacing: 0;
+    }
+  }
+
+/* todo: hide keyboard shortcut on smartphones, touchscreens device - cross browser limitation with media q, maybe js is better https://codepen.io/Ferie/pen/vQOMmO?editors=1010 */
+@media (hover: none) and (pointer: coarse) {
+  /* ... */
+}

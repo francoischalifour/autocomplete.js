@@ -5,6 +5,9 @@ import { AlgoliaLogo } from './AlgoliaLogo';
 export function Footer() {
   return (
     <>
+      <div className="DocSearch-Logo">
+        <AlgoliaLogo />
+      </div>
       <ul className="DocSearch-Commands">
         <li>
           <span className="DocSearch-Commands-Key">
@@ -36,9 +39,6 @@ export function Footer() {
           <span className="DocSearch-Label">to close</span>
         </li>
       </ul>
-      <div className="DocSearch-Logo">
-        <AlgoliaLogo />
-      </div>
     </>
   );
 }
