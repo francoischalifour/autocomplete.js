@@ -74,6 +74,15 @@ export function DocSearch({
                 indexName,
                 query,
                 params: {
+                  attributesToRetrieve: [
+                    'hierarchy.lvl0',
+                    'hierarchy.lvl1',
+                    'hierarchy.lvl2',
+                    'hierarchy.lvl3',
+                    'content',
+                    'type',
+                    'url',
+                  ],
                   attributesToSnippet: [
                     'hierarchy.lvl1',
                     'hierarchy.lvl2',
