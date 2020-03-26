@@ -177,8 +177,8 @@ html[data-theme='dark'] {
 
 .DocSearch-Form {
   display: flex;
+  flex: 1;
   position: relative;
-  width: 100%;
   height: var(--docsearch-searchbox-height);
   padding: 0 12px;
   align-items: center;
@@ -488,7 +488,7 @@ html[data-theme='dark'] {
       margin: 0 auto;
     }
     .DocSearch-Cancel {
-      display: block;
+      display: inline-block;
       appearance: none;
       background: none;
       border: 0;
@@ -497,7 +497,7 @@ html[data-theme='dark'] {
       color: var(--docsearch-highlight-color);
       margin-left: var(--docsearch-spacing);
       padding: 0;
-      font-size: 1.125em;
+      font-size: 1em;
       font-weight: 500;
       letter-spacing: 0.02em;
     }
