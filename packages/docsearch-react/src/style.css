@@ -157,7 +157,6 @@ html[data-theme='dark'] {
 
 .DocSearch-Modal {
   position: relative;
-  display: flex;
   flex-direction: column;
   width: 100%;
   max-width: var(--docsearch-modal-width);
@@ -172,12 +171,12 @@ html[data-theme='dark'] {
 
 .DocSearch-SearchBar {
   display: flex;
-  margin: 12px;
+  padding: 12px;
 }
 
 .DocSearch-Form {
   display: flex;
-  flex: 0 2 100%;
+  width: 100%;
   position: relative;
   height: var(--docsearch-searchbox-height);
   padding: 0 12px;
@@ -189,7 +188,7 @@ html[data-theme='dark'] {
 
 .DocSearch-Input {
   height: 100%;
-  flex: 0 2 100%;
+  flex: auto;
   padding-left: 8px;
   font: inherit;
   font-size: 1.2em;
@@ -492,7 +491,7 @@ html[data-theme='dark'] {
     }
     .DocSearch-Cancel {
       display: inline-block;
-      flex-basis: 0;
+      flex: none;
       appearance: none;
       background: none;
       border: 0;
