@@ -1,19 +1,40 @@
 import React, { useState, useEffect } from 'react';
 
-export default function SearchButton({ onClick }) {
-  const [key, setKey] = useState('Ctrl');
+interface SearchButtonProps {
+  onClick(): void;
+}
+
+const ACTION_KEY_DEFAULT = 'CTRL';
+const ACTION_KEY_APPLE = '⌘';
+
+function isAppleDevice() {
+  if (typeof navigator === 'undefined') {
+    return ACTION_KEY_DEFAULT;
+  }
+
+  return /(Mac|iPhone|iPod|iPad)/i.test(navigator.platform);
+}
+
+export function SearchButton(props: SearchButtonProps) {
+  const [key, setKey] = useState(() =>
+    isAppleDevice() ? ACTION_KEY_APPLE : ACTION_KEY_DEFAULT
+  );
 
   useEffect(() => {
-    if (/(Mac|iPhone|iPod|iPad)/i.test(navigator.platform)) {
-      setKey('⌘');
+    if (isAppleDevice()) {
+      setKey(ACTION_KEY_APPLE);
     }
   }, []);
 
   return (
-    <button type="button" className="DocSearch-SearchButton" onClick={onClick}>
+    <button
+      type="button"
+      className="DocSearch-SearchButton"
+      onClick={props.onClick}
+    >
       <svg
         className="DocSearch-SearchButton-Icon"
-        width="18px"
+        width={18}
         viewBox="0 0 18 18"
       >
         <path

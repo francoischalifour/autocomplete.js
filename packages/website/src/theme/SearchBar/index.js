@@ -1,9 +1,8 @@
 /* eslint-disable import/no-unresolved */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
-
-import SearchButton from './SearchButton';
+import { SearchButton } from 'docsearch-react';
 
 let DocSearch = null;
 
@@ -19,11 +18,12 @@ export default function SearchBar() {
     searchParameters,
   } = siteConfig.themeConfig.algolia;
 
-  const load = React.useCallback(
+  const load = useCallback(
     function load() {
-      if (isLoaded) {
+      if (isLoaded === true) {
         return;
       }
+
       Promise.all([
         import('docsearch-react'),
         import('docsearch-react/dist/esm/style.css'),
@@ -35,7 +35,7 @@ export default function SearchBar() {
     [isLoaded, setIsLoaded]
   );
 
-  const onOpen = React.useCallback(
+  const onOpen = useCallback(
     function onOpen() {
       load();
       setIsShowing(true);
@@ -44,7 +44,7 @@ export default function SearchBar() {
     [load, setIsShowing]
   );
 
-  const onClose = React.useCallback(
+  const onClose = useCallback(
     function onClose() {
       setIsShowing(false);
       document.body.classList.remove('DocSearch--active');
@@ -76,7 +76,7 @@ export default function SearchBar() {
   }, [isShowing, onOpen, onClose]);
 
   return (
-    <div>
+    <>
       <SearchButton onClick={onOpen} />
 
       {isLoaded && isShowing && (
@@ -88,6 +88,6 @@ export default function SearchBar() {
           onClose={onClose}
         />
       )}
-    </div>
+    </>
   );
 }
