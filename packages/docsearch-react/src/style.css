@@ -273,7 +273,8 @@ html[data-theme='dark'] {
 
 .DocSearch-Dropdown {
   height: calc(var(--docsearch-modal-height) - var(--docsearch-searchbox-height) - var(--docsearch-spacing)*2);
-  padding: 0 12px 60px;
+  padding: 0 12px 20px;
+  margin-bottom: var(--docsearch-footer-height);
   flex: 1 0 auto;
   overflow-y: scroll;
   letter-spacing: 0.02em;
@@ -386,9 +387,6 @@ html[data-theme='dark'] {
   letter-spacing: 0;
 }
 
-/* .DocSearch-Hit--Child {
-} */
-
 .DocSearch-Hit-Tree {
   width: 30px;
   height: 60px;
@@ -409,16 +407,6 @@ html[data-theme='dark'] {
 .DocSearch-Hit[aria-selected='true'] .DocSearch-Hit-action {
   color: var(--docsearch-hit-active-color) !important;
 }
-
-.DocSearch-Hit[aria-selected='true'] .DocSearch-Hit-path,
-.DocSearch-Hit[aria-selected='true'] .DocSearch-Hit-icon {
-
-}
-
-.DocSearch-Hit[aria-selected='true'] .DocSearch-Hit-content-wrapper::after {
-  background: linear-gradient(90deg,transparent,var(--docsearch-highlight-color));
-}
-
 
 .DocSearch-Hit a {
   display: block;
@@ -462,16 +450,6 @@ html[data-theme='dark'] {
   position: relative;
 }
 
-.DocSearch-Hit-content-wrapper::after {
-content:"";
-display: block;
-width: 40px;
-height: 40px;
-background-image: linear-gradient(90deg,rgba(255,255,255,0), white);
-right:0;
-position: absolute;
-}
-
 .DocSearch-Hit-title {
   font-size: 0.9em;
   font-weight: 500;
@@ -498,7 +476,7 @@ position: absolute;
   @media (max-width: 750px){
     :root {
       /* quickfix https://stackoverflow.com/questions/37112218/css3-100vh-not-constant-in-mobile-browser */
-      --docsearch-modal-height: calc(100vh - 120px);
+      --docsearch-modal-height: calc(100vh - 110px);
     }
     .DocSearch-SearchButton-KeySeparator,
     .DocSearch-SearchButton-Key {

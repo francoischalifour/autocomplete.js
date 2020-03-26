@@ -93,7 +93,7 @@ export function DocSearch({
                   snippetEllipsisText: '…',
                   highlightPreTag: '<mark>',
                   highlightPostTag: '</mark>',
-                  hitsPerPage: 10,
+                  hitsPerPage: 15,
                   distinct: 3,
                   ...searchParameters,
                 },
