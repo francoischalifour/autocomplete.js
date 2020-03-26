@@ -385,6 +385,12 @@ html[data-theme='dark'] {
   font-weight: 600;
   color: var(--docsearch-highlight-color);
   letter-spacing: 0;
+  position: sticky;
+  top: 0;
+  z-index: var(--ifm-z-index-fixed);
+  background: var(--docsearch-modal-background);
+  /* hide hit shadow */
+  box-shadow: 0 -4px 0 4px var(--docsearch-modal-background);
 }
 
 .DocSearch-Hit-Tree {
