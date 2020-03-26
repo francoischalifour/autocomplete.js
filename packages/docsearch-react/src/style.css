@@ -129,6 +129,11 @@ html[data-theme='dark'] {
   overflow: hidden !important;
 }
 
+/* Hide Docusaurus hamburger button when modal is opened */
+.DocSearch--active .menu__button {
+  display: none !important;
+}
+
 /* Container & Modal */
 
 .DocSearch-Container,
