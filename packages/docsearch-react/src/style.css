@@ -150,11 +150,12 @@ html[data-theme='dark'] {
 }
 
 .DocSearch-Modal {
+  position: relative;
   display: flex;
   flex-direction: column;
   width: 100%;
   max-width: var(--docsearch-modal-width);
-  height: var(--docsearch-modal-height);
+  /* height: var(--docsearch-modal-height); */
   margin: 60px auto auto auto;
   border-radius: 6px;
   background: var(--docsearch-modal-background);
@@ -261,8 +262,8 @@ html[data-theme='dark'] {
 /* Modal Dropdown */
 
 .DocSearch-Dropdown {
-  height: calc(var(--docsearch-modal-height) - var(--docsearch-searchbox-height) - var(--docsearch-spacing)*2  - var(--docsearch-footer-height));
-  padding: 0 12px 20px;
+  height: calc(var(--docsearch-modal-height) - var(--docsearch-searchbox-height) - var(--docsearch-spacing)*2);
+  padding: 0 12px 60px;
   flex: 1 0 auto;
   overflow-y: scroll;
   letter-spacing: 0.02em;
@@ -282,8 +283,10 @@ html[data-theme='dark'] {
 
 .DocSearch-Footer {
   display: flex;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
   height: var(--docsearch-footer-height);
-  z-index: var(--ifm-z-index-fixed);
   padding: 0 12px;
   flex-direction: row-reverse;
   flex-shrink: 0;
@@ -465,9 +468,13 @@ html[data-theme='dark'] {
 
 
 /* @media only screen and (max-device-width: 1024px) { */
-  @media (max-width: 996px){
+  @media (max-width: 750px){
     :root {
       --docsearch-modal-height: 100vh;
+    }
+    .DocSearch-SearchButton-KeySeparator,
+    .DocSearch-SearchButton-Key {
+      display: none;
     }
     .DocSearch-Modal {
       border-radius: 0;
