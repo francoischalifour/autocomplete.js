@@ -16,17 +16,17 @@ interface DocSearchHitAttributeHighlightResult {
 }
 
 interface DocSearchHitHighlightResultHierarchy {
-  lvl0?: DocSearchHitAttributeHighlightResult;
-  lvl1?: DocSearchHitAttributeHighlightResult;
-  lvl2?: DocSearchHitAttributeHighlightResult;
-  lvl3?: DocSearchHitAttributeHighlightResult;
-  lvl4?: DocSearchHitAttributeHighlightResult;
-  lvl5?: DocSearchHitAttributeHighlightResult;
-  lvl6?: DocSearchHitAttributeHighlightResult;
+  lvl0: DocSearchHitAttributeHighlightResult;
+  lvl1: DocSearchHitAttributeHighlightResult;
+  lvl2: DocSearchHitAttributeHighlightResult;
+  lvl3: DocSearchHitAttributeHighlightResult;
+  lvl4: DocSearchHitAttributeHighlightResult;
+  lvl5: DocSearchHitAttributeHighlightResult;
+  lvl6: DocSearchHitAttributeHighlightResult;
 }
 
 interface DocSearchHitHighlightResult {
-  content?: DocSearchHitAttributeHighlightResult;
+  content: DocSearchHitAttributeHighlightResult;
   hierarchy: DocSearchHitHighlightResultHierarchy;
   hierarchy_camel: DocSearchHitHighlightResultHierarchy[];
 }
@@ -38,6 +38,8 @@ interface DocSearchHitAttributeSnippetResult {
 
 interface DocSearchHitSnippetResult {
   content: DocSearchHitAttributeSnippetResult;
+  hierarchy: DocSearchHitHighlightResultHierarchy;
+  hierarchy_camel: DocSearchHitHighlightResultHierarchy[];
 }
 
 export interface DocSearchHit {
@@ -57,7 +59,7 @@ export interface DocSearchHit {
     lvl6: string | null;
   };
   _highlightResult: DocSearchHitHighlightResult;
-  _snippetResult?: DocSearchHitSnippetResult;
+  _snippetResult: DocSearchHitSnippetResult;
   _rankingInfo?: {
     promoted: boolean;
     nbTypos: number;

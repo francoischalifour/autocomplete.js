@@ -1,5 +1,4 @@
 import React from 'react';
-import { Snippet } from '@francoischalifour/autocomplete-react';
 import {
   GetMenuProps,
   GetItemProps,
@@ -70,16 +69,19 @@ export function Results(props: ResultsProps) {
 
                         {item.hierarchy[item.type] && item.type === 'lvl1' && (
                           <div className="DocSearch-Hit-content-wrapper">
-                            <Snippet
-                              hit={item}
-                              attribute="hierarchy.lvl1"
+                            <span
                               className="DocSearch-Hit-title"
+                              dangerouslySetInnerHTML={{
+                                __html:
+                                  item._snippetResult.hierarchy.lvl1.value,
+                              }}
                             />
                             {item.content && (
-                              <Snippet
-                                hit={item}
-                                attribute="content"
+                              <span
                                 className="DocSearch-Hit-path"
+                                dangerouslySetInnerHTML={{
+                                  __html: item._snippetResult.content.value,
+                                }}
                               />
                             )}
                           </div>
@@ -92,30 +94,38 @@ export function Results(props: ResultsProps) {
                             item.type === 'lvl5' ||
                             item.type === 'lvl6') && (
                             <div className="DocSearch-Hit-content-wrapper">
-                              <Snippet
-                                hit={item}
-                                attribute={`hierarchy.${item.type}`}
+                              <span
                                 className="DocSearch-Hit-title"
+                                dangerouslySetInnerHTML={{
+                                  __html:
+                                    item._snippetResult.hierarchy[item.type]
+                                      .value,
+                                }}
                               />
-                              <Snippet
-                                hit={item}
-                                attribute="hierarchy.lvl1"
+                              <span
                                 className="DocSearch-Hit-path"
+                                dangerouslySetInnerHTML={{
+                                  __html:
+                                    item._snippetResult.hierarchy.lvl1.value,
+                                }}
                               />
                             </div>
                           )}
 
                         {item.type === 'content' && (
                           <div className="DocSearch-Hit-content-wrapper">
-                            <Snippet
-                              hit={item}
-                              attribute="content"
+                            <span
                               className="DocSearch-Hit-title"
+                              dangerouslySetInnerHTML={{
+                                __html: item._snippetResult.content.value,
+                              }}
                             />
-                            <Snippet
-                              hit={item}
-                              attribute="hierarchy.lvl1"
+                            <span
                               className="DocSearch-Hit-path"
+                              dangerouslySetInnerHTML={{
+                                __html:
+                                  item._snippetResult.hierarchy.lvl1.value,
+                              }}
                             />
                           </div>
                         )}
