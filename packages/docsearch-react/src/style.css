@@ -24,6 +24,7 @@ font size */
   --docsearch-hit-color: var(--ifm-color-emphasis-800);
   --docsearch-hit-active-color: white;
   --docsearch-hit-icon-color: var(--ifm-color-emphasis-500);
+  --docsearch-hit-tree-color: var(--ifm-color-emphasis-200);
   --docsearch-hit-background: white;
   --docsearch-hit-shadow: 0px 2px 6px 0px rgb(212, 217, 225);
   --docsearch-key-gradient: linear-gradient(
@@ -57,6 +58,7 @@ html[data-theme='dark'] {
   --docsearch-searchbox-shadow: inset 0px 0px 1px 1px rgba(84, 104, 255, 0.6);
   --docsearch-hit-color: var(--ifm-color-emphasis-500);
   --docsearch-hit-icon-color: var(--ifm-color-emphasis-300);
+  --docsearch-hit-tree-color: rgba(109, 113, 163, 0.4);
   --docsearch-hit-shadow: none;
   --docsearch-hit-background: rgb(9, 10, 17);
   --docsearch-key-gradient: linear-gradient(
@@ -163,7 +165,6 @@ html[data-theme='dark'] {
 
 .DocSearch-SearchBar {
   display: flex;
-  flex: 1;
 }
 
 .DocSearch-Form {
@@ -282,7 +283,7 @@ html[data-theme='dark'] {
 .DocSearch-Footer {
   display: flex;
   height: var(--docsearch-footer-height);
-  z-index: 9999;
+  z-index: var(--ifm-z-index-fixed);
   padding: 0 12px;
   flex-direction: row-reverse;
   flex-shrink: 0;
@@ -380,8 +381,8 @@ html[data-theme='dark'] {
 .DocSearch-Hit-Tree {
   width: 30px;
   height: 60px;
-  color: #d4d9e1;
   margin-right: 4px;
+  color: var(--docsearch-hit-tree-color);
 }
 
 .DocSearch-Hit[aria-selected='true'] {
@@ -466,9 +467,11 @@ html[data-theme='dark'] {
 /* @media only screen and (max-device-width: 1024px) { */
   @media (max-width: 996px){
     :root {
-      --docsearch-modal-height: 60vh;
+      --docsearch-modal-height: 100vh;
     }
     .DocSearch-Modal {
+      border-radius: 0;
+      box-shadow: none;
       margin: 0 auto;
     }
     .DocSearch-Commands {
