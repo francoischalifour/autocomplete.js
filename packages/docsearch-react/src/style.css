@@ -177,7 +177,7 @@ html[data-theme='dark'] {
 
 .DocSearch-Form {
   display: flex;
-  flex: 1;
+  flex: 0 2 100%;
   position: relative;
   height: var(--docsearch-searchbox-height);
   padding: 0 12px;
@@ -189,7 +189,7 @@ html[data-theme='dark'] {
 
 .DocSearch-Input {
   height: 100%;
-  flex-grow: 1;
+  flex: 0 2 100%;
   padding-left: 8px;
   font: inherit;
   font-size: 1.2em;
@@ -492,6 +492,7 @@ html[data-theme='dark'] {
     }
     .DocSearch-Cancel {
       display: inline-block;
+      flex-basis: 0;
       appearance: none;
       background: none;
       border: 0;
