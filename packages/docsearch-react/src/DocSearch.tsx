@@ -194,6 +194,7 @@ export function DocSearch({
             getFormProps={getFormProps}
             getLabelProps={getLabelProps}
             getInputProps={getInputProps}
+            onClose={onClose}
           />
         </header>
 
