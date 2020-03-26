@@ -159,6 +159,12 @@ export function DocSearch({
   }, []);
 
   useEffect(() => {
+    if (dropdownRef.current) {
+      dropdownRef.current.scrollTop = 0;
+    }
+  }, [state.query]);
+
+  useEffect(() => {
     if (!(searchBoxRef.current && dropdownRef.current && inputRef.current)) {
       return undefined;
     }
