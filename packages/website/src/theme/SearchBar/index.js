@@ -35,12 +35,21 @@ export default function SearchBar() {
     [isLoaded, setIsLoaded]
   );
 
-  const open = React.useCallback(
-    function open() {
+  const onOpen = React.useCallback(
+    function onOpen() {
       load();
       setIsShowing(true);
+      document.body.classList.add('DocSearch--active');
     },
     [load, setIsShowing]
+  );
+
+  const onClose = React.useCallback(
+    function onClose() {
+      setIsShowing(false);
+      document.body.classList.remove('DocSearch--active');
+    },
+    [setIsShowing]
   );
 
   useEffect(() => {
@@ -52,9 +61,9 @@ export default function SearchBar() {
         event.preventDefault();
 
         if (isShowing) {
-          setIsShowing(!isShowing);
+          onClose();
         } else {
-          open();
+          onOpen();
         }
       }
     }
@@ -64,15 +73,11 @@ export default function SearchBar() {
     return () => {
       window.removeEventListener('keydown', onKeyDown);
     };
-  }, [isShowing, open]);
+  }, [isShowing, onOpen, onClose]);
 
   return (
     <div>
-      <SearchButton
-        onClick={() => {
-          open();
-        }}
-      />
+      <SearchButton onClick={onOpen} />
 
       {isLoaded && isShowing && (
         <DocSearch
@@ -80,7 +85,7 @@ export default function SearchBar() {
           apiKey={apiKey}
           indexName={indexName}
           searchParameters={searchParameters}
-          onClose={() => setIsShowing(false)}
+          onClose={onClose}
         />
       )}
     </div>

@@ -117,6 +117,16 @@ html[data-theme='dark'] {
   color: var(--ifm-color-emphasis-600);
 }
 
+/* Body modifier */
+
+.DocSearch--active {
+  /*
+   * We need to mark it as important because some websites override the
+   * `style` attribute (e.g. Docusaurus).
+   */
+  overflow: hidden !important;
+}
+
 /* Container & Modal */
 
 .DocSearch-Container,
