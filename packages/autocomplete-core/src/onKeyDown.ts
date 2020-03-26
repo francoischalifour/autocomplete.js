@@ -39,7 +39,9 @@ export function onKeyDown<TItem>({
 
     if (
       store.getState().highlightedIndex !== null &&
-      store.getState().suggestions.some(suggestion => suggestion.length > 0)
+      store
+        .getState()
+        .suggestions.some(suggestion => suggestion.items.length > 0)
     ) {
       const { item, itemValue, itemUrl, source } = getHighlightedItem({
         state: store.getState(),
@@ -99,7 +101,9 @@ export function onKeyDown<TItem>({
     // form event.
     if (
       store.getState().highlightedIndex === null ||
-      store.getState().suggestions.every(suggestion => suggestion.length === 0)
+      store
+        .getState()
+        .suggestions.every(suggestion => suggestion.items.length === 0)
     ) {
       return;
     }
