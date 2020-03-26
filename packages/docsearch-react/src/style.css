@@ -272,7 +272,7 @@ html[data-theme='dark'] {
 /* Modal Dropdown */
 
 .DocSearch-Dropdown {
-  height: calc(var(--docsearch-modal-height) - var(--docsearch-searchbox-height) - var(--docsearch-spacing)*2);
+  height: calc(var(--docsearch-modal-height) - var(--docsearch-searchbox-height) - var(--docsearch-spacing)*2 - var(--docsearch-footer-height));
   padding: 0 12px 20px;
   margin-bottom: var(--docsearch-footer-height);
   flex: 1 0 auto;
