@@ -37,6 +37,7 @@ export function DocSearch({
   const searchBoxRef = useRef<HTMLDivElement | null>(null);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const snipetLength = useRef<number>(10);
 
   const searchClient = React.useMemo(() => algoliasearch(appId, apiKey), [
     appId,
@@ -84,10 +85,10 @@ export function DocSearch({
                     'url',
                   ],
                   attributesToSnippet: [
-                    'hierarchy.lvl1',
-                    'hierarchy.lvl2',
-                    'hierarchy.lvl3',
-                    'content',
+                    `hierarchy.lvl1:${snipetLength.current}`,
+                    `hierarchy.lvl2:${snipetLength.current}`,
+                    `hierarchy.lvl3:${snipetLength.current}`,
+                    `content:${snipetLength.current}`,
                   ],
                   snippetEllipsisText: '…',
                   highlightPreTag: '<mark>',
@@ -148,6 +149,14 @@ export function DocSearch({
       }),
     [indexName, searchParameters, searchClient, onClose]
   );
+
+  useEffect(() => {
+    const isMobileMediaQuery = window.matchMedia('(max-width: 750px)');
+
+    if (isMobileMediaQuery.matches) {
+      snipetLength.current = 5;
+    }
+  }, []);
 
   useEffect(() => {
     if (!(searchBoxRef.current && dropdownRef.current && inputRef.current)) {
