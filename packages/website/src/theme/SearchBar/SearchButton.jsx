@@ -1,9 +1,21 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 export default function SearchButton({ onClick }) {
+  const [key, setKey] = useState('Ctrl');
+
+  useEffect(() => {
+    if (/(Mac|iPhone|iPod|iPad)/i.test(navigator.platform)) {
+      setKey('⌘');
+    }
+  }, []);
+
   return (
     <button type="button" className="DocSearch-SearchButton" onClick={onClick}>
-      <svg className="DocSearch-SearchButton-Icon" width="18px" viewBox="0 0 18 18">
+      <svg
+        className="DocSearch-SearchButton-Icon"
+        width="18px"
+        viewBox="0 0 18 18"
+      >
         <path
           d="M13.14 13.14L17 17l-3.86-3.86A7.11 7.11 0 1 1 3.08 3.08a7.11 7.11 0 0 1 10.06 10.06z"
           stroke="currentColor"
@@ -14,8 +26,10 @@ export default function SearchButton({ onClick }) {
           strokeLinejoin="round"
         ></path>
       </svg>
+
       <span className="DocSearch-SearchButton-Placeholder">Search...</span>
-      <span className="DocSearch-SearchButton-Key">⌘</span>
+
+      <span className="DocSearch-SearchButton-Key">{key}</span>
       <span className="DocSearch-SearchButton-KeySeparator">+</span>
       <span className="DocSearch-SearchButton-Key">K</span>
     </button>
