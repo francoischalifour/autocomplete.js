@@ -158,7 +158,6 @@ html[data-theme='dark'] {
 .DocSearch-Modal {
   position: relative;
   flex-direction: column;
-  width: 100%;
   max-width: var(--docsearch-modal-width);
   /* height: var(--docsearch-modal-height); */
   margin: 60px auto auto auto;
@@ -188,7 +187,8 @@ html[data-theme='dark'] {
 
 .DocSearch-Input {
   height: 100%;
-  flex: auto;
+  flex: 1;
+  width: 80%;
   padding-left: 8px;
   font: inherit;
   font-size: 1.2em;
@@ -272,7 +272,7 @@ html[data-theme='dark'] {
 
 .DocSearch-Dropdown {
   height: calc(var(--docsearch-modal-height) - var(--docsearch-searchbox-height) - var(--docsearch-spacing)*2 - var(--docsearch-footer-height));
-  padding: 0 12px 20px;
+  padding: 0 12px 60px;
   margin-bottom: var(--docsearch-footer-height);
   flex: 1 0 auto;
   overflow-y: scroll;
@@ -305,6 +305,7 @@ html[data-theme='dark'] {
   border-radius: 0 0 8px 8px;
   background: var(--docsearch-footer-background);
   box-shadow: var(--docsearch-footer-shadow);
+  z-index: var(--ifm-z-index-fixed);
 }
 
 .DocSearch-Commands {

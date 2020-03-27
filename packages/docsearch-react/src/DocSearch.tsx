@@ -99,7 +99,7 @@ export function DocSearch({
                   highlightPreTag: '<mark>',
                   highlightPostTag: '</mark>',
                   hitsPerPage: 15,
-                  distinct: 3,
+                  distinct: 5,
                   ...searchParameters,
                 },
               },
