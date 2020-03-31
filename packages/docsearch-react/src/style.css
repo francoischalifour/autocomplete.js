@@ -425,39 +425,6 @@ html[data-theme='dark'] {
   color: var(--docsearch-hit-active-color) !important;
 }
 
-.DocSearch-Hit {
-  animation-iteration-count: 1;
-  animation: hit 0.02s cubic-bezier(0.64, 0.57, 0.67, 1.53) forwards;
-  transform-origin: center top;
-  transform: scale(0);
-}
-
-.DocSearch-Hit:nth-child(1) {
-  animation-delay: 0;
-  animation-duration: 0.001s;
-}
-.DocSearch-Hit:nth-child(2) {
-  animation-delay: 0.06s;
-}
-.DocSearch-Hit:nth-child(3) {
-  animation-delay: 0.12s;
-}
-.DocSearch-Hit:nth-child(4) {
-  animation-delay: 0.18s;
-}
-.DocSearch-Hit:nth-child(5) {
-  animation-delay: 0.24s;
-}
-
-@keyframes hit {
-  0% {
-    transform: scale(0.95);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-
 .DocSearch-Hit a {
   display: block;
   border-radius: 4px;
