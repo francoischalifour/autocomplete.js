@@ -470,6 +470,15 @@ html[data-theme='dark'] {
   color: var(--docsearch-hit-icon-color);
 }
 
+.DocSearch-Hit-action-button {
+  appearance: none;
+  background: none;
+  color: inherit;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
 /* Icons */
 
 /* Responsive */

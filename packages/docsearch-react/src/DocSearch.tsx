@@ -11,6 +11,8 @@ import { SearchBox } from './SearchBox';
 import { Dropdown } from './Dropdown';
 import { Footer } from './Footer';
 
+import { makeRecentSearches } from './plugins/RecentSearches';
+
 interface DocSearchProps {
   appId?: string;
   apiKey: string;
@@ -42,6 +44,7 @@ export function DocSearch({
     appId,
     apiKey,
   ]);
+  const recentSearches = useRef(makeRecentSearches());
 
   const {
     getEnvironmentProps,
@@ -66,13 +69,13 @@ export function DocSearch({
         onStateChange({ state }) {
           setState(state as any);
         },
-        getSources({ query }) {
+        getSources(params) {
           return getAlgoliaHits({
             searchClient,
             queries: [
               {
                 indexName,
-                query,
+                query: params.query,
                 params: {
                   attributesToRetrieve: [
                     'hierarchy.lvl0',
@@ -117,38 +120,90 @@ export function DocSearch({
             });
             const sources = groupBy(formattedHits, hit => hit.hierarchy.lvl0);
 
-            return Object.values<DocSearchHit[]>(sources).map(items => {
-              return {
-                onSelect() {
+            return [
+              // Safari doesn't support `localStorage` in incognito mode,
+              // therefore `recentSearches` can be `null`.
+              recentSearches.current && {
+                onSelect({ suggestion }) {
+                  const {
+                    _highlightResult,
+                    _snippetResult,
+                    ...search
+                  } = suggestion;
+
+                  recentSearches.current.saveSearch(search);
+                  inputRef.current.blur();
                   onClose();
                 },
                 getSuggestionUrl({ suggestion }) {
                   return suggestion.url;
                 },
-                getSuggestions() {
-                  return Object.values(
-                    groupBy(items, item => item.hierarchy.lvl1)
-                  )
-                    .map(hits =>
-                      hits.map(item => {
-                        return {
-                          ...item,
-                          // eslint-disable-next-line @typescript-eslint/camelcase
-                          __docsearch_parent:
-                            item.type !== 'lvl1' &&
-                            hits.find(
-                              siblingItem =>
-                                siblingItem.type === 'lvl1' &&
-                                siblingItem.hierarchy.lvl1 ===
-                                  item.hierarchy.lvl1
-                            ),
-                        };
-                      })
-                    )
-                    .flat();
+                getSuggestions({ query }) {
+                  if (query) {
+                    return [];
+                  }
+
+                  return recentSearches.current.getSearches().map(item => ({
+                    ...item,
+                    // eslint-disable-next-line @typescript-eslint/camelcase
+                    __docsearch_source: 'recent-searches',
+                    // eslint-disable-next-line @typescript-eslint/camelcase
+                    __docsearch_title: 'Recent',
+                    // eslint-disable-next-line @typescript-eslint/camelcase
+                    __docsearch_action: item => {
+                      recentSearches.current?.deleteSearch(item);
+                      // Hack to call `getSuggestions` again
+                      inputRef.current.blur();
+                      inputRef.current.focus();
+                    },
+                  }));
                 },
-              };
-            });
+              },
+              ...Object.values<DocSearchHit[]>(sources).map(items => {
+                return {
+                  onSelect({ suggestion }) {
+                    inputRef.current.blur();
+
+                    const {
+                      _highlightResult,
+                      _snippetResult,
+                      ...search
+                    } = suggestion;
+
+                    recentSearches.current.saveSearch(search);
+                    inputRef.current.blur();
+                    onClose();
+                  },
+                  getSuggestionUrl({ suggestion }) {
+                    return suggestion.url;
+                  },
+                  getSuggestions() {
+                    return Object.values(
+                      groupBy(items, item => item.hierarchy.lvl1)
+                    )
+                      .map(hits =>
+                        hits.map(item => {
+                          return {
+                            ...item,
+                            // eslint-disable-next-line @typescript-eslint/camelcase
+                            __docsearch_title: item.hierarchy.lvl0,
+                            // eslint-disable-next-line @typescript-eslint/camelcase
+                            __docsearch_parent:
+                              item.type !== 'lvl1' &&
+                              hits.find(
+                                siblingItem =>
+                                  siblingItem.type === 'lvl1' &&
+                                  siblingItem.hierarchy.lvl1 ===
+                                    item.hierarchy.lvl1
+                              ),
+                          };
+                        })
+                      )
+                      .flat();
+                  },
+                };
+              }),
+            ];
           });
         },
       }),
