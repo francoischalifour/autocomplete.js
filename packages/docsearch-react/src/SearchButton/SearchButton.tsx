@@ -48,10 +48,9 @@ export function SearchButton(props: SearchButtonProps) {
         ></path>
       </svg>
 
-      <span className="DocSearch-SearchButton-Placeholder">Search...</span>
+      <span className="DocSearch-SearchButton-Placeholder">Search</span>
 
       <span className="DocSearch-SearchButton-Key">{key}</span>
-      <span className="DocSearch-SearchButton-KeySeparator">+</span>
       <span className="DocSearch-SearchButton-Key">K</span>
     </button>
   );

@@ -14,7 +14,6 @@ interface ResultsProps {
   suggestions: Array<AutocompleteSuggestion<InternalDocSearchHit>>;
   getMenuProps: GetMenuProps;
   getItemProps: GetItemProps<InternalDocSearchHit, React.MouseEvent>;
-  plugins: any[];
 }
 
 export function Results(props: ResultsProps) {
