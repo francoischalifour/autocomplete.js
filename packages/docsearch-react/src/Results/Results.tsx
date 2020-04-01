@@ -1,8 +1,7 @@
 import React from 'react';
 import {
-  GetMenuProps,
-  GetItemProps,
-  AutocompleteSuggestion,
+  AutocompleteApi,
+  AutocompleteState,
 } from '@francoischalifour/autocomplete-core';
 
 import { Snippet } from '../Snippet';
@@ -10,21 +9,25 @@ import { SourceIcon } from './SourceIcon';
 import { SelectIcon } from './ActionIcon';
 import { InternalDocSearchHit } from '../types';
 
-interface ResultsProps {
-  suggestions: Array<AutocompleteSuggestion<InternalDocSearchHit>>;
-  getMenuProps: GetMenuProps;
-  getItemProps: GetItemProps<InternalDocSearchHit, React.MouseEvent>;
+interface ResultsProps
+  extends AutocompleteApi<
+    InternalDocSearchHit,
+    React.FormEvent,
+    React.MouseEvent,
+    React.KeyboardEvent
+  > {
+  state: AutocompleteState<InternalDocSearchHit>;
 }
 
 export function Results(props: ResultsProps) {
   return (
     <div className="DocSearch-Dropdown-Container">
-      {props.suggestions.map(({ source, items }) => {
+      {props.state.suggestions.map(({ source, items }) => {
         if (items.length === 0) {
           return null;
         }
 
-        const title = items[0].__docsearch_title;
+        const title = items[0].hierarchy.lvl0;
 
         return (
           <section key={title} className="DocSearch-Hits">
@@ -34,12 +37,10 @@ export function Results(props: ResultsProps) {
               {items.map((item, index) => {
                 return (
                   <li
-                    key={[title, item.objectID].join(':')}
+                    key={item.objectID}
                     className={[
                       'DocSearch-Hit',
-                      !item.__docsearch_source &&
-                        item.__docsearch_parent &&
-                        'DocSearch-Hit--Child',
+                      item.__docsearch_parent && 'DocSearch-Hit--Child',
                     ]
                       .filter(Boolean)
                       .join(' ')}
@@ -48,7 +49,7 @@ export function Results(props: ResultsProps) {
                       source,
                     })}
                   >
-                    {!item.__docsearch_source && item.__docsearch_parent && (
+                    {item.__docsearch_parent && (
                       <svg className="DocSearch-Hit-Tree">
                         <g
                           stroke="currentColor"
@@ -69,7 +70,11 @@ export function Results(props: ResultsProps) {
                     )}
 
                     <a href={item.url}>
-                      <SourceItem {...item}>
+                      <div className="DocSearch-Hit-Container">
+                        <div className="DocSearch-Hit-icon">
+                          <SourceIcon type={item.type} />
+                        </div>
+
                         {item.hierarchy[item.type] && item.type === 'lvl1' && (
                           <div className="DocSearch-Hit-content-wrapper">
                             <Snippet
@@ -97,7 +102,7 @@ export function Results(props: ResultsProps) {
                               <Snippet
                                 className="DocSearch-Hit-title"
                                 hit={item}
-                                attribute={`hierarchy[${item.type}]`}
+                                attribute={`hierarchy.${item.type}`}
                               />
                               <Snippet
                                 className="DocSearch-Hit-path"
@@ -121,7 +126,11 @@ export function Results(props: ResultsProps) {
                             />
                           </div>
                         )}
-                      </SourceItem>
+
+                        <div className="DocSearch-Hit-action">
+                          <SelectIcon />
+                        </div>
+                      </div>
                     </a>
                   </li>
                 );
@@ -130,85 +139,6 @@ export function Results(props: ResultsProps) {
           </section>
         );
       })}
-    </div>
-  );
-}
-
-function SourceItem(props: InternalDocSearchHit) {
-  if (props.__docsearch_source === 'recent-searches') {
-    return <RecentSearchItem {...props} />;
-  } else {
-    return <DocumentationItem {...props} />;
-  }
-}
-
-function RecentSearchItem(props) {
-  const { children, ...suggestion } = props;
-
-  return (
-    <div className="DocSearch-Hit-Container">
-      <div className="DocSearch-Hit-icon">
-        <svg width="20" height="20">
-          <g
-            stroke="currentColor"
-            strokeWidth="2"
-            fill="none"
-            fillRule="evenodd"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <path d="M3.18 6.6a8.23 8.23 0 1112.93 9.94h0a8.23 8.23 0 01-11.63 0" />
-            <path d="M6.44 7.25H2.55V3.36M10.45 6v5.6M10.45 11.6L13 13" />
-          </g>
-        </svg>
-      </div>
-
-      {children}
-
-      <div className="DocSearch-Hit-action">
-        <button
-          className="DocSearch-Hit-action-button"
-          title="Delete this search"
-          onClick={event => {
-            console.log('onActionClick', props);
-
-            event.preventDefault();
-            event.stopPropagation();
-
-            props.__docsearch_action(suggestion);
-          }}
-        >
-          <svg width="20" height="20">
-            <g
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-            >
-              <path
-                d="M10,10 L15.0853291,4.91467086 L10,10 L15.0853291,15.0853291 L10,10 Z M10,10 L4.91467086,4.91467086 L10,10 L4.91467086,15.0853291 L10,10 Z"
-                transform="translate(10.000000, 10.000000) rotate(-360.000000) translate(-10.000000, -10.000000) "
-              ></path>
-            </g>
-          </svg>
-        </button>
-      </div>
-    </div>
-  );
-}
-
-function DocumentationItem(props) {
-  return (
-    <div className="DocSearch-Hit-Container">
-      <div className="DocSearch-Hit-icon">
-        <SourceIcon type={props.type} />
-      </div>
-
-      {props.children}
-
-      <div className="DocSearch-Hit-action">
-        <SelectIcon />
-      </div>
     </div>
   );
 }

@@ -5,13 +5,13 @@ import {
 } from '@francoischalifour/autocomplete-core';
 import { getAlgoliaHits } from '@francoischalifour/autocomplete-preset-algolia';
 
-import { DocSearchHit, InternalDocSearchHit } from './types';
+import { DocSearchHit, InternalDocSearchHit, RecentSearchHit } from './types';
 import { createSearchClient, groupBy, noop } from './utils';
 import { SearchBox } from './SearchBox';
 import { Dropdown } from './Dropdown';
 import { Footer } from './Footer';
 
-import { makeRecentSearches } from './plugins/RecentSearches';
+import { createRecentSearches } from './recent-searches';
 
 interface DocSearchProps {
   appId?: string;
@@ -44,19 +44,9 @@ export function DocSearch({
     appId,
     apiKey,
   ]);
-  const recentSearches = useRef(makeRecentSearches());
+  const recentSearches = useRef(createRecentSearches<RecentSearchHit>());
 
-  const {
-    getEnvironmentProps,
-    getRootProps,
-    getFormProps,
-    getLabelProps,
-    getInputProps,
-    getMenuProps,
-    getItemProps,
-    setQuery,
-    refresh,
-  } = React.useMemo(
+  const autocomplete = React.useMemo(
     () =>
       createAutocomplete<
         InternalDocSearchHit,
@@ -130,95 +120,75 @@ export function DocSearch({
               });
             }
 
-            return [
-              // Safari doesn't support `localStorage` in incognito mode,
-              // therefore `recentSearches` can be `null`.
-              recentSearches.current && {
-                onSelect({ suggestion }) {
-                  const {
-                    _highlightResult,
-                    _snippetResult,
-                    ...search
-                  } = suggestion;
-
-                  recentSearches.current.saveSearch(search);
-                  inputRef.current.blur();
-                  onClose();
-                },
-                getSuggestionUrl({ suggestion }) {
-                  return suggestion.url;
-                },
-                getSuggestions({ query }) {
-                  if (query) {
-                    return [];
-                  }
-
-                  return recentSearches.current.getSearches().map(item => ({
-                    ...item,
-                    // eslint-disable-next-line @typescript-eslint/camelcase
-                    __docsearch_source: 'recent-searches',
-                    // eslint-disable-next-line @typescript-eslint/camelcase
-                    __docsearch_title: 'Recent',
-                    // eslint-disable-next-line @typescript-eslint/camelcase
-                    __docsearch_action: item => {
-                      recentSearches.current?.deleteSearch(item);
-                      // Hack to call `getSuggestions` again
-                      inputRef.current.blur();
-                      inputRef.current.focus();
-                    },
-                  }));
-                },
-              },
-              ...Object.values<DocSearchHit[]>(sources).map(items => {
-                return {
+            if (!query) {
+              return [
+                {
                   onSelect({ suggestion }) {
-                    inputRef.current.blur();
-
                     const {
                       _highlightResult,
                       _snippetResult,
                       ...search
                     } = suggestion;
-
                     recentSearches.current.saveSearch(search);
-                    inputRef.current.blur();
+
                     onClose();
                   },
                   getSuggestionUrl({ suggestion }) {
                     return suggestion.url;
                   },
                   getSuggestions() {
-                    return Object.values(
-                      groupBy(items, item => item.hierarchy.lvl1)
-                    )
-                      .map(hits =>
-                        hits.map(item => {
-                          return {
-                            ...item,
-                            // eslint-disable-next-line @typescript-eslint/camelcase
-                            __docsearch_title: item.hierarchy.lvl0,
-                            // eslint-disable-next-line @typescript-eslint/camelcase
-                            __docsearch_parent:
-                              item.type !== 'lvl1' &&
-                              hits.find(
-                                siblingItem =>
-                                  siblingItem.type === 'lvl1' &&
-                                  siblingItem.hierarchy.lvl1 ===
-                                    item.hierarchy.lvl1
-                              ),
-                          };
-                        })
-                      )
-                      .flat();
+                    return recentSearches.current.getSearches();
                   },
-                };
-              }),
-            ];
+                },
+              ];
+            }
+
+            return Object.values<DocSearchHit[]>(sources).map(items => {
+              return {
+                onSelect({ suggestion }) {
+                  const {
+                    _highlightResult,
+                    _snippetResult,
+                    ...search
+                  } = suggestion;
+                  recentSearches.current.saveSearch(search);
+
+                  onClose();
+                },
+                getSuggestionUrl({ suggestion }) {
+                  return suggestion.url;
+                },
+                getSuggestions() {
+                  return Object.values(
+                    groupBy(items, item => item.hierarchy.lvl1)
+                  )
+                    .map(hits =>
+                      hits.map(item => {
+                        return {
+                          ...item,
+                          // eslint-disable-next-line @typescript-eslint/camelcase
+                          __docsearch_parent:
+                            item.type !== 'lvl1' &&
+                            hits.find(
+                              siblingItem =>
+                                siblingItem.type === 'lvl1' &&
+                                siblingItem.hierarchy.lvl1 ===
+                                  item.hierarchy.lvl1
+                            ),
+                        };
+                      })
+                    )
+                    .flat();
+                },
+              };
+            });
           });
         },
       }),
     [indexName, searchParameters, searchClient, onClose]
   );
+
+  const { getEnvironmentProps, getRootProps } = autocomplete;
 
   useEffect(() => {
     const isMobileMediaQuery = window.matchMedia('(max-width: 750px)');
@@ -274,23 +244,22 @@ export function DocSearch({
       <div className="DocSearch-Modal">
         <header className="DocSearch-SearchBar" ref={searchBoxRef}>
           <SearchBox
-            inputRef={inputRef}
-            query={state.query}
-            getFormProps={getFormProps}
-            getLabelProps={getLabelProps}
-            getInputProps={getInputProps}
+            {...autocomplete}
+            state={state}
             onClose={onClose}
+            inputRef={inputRef}
           />
         </header>
 
         <div className="DocSearch-Dropdown" ref={dropdownRef}>
           <Dropdown
-            inputRef={inputRef}
+            {...autocomplete}
             state={state}
-            getMenuProps={getMenuProps}
-            getItemProps={getItemProps}
-            setQuery={setQuery}
-            refresh={refresh}
+            inputRef={inputRef}
+            onDeleteSearch={search => {
+              recentSearches.current.deleteSearch(search);
+              autocomplete.refresh();
+            }}
           />
         </div>
 

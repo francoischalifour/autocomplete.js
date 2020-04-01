@@ -1,22 +1,25 @@
 import React from 'react';
 import {
+  AutocompleteApi,
   AutocompleteState,
-  GetMenuProps,
-  GetItemProps,
 } from '@francoischalifour/autocomplete-core';
 
-import { InternalDocSearchHit } from '../types';
-import { Error } from '../Error';
-import { NoResults } from '../NoResults';
+import { InternalDocSearchHit, RecentSearchHit } from '../types';
+import { EmptyScreen } from '../EmptyScreen';
 import { Results } from '../Results';
+import { NoResults } from '../NoResults';
+import { Error } from '../Error';
 
-interface DropdownProps {
+interface DropdownProps
+  extends AutocompleteApi<
+    InternalDocSearchHit,
+    React.FormEvent,
+    React.MouseEvent,
+    React.KeyboardEvent
+  > {
   state: AutocompleteState<InternalDocSearchHit>;
-  getMenuProps: GetMenuProps;
-  getItemProps: GetItemProps<InternalDocSearchHit, React.MouseEvent>;
-  setQuery(value: string): void;
-  refresh(): Promise<void>;
-  inputRef: React.MutableRefObject<HTMLInputElement>;
+  onDeleteSearch(search: RecentSearchHit): void;
+  inputRef: React.MutableRefObject<null | HTMLInputElement>;
 }
 
 export function Dropdown(props: DropdownProps) {
@@ -24,25 +27,17 @@ export function Dropdown(props: DropdownProps) {
     return <Error />;
   }
 
-  if (
-    props.state.status === 'idle' &&
-    props.state.suggestions.every(source => source.items.length === 0)
-  ) {
-    return (
-      <NoResults
-        setQuery={props.setQuery}
-        refresh={props.refresh}
-        state={props.state}
-        inputRef={props.inputRef}
-      />
-    );
+  const hasSuggestions = props.state.suggestions.some(
+    source => source.items.length > 0
+  );
+
+  if (!props.state.query) {
+    return <EmptyScreen {...props} hasSuggestions={hasSuggestions} />;
   }
 
-  return (
-    <Results
-      suggestions={props.state.suggestions}
-      getMenuProps={props.getMenuProps}
-      getItemProps={props.getItemProps}
-    />
-  );
+  if (props.state.status === 'idle' && hasSuggestions === false) {
+    return <NoResults {...props} />;
+  }
+
+  return <Results {...props} />;
 }
