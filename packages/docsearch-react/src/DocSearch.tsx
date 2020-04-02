@@ -97,8 +97,8 @@ export function DocSearch({
                   snippetEllipsisText: '…',
                   highlightPreTag: '<mark>',
                   highlightPostTag: '</mark>',
-                  hitsPerPage: 15,
-                  distinct: 5,
+                  hitsPerPage: 20,
+                  distinct: 4,
                   ...searchParameters,
                 },
               },
@@ -128,13 +128,7 @@ export function DocSearch({
               return [
                 {
                   onSelect({ suggestion }) {
-                    const {
-                      _highlightResult,
-                      _snippetResult,
-                      ...search
-                    } = suggestion;
-                    recentSearches.current.saveSearch(search);
-
+                    recentSearches.current.saveSearch(suggestion);
                     onClose();
                   },
                   getSuggestionUrl({ suggestion }) {
@@ -150,13 +144,7 @@ export function DocSearch({
             return Object.values<DocSearchHit[]>(sources).map(items => {
               return {
                 onSelect({ suggestion }) {
-                  const {
-                    _highlightResult,
-                    _snippetResult,
-                    ...search
-                  } = suggestion;
-                  recentSearches.current.saveSearch(search);
-
+                  recentSearches.current.saveSearch(suggestion);
                   onClose();
                 },
                 getSuggestionUrl({ suggestion }) {
@@ -261,15 +249,11 @@ export function DocSearch({
             state={state}
             inputRef={inputRef}
             onItemClick={item => {
-              if (item.type !== 'content') {
-                const { _highlightResult, _snippetResult, ...search } = item;
-                recentSearches.current.saveSearch(search);
-              }
-
+              recentSearches.current.saveSearch(item);
               onClose();
             }}
-            onAction={search => {
-              recentSearches.current.deleteSearch(search);
+            onAction={item => {
+              recentSearches.current.deleteSearch(item);
               autocomplete.refresh();
             }}
           />

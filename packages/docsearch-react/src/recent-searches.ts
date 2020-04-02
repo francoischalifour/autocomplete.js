@@ -1,3 +1,5 @@
+import { DocSearchHit, RecentDocSearchHit } from './types';
+
 function isLocalStorageSupported() {
   const key = '__TEST_KEY__';
 
@@ -35,12 +37,22 @@ function createStorage<TItem>() {
   };
 }
 
-export function createRecentSearches<TItem extends { objectID: string }>() {
+export function createRecentSearches<TItem extends RecentDocSearchHit>() {
   const storage = createStorage<TItem>();
   let items = storage.getItem();
 
   return {
-    saveSearch(item: TItem) {
+    saveSearch(search: TItem) {
+      const {
+        _highlightResult,
+        _snippetResult,
+        ...item
+      } = (search as unknown) as DocSearchHit;
+
+      if (item.type === 'content') {
+        return false;
+      }
+
       const isQueryAlreadySaved = items.findIndex(
         x => x.objectID === item.objectID
       );
@@ -49,10 +61,12 @@ export function createRecentSearches<TItem extends { objectID: string }>() {
         items.splice(isQueryAlreadySaved, 1);
       }
 
-      items.unshift(item);
+      items.unshift(item as TItem);
       items = items.slice(0, 5);
 
       storage.setItem(items);
+
+      return true;
     },
     deleteSearch(item: TItem) {
       items = items.filter(x => x.objectID !== item.objectID);
