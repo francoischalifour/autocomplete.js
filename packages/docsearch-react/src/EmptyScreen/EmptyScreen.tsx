@@ -14,9 +14,9 @@ interface EmptyScreenProps
     React.KeyboardEvent
   > {
   state: AutocompleteState<RecentDocSearchHit>;
-  onSaveSearch(search: RecentDocSearchHit): void;
-  onDeleteSearch(search: RecentDocSearchHit): void;
   hasSuggestions: boolean;
+  onItemClick(item: RecentDocSearchHit): void;
+  onAction(search: RecentDocSearchHit): void;
 }
 
 export function EmptyScreen(props: EmptyScreenProps) {
@@ -45,7 +45,7 @@ export function EmptyScreen(props: EmptyScreenProps) {
                       item,
                       source,
                       onClick() {
-                        props.onSaveSearch(item);
+                        props.onItemClick(item);
                       },
                     })}
                   >
@@ -115,7 +115,7 @@ export function EmptyScreen(props: EmptyScreenProps) {
                               event.preventDefault();
                               event.stopPropagation();
 
-                              props.onDeleteSearch(item);
+                              props.onAction(item);
                             }}
                           >
                             <svg width="20" height="20">

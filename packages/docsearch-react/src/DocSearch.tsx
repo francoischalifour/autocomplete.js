@@ -260,13 +260,15 @@ export function DocSearch({
             {...autocomplete}
             state={state}
             inputRef={inputRef}
-            onSaveSearch={item => {
+            onItemClick={item => {
               if (item.type !== 'content') {
                 const { _highlightResult, _snippetResult, ...search } = item;
                 recentSearches.current.saveSearch(search);
               }
+
+              onClose();
             }}
-            onDeleteSearch={search => {
+            onAction={search => {
               recentSearches.current.deleteSearch(search);
               autocomplete.refresh();
             }}

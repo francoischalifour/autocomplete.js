@@ -18,8 +18,8 @@ interface DropdownProps<TItem>
     React.KeyboardEvent
   > {
   state: AutocompleteState<TItem>;
-  onSaveSearch(search: RecentDocSearchHit): void;
-  onDeleteSearch(search: RecentDocSearchHit): void;
+  onItemClick(search: RecentDocSearchHit): void;
+  onAction(search: RecentDocSearchHit): void;
   inputRef: React.MutableRefObject<null | HTMLInputElement>;
 }
 
