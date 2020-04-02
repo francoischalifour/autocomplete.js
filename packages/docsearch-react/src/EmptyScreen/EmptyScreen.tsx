@@ -4,17 +4,18 @@ import {
   AutocompleteState,
 } from '@francoischalifour/autocomplete-core';
 
-import { RecentSearchHit } from '../types';
+import { RecentDocSearchHit } from '../types';
 
 interface EmptyScreenProps
   extends AutocompleteApi<
-    RecentSearchHit,
+    RecentDocSearchHit,
     React.FormEvent,
     React.MouseEvent,
     React.KeyboardEvent
   > {
-  state: AutocompleteState<RecentSearchHit>;
-  onDeleteSearch(search: RecentSearchHit): void;
+  state: AutocompleteState<RecentDocSearchHit>;
+  onSaveSearch(search: RecentDocSearchHit): void;
+  onDeleteSearch(search: RecentDocSearchHit): void;
   hasSuggestions: boolean;
 }
 
@@ -31,21 +32,21 @@ export function EmptyScreen(props: EmptyScreenProps) {
     <div className="DocSearch-Dropdown-Container">
       {props.state.suggestions.map(({ source, items }, index) => {
         return (
-          <section
-            key={['history', index].join(':')}
-            className="DocSearch-Hits"
-          >
-            <div className="DocSearch-Hit-source">Recent searches</div>
+          <section key={['recent', index].join(':')} className="DocSearch-Hits">
+            <div className="DocSearch-Hit-source">Recent</div>
 
             <ul {...props.getMenuProps()}>
               {items.map(item => {
                 return (
                   <li
-                    key={['history', item.objectID].join(':')}
+                    key={['recent', item.objectID].join(':')}
                     className="DocSearch-Hit"
                     {...props.getItemProps({
                       item,
                       source,
+                      onClick() {
+                        props.onSaveSearch(item);
+                      },
                     })}
                   >
                     <a href={item.url}>
@@ -87,7 +88,7 @@ export function EmptyScreen(props: EmptyScreenProps) {
                             item.type === 'lvl6') && (
                             <div className="DocSearch-Hit-content-wrapper">
                               <span className="DocSearch-Hit-title">
-                                {item.hierarchy['item.type']}
+                                {item.hierarchy[item.type]}
                               </span>
                               <span className="DocSearch-Hit-path">
                                 {item.hierarchy.lvl1}

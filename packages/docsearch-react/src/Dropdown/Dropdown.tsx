@@ -4,25 +4,26 @@ import {
   AutocompleteState,
 } from '@francoischalifour/autocomplete-core';
 
-import { InternalDocSearchHit, RecentSearchHit } from '../types';
+import { InternalDocSearchHit, RecentDocSearchHit } from '../types';
 import { EmptyScreen } from '../EmptyScreen';
 import { Results } from '../Results';
 import { NoResults } from '../NoResults';
 import { Error } from '../Error';
 
-interface DropdownProps
+interface DropdownProps<TItem>
   extends AutocompleteApi<
-    InternalDocSearchHit,
+    TItem,
     React.FormEvent,
     React.MouseEvent,
     React.KeyboardEvent
   > {
-  state: AutocompleteState<InternalDocSearchHit>;
-  onDeleteSearch(search: RecentSearchHit): void;
+  state: AutocompleteState<TItem>;
+  onSaveSearch(search: RecentDocSearchHit): void;
+  onDeleteSearch(search: RecentDocSearchHit): void;
   inputRef: React.MutableRefObject<null | HTMLInputElement>;
 }
 
-export function Dropdown(props: DropdownProps) {
+export function Dropdown(props: DropdownProps<InternalDocSearchHit>) {
   if (props.state.status === 'error') {
     return <Error />;
   }
@@ -32,7 +33,12 @@ export function Dropdown(props: DropdownProps) {
   );
 
   if (!props.state.query) {
-    return <EmptyScreen {...props} hasSuggestions={hasSuggestions} />;
+    return (
+      <EmptyScreen
+        {...(props as DropdownProps<any>)}
+        hasSuggestions={hasSuggestions}
+      />
+    );
   }
 
   if (props.state.status === 'idle' && hasSuggestions === false) {

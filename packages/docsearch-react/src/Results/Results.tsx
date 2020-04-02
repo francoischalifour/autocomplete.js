@@ -17,6 +17,7 @@ interface ResultsProps
     React.KeyboardEvent
   > {
   state: AutocompleteState<InternalDocSearchHit>;
+  onSaveSearch(search: InternalDocSearchHit): void;
 }
 
 export function Results(props: ResultsProps) {
@@ -47,6 +48,9 @@ export function Results(props: ResultsProps) {
                     {...props.getItemProps({
                       item,
                       source,
+                      onClick() {
+                        props.onSaveSearch(item);
+                      },
                     })}
                   >
                     {item.__docsearch_parent && (

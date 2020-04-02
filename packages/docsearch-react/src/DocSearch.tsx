@@ -5,7 +5,11 @@ import {
 } from '@francoischalifour/autocomplete-core';
 import { getAlgoliaHits } from '@francoischalifour/autocomplete-preset-algolia';
 
-import { DocSearchHit, InternalDocSearchHit, RecentSearchHit } from './types';
+import {
+  DocSearchHit,
+  InternalDocSearchHit,
+  RecentDocSearchHit,
+} from './types';
 import { createSearchClient, groupBy, noop } from './utils';
 import { SearchBox } from './SearchBox';
 import { Dropdown } from './Dropdown';
@@ -44,7 +48,7 @@ export function DocSearch({
     appId,
     apiKey,
   ]);
-  const recentSearches = useRef(createRecentSearches<RecentSearchHit>());
+  const recentSearches = useRef(createRecentSearches<RecentDocSearchHit>());
 
   const autocomplete = React.useMemo(
     () =>
@@ -256,6 +260,12 @@ export function DocSearch({
             {...autocomplete}
             state={state}
             inputRef={inputRef}
+            onSaveSearch={item => {
+              if (item.type !== 'content') {
+                const { _highlightResult, _snippetResult, ...search } = item;
+                recentSearches.current.saveSearch(search);
+              }
+            }}
             onDeleteSearch={search => {
               recentSearches.current.deleteSearch(search);
               autocomplete.refresh();

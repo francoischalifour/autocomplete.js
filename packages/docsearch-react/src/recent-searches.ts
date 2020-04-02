@@ -37,32 +37,30 @@ function createStorage<TItem>() {
 
 export function createRecentSearches<TItem extends { objectID: string }>() {
   const storage = createStorage<TItem>();
+  let items = storage.getItem();
 
   return {
-    saveSearch(newSearch: TItem) {
-      const nextSearches = this.getSearches();
-
-      const isQueryAlreadySaved = nextSearches.findIndex(
-        x => x.objectID === newSearch.objectID
+    saveSearch(item: TItem) {
+      const isQueryAlreadySaved = items.findIndex(
+        x => x.objectID === item.objectID
       );
 
       if (isQueryAlreadySaved > -1) {
-        nextSearches.splice(isQueryAlreadySaved, 1);
+        items.splice(isQueryAlreadySaved, 1);
       }
 
-      nextSearches.unshift(newSearch);
+      items.unshift(item);
+      items = items.slice(0, 5);
 
-      storage.setItem(nextSearches.slice(0, 3));
+      storage.setItem(items);
     },
-    deleteSearch(search: TItem) {
-      const nextSearches = this.getSearches().filter(
-        x => x.objectID !== search.objectID
-      );
+    deleteSearch(item: TItem) {
+      items = items.filter(x => x.objectID !== item.objectID);
 
-      storage.setItem(nextSearches);
+      storage.setItem(items);
     },
     getSearches() {
-      return storage.getItem();
+      return items;
     },
   };
 }

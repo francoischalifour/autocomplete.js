@@ -1,6 +1,6 @@
 import { DocSearchHit } from './DocSearchHit';
 
-export type RecentSearchHit = Exclude<
+export type RecentDocSearchHit = Exclude<
   DocSearchHit,
   '_highlightResult' | '_snippetResult'
 >;
