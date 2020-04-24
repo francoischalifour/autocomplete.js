@@ -1,3 +1,7 @@
+# [](https://github.com/francoischalifour/autocomplete.js/compare/v1.0.0-alpha.12...v) (2020-04-24)
+
+
+
 # [1.0.0-alpha.12](https://github.com/francoischalifour/autocomplete.js/compare/v1.0.0-alpha.11...v1.0.0-alpha.12) (2020-04-24)
 
 ### Bug Fixes
