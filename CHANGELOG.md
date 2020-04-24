@@ -1,3 +1,75 @@
+# [](https://github.com/francoischalifour/autocomplete.js/compare/v1.0.0-alpha.10...v) (2020-04-24)
+
+
+### Bug Fixes
+
+* re-export styles from style entry ([ff99bd5](https://github.com/francoischalifour/autocomplete.js/commit/ff99bd5ac1a40ee1b18194fe432c3c9afb9370f6))
+* **core:** don't extrat highlighted item from undefined source ([b0601da](https://github.com/francoischalifour/autocomplete.js/commit/b0601da315fc22a84290e3a0db3bd11158067745))
+* **core:** skip state change on `onClick` if URL ([53f634d](https://github.com/francoischalifour/autocomplete.js/commit/53f634df1ea9d1249ebb6894aacb05473f202cd0))
+* **design:** animation + spacing search button ([7f734d6](https://github.com/francoischalifour/autocomplete.js/commit/7f734d6ee291e7a2aba7c107558799f4d7204c83))
+* **design:** contrast + darkmode ([eec8a0b](https://github.com/francoischalifour/autocomplete.js/commit/eec8a0b990f7a650d4c5d55225ba38a905c3227f))
+* **design:** error screen, loading indicator, no results links ([522377f](https://github.com/francoischalifour/autocomplete.js/commit/522377f23a7cbe02074658e7d4353605fba1f6a5))
+* **design:** footer, hit spacing ([3e6468a](https://github.com/francoischalifour/autocomplete.js/commit/3e6468a36da8e3e418f111f001f98bf16c057a4b))
+* **design:** hovers + tree icons ([ba60df8](https://github.com/francoischalifour/autocomplete.js/commit/ba60df8eb0374fb3d873ffaa893f30b2a57be612))
+* **design:** icons ([d225ea2](https://github.com/francoischalifour/autocomplete.js/commit/d225ea2044d0a5f3a0a44d87e7ec6c7d2c4ffd01))
+* **design:** improvements from feedbacks ([48e4090](https://github.com/francoischalifour/autocomplete.js/commit/48e4090db0b6be7c81dec8d132ac3133584ae898))
+* **design:** mobile ([8a02679](https://github.com/francoischalifour/autocomplete.js/commit/8a02679588c405696b301cc78bc5ac750ee341cb))
+* **design:** mobile scroll and source zindex ([72fd25b](https://github.com/francoischalifour/autocomplete.js/commit/72fd25b0df097e272242887d5f815644c7d0535e))
+* **design:** modal height, no results screen ([0645d9a](https://github.com/francoischalifour/autocomplete.js/commit/0645d9a58ed059dcd2d09b2e94121a1247f85cba))
+* **design:** No results cosmetics ([4185ae3](https://github.com/francoischalifour/autocomplete.js/commit/4185ae32b3a1b29344b1d24b8a3aa94de3f46e8b))
+* **design:** no results, empty screen + details ([2e50842](https://github.com/francoischalifour/autocomplete.js/commit/2e50842aa55f4d0230ab14535fd7beaf8916fde5))
+* **design:** tablet responsive ([d787c95](https://github.com/francoischalifour/autocomplete.js/commit/d787c95ee19e42464ce0c91c446fa8d9818779a1))
+* **docsearch:** do not render Screen when loading or stalled ([dfb855e](https://github.com/francoischalifour/autocomplete.js/commit/dfb855e630dde188dd1f9b92be41933d72a57db1))
+* **docsearch:** don't add search to recent searches if favorited ([32a09c2](https://github.com/francoischalifour/autocomplete.js/commit/32a09c2b558f759e04a23d0c7d7437e82190c454))
+* **docsearch:** don't display items when no suggestions ([7556342](https://github.com/francoischalifour/autocomplete.js/commit/7556342ef48315fe51e5df545a41dc521680f5a2))
+* **docsearch:** don't focus input if initial query ([466f325](https://github.com/francoischalifour/autocomplete.js/commit/466f325f374663e272c43d8f0343618c96632e9d))
+* **docsearch:** don't request Algolia on start screen ([a5430c9](https://github.com/francoischalifour/autocomplete.js/commit/a5430c91ddc14ecdf5841403bd1ac453ad4fd03b))
+* **docsearch:** drop the "..." ([e626c54](https://github.com/francoischalifour/autocomplete.js/commit/e626c5481e6deadb85d81ba80d51be82fdb0c31e))
+* **docsearch:** hide search suggestions if none ([574dbc6](https://github.com/francoischalifour/autocomplete.js/commit/574dbc6ab153c29cb9229d9580359e86a6c902d5))
+* **docsearch:** limit number of searches retrieved ([9c330f5](https://github.com/francoischalifour/autocomplete.js/commit/9c330f567c33aac31971691e39b91c0a0476ae27))
+* **docsearch:** limit query size ([bc34735](https://github.com/francoischalifour/autocomplete.js/commit/bc347354be41c9134b151d98eb13b99c4d0c1260))
+* **docsearch:** make sure there are search suggestions before showing them ([00d031c](https://github.com/francoischalifour/autocomplete.js/commit/00d031cad613252b96a946288b69c0c3f51d11d2))
+* **docsearch:** provide autocomplete ID for HTML attributes ([7137e86](https://github.com/francoischalifour/autocomplete.js/commit/7137e8618a428bb018d4f334dfacd92bf532a8f4))
+* **docsearch:** remove recent search when favorited ([c88cc79](https://github.com/francoischalifour/autocomplete.js/commit/c88cc79157c72ed99b06a74407e3bc08e0cd5388))
+* **docsearch:** restore scroll position when closing on mobile ([27d8c5e](https://github.com/francoischalifour/autocomplete.js/commit/27d8c5ef7bc346fa61236fa165cd3380c746a4fc))
+* **docsearch:** update local storage key ([1d37f78](https://github.com/francoischalifour/autocomplete.js/commit/1d37f7856f0780cf579485ba5c902253fffd6759))
+* **docsearch:** update search suggestions when new lvl0s are encountered ([8c79685](https://github.com/francoischalifour/autocomplete.js/commit/8c79685511e2d6670d8164bc2f19672cfcd8f6be))
+* **docusaurus:** add crossorigin to preconnect script ([5dbfa11](https://github.com/francoischalifour/autocomplete.js/commit/5dbfa11fa3ab50c16fc71af1d51e30fb575ffdfc))
+* **docusaurus:** default `appId` to leverage `preconnect` ([b4a59fd](https://github.com/francoischalifour/autocomplete.js/commit/b4a59fd71ae7ffdc6b85e8e428d37011bc72ad93))
+* **react:** remove `maxLength` option supported in core ([3288e6d](https://github.com/francoischalifour/autocomplete.js/commit/3288e6d07e2bbbfd5a4646d336fba40c3047b31f))
+
+
+### Features
+
+* create clean exports ([d0f8ff3](https://github.com/francoischalifour/autocomplete.js/commit/d0f8ff3ab4f89c9dce1f2bdc923d94aed7515dc1))
+* **design:** icon actions ([056d333](https://github.com/francoischalifour/autocomplete.js/commit/056d333780d6c5f48cf86236b443916b75b073b4))
+* **design:** new error icons + update icons + update light shadows / searchbox ([2e77e70](https://github.com/francoischalifour/autocomplete.js/commit/2e77e70e792ccb52d7c6300f149697fad441fd2e))
+* **design:** new icons ([5bd3cbc](https://github.com/francoischalifour/autocomplete.js/commit/5bd3cbc10693d3b65f7908e3523fa9bcc187f0ea))
+* **docsearch:** add `hitComponent` and `transformItems` options ([daaafe5](https://github.com/francoischalifour/autocomplete.js/commit/daaafe5178cd43e258e389f579bc7517a3935b09))
+* **docsearch:** add DocSearch for Docusaurus ([#39](https://github.com/francoischalifour/autocomplete.js/issues/39)) ([ad63053](https://github.com/francoischalifour/autocomplete.js/commit/ad630539c444417f414e0e8bcf74fd20f7cd73c8))
+* **docsearch:** add recent searches ([#40](https://github.com/francoischalifour/autocomplete.js/issues/40)) ([36e7fab](https://github.com/francoischalifour/autocomplete.js/commit/36e7fabe43582fe358cb15f92e5afddecd5f1a7d))
+* **docsearch:** add search suggestions ([d1fe8b2](https://github.com/francoischalifour/autocomplete.js/commit/d1fe8b2be3d30f067892ac9f04f6f802b6b40826))
+* **docsearch:** allow placeholder customization ([3a4f13b](https://github.com/francoischalifour/autocomplete.js/commit/3a4f13b35198a0372f6d4cab7b661e774e424c6f))
+* **docsearch:** animate cards on action ([8c7bdc1](https://github.com/francoischalifour/autocomplete.js/commit/8c7bdc117f6a76a53c9245a2089cda5dd02b71e6))
+* **docsearch:** append modal to body ([73a7f0e](https://github.com/francoischalifour/autocomplete.js/commit/73a7f0ed491407d9c80ef9d14ddd704c0ac8f7c4))
+* **docsearch:** catch retry errors in the search client ([750c4b5](https://github.com/francoischalifour/autocomplete.js/commit/750c4b51e2159a787613aa959ac62238c1f1a65b))
+* **docsearch:** display more recent searches when no favorites ([a4c7082](https://github.com/francoischalifour/autocomplete.js/commit/a4c70825cc5d204b0ee44bcb8965a325f7fa5471))
+* **docsearch:** forward props to autocomplete-core ([7cbcb12](https://github.com/francoischalifour/autocomplete.js/commit/7cbcb128bd59fe5c550ffb534f399b2b1022e5a3))
+* **docsearch:** introduce favorite searches ([61bd0aa](https://github.com/francoischalifour/autocomplete.js/commit/61bd0aa5f768658c70f7cb0b7bb465c9b9579da7))
+* **docsearch:** introduce Selection Search ([d5fd4d6](https://github.com/francoischalifour/autocomplete.js/commit/d5fd4d66a08a1b6d7f990757261c5f9e32e95c1c))
+* **docsearch:** save content record hit parent in recent searches ([3fe547f](https://github.com/francoischalifour/autocomplete.js/commit/3fe547f2cc17f2c5a2f1c526bca4e98b42093e1f))
+* **docsearch:** save content record hit parent in recent searches ([5f8df1f](https://github.com/francoischalifour/autocomplete.js/commit/5f8df1f0400b567e223d8c895f07d36c319605ae))
+* **docsearch:** trap focus in modal ([0ca92ca](https://github.com/francoischalifour/autocomplete.js/commit/0ca92ca18b60d3949f4150a7afb5eb1f6984612d))
+* **docsearch:** use `preconnect` link in Docusaurus integration ([33e2e8b](https://github.com/francoischalifour/autocomplete.js/commit/33e2e8bd9436222933e7bd949082c3a446cb9f6e))
+* **docsearch:** use relative URLs ([f434ca1](https://github.com/francoischalifour/autocomplete.js/commit/f434ca1f92c9638ddfa42f3cd8b7d0093490830f))
+
+
+### Reverts
+
+* Revert "chore: use Babel to replace DocSearch verison in UA" ([42caf20](https://github.com/francoischalifour/autocomplete.js/commit/42caf20187a7b716767588ba9081bfa181fa9e13))
+
+
+
 # [1.0.0-alpha.10](https://github.com/francoischalifour/autocomplete.js/compare/v0.37.0...v1.0.0-alpha.10) (2020-03-31)
 
 ### Bug Fixes
