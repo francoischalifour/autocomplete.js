@@ -1,16 +1,12 @@
-# [](https://github.com/francoischalifour/autocomplete.js/compare/v1.0.0-alpha.17...v) (2020-06-11)
-
+# [1.0.0-alpha.18](https://github.com/francoischalifour/autocomplete.js/compare/v1.0.0-alpha.17...v1.0.0-alpha.18) (2020-06-11)
 
 ### Bug Fixes
 
-* **css:** overflow overlay not supported on gecko ([9e5b764](https://github.com/francoischalifour/autocomplete.js/commit/9e5b764794b5de5e2169ed13f48e024f5f1df812))
-
+- **css:** overflow overlay not supported on gecko ([9e5b764](https://github.com/francoischalifour/autocomplete.js/commit/9e5b764794b5de5e2169ed13f48e024f5f1df812))
 
 ### Features
 
-* **docsearch:** introduce `initialScrollY` option ([2d5b216](https://github.com/francoischalifour/autocomplete.js/commit/2d5b21684174f0940c405d4da6839b0e94412f61))
-
-
+- **docsearch:** introduce `initialScrollY` option ([2d5b216](https://github.com/francoischalifour/autocomplete.js/commit/2d5b21684174f0940c405d4da6839b0e94412f61))
 
 # [1.0.0-alpha.17](https://github.com/francoischalifour/autocomplete.js/compare/v1.0.0-alpha.16...v1.0.0-alpha.17) (2020-06-08)
 
