@@ -17,6 +17,7 @@ export interface DocSearchProps
   indexName: string;
   placeholder?: string;
   searchParameters?: any;
+  query?: string;
   transformItems?(items: DocSearchHit[]): DocSearchHit[];
   hitComponent?(props: {
     hit: DocSearchHit;

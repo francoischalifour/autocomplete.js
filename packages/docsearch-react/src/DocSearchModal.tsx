@@ -39,6 +39,7 @@ export function DocSearchModal({
   resultsFooterComponent = () => null,
   navigator,
   initialScrollY = 0,
+  query,
 }: DocSearchModalProps) {
   const [state, setState] = React.useState<
     AutocompleteState<InternalDocSearchHit>
@@ -51,11 +52,13 @@ export function DocSearchModal({
   const searchBoxRef = React.useRef<HTMLDivElement | null>(null);
   const dropdownRef = React.useRef<HTMLDivElement | null>(null);
   const inputRef = React.useRef<HTMLInputElement | null>(null);
-  const snipetLength = React.useRef<number>(10);
+  const snippetLength = React.useRef<number>(10);
+
+  const defaultQueryText = query ? query : '';
   const initialQuery = React.useRef(
     typeof window !== 'undefined'
       ? window.getSelection()!.toString().slice(0, MAX_QUERY_SIZE)
-      : ''
+      : defaultQueryText
   ).current;
 
   const searchClient = useSearchClient(appId, apiKey);
@@ -166,13 +169,13 @@ export function DocSearchModal({
                     'url',
                   ],
                   attributesToSnippet: [
-                    `hierarchy.lvl1:${snipetLength.current}`,
-                    `hierarchy.lvl2:${snipetLength.current}`,
-                    `hierarchy.lvl3:${snipetLength.current}`,
-                    `hierarchy.lvl4:${snipetLength.current}`,
-                    `hierarchy.lvl5:${snipetLength.current}`,
-                    `hierarchy.lvl6:${snipetLength.current}`,
-                    `content:${snipetLength.current}`,
+                    `hierarchy.lvl1:${snippetLength.current}`,
+                    `hierarchy.lvl2:${snippetLength.current}`,
+                    `hierarchy.lvl3:${snippetLength.current}`,
+                    `hierarchy.lvl4:${snippetLength.current}`,
+                    `hierarchy.lvl5:${snippetLength.current}`,
+                    `hierarchy.lvl6:${snippetLength.current}`,
+                    `content:${snippetLength.current}`,
                   ],
                   snippetEllipsisText: '…',
                   highlightPreTag: '<mark>',
@@ -292,7 +295,7 @@ export function DocSearchModal({
     const isMobileMediaQuery = window.matchMedia('(max-width: 750px)');
 
     if (isMobileMediaQuery.matches) {
-      snipetLength.current = 5;
+      snippetLength.current = 5;
     }
   }, []);
 
