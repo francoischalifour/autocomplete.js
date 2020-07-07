@@ -7,6 +7,7 @@ const packages = [
   'packages/autocomplete-core',
   'packages/autocomplete-preset-algolia',
   'packages/docsearch-react',
+  'packages/docsearch-js',
 ];
 
 module.exports = {
@@ -45,6 +46,10 @@ module.exports = {
           `@francoischalifour/autocomplete-core@^${version}`,
           `@francoischalifour/autocomplete-preset-algolia@^${version}`,
         ],
+      },
+      {
+        package: '@docsearch/js',
+        dependencies: [`@docsearch/react@^${version}`],
       },
       {
         package: '@francoischalifour/autocomplete-website',
