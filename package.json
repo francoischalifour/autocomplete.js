@@ -36,7 +36,7 @@
     "cy:run:firefox": "yarn run cy:run --browser firefox",
     "cy:run:edge": "yarn run cy:run --browser edge",
     "cy:clean": "rm -rf cypress/screenshots",
-    "docsearch:lint:css": "stylelint packages/docsearch-react/src/**/*.css"
+    "docsearch:lint:css": "stylelint packages/docsearch-css/src/**/*.css"
   },
   "devDependencies": {
     "@babel/cli": "7.10.1",

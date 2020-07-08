@@ -1,6 +1,6 @@
 {
   "name": "@docsearch/js",
-  "version": "1.0.0-alpha.20",
+  "version": "1.0.0-alpha.21",
   "license": "MIT",
   "homepage": "https://github.com/algolia/autocomplete.js",
   "repository": "algolia/autocomplete.js",
@@ -20,8 +20,7 @@
   "unpkg": "dist/umd/index.js",
   "jsdelivr": "dist/umd/index.js",
   "scripts": {
-    "build": "yarn build:clean && yarn build:umd && yarn build:esm && yarn build:css",
-    "build:css": "cp ../docsearch-react/src/styles/*.css dist/",
+    "build": "yarn build:clean && yarn build:umd && yarn build:esm",
     "build:esm": "babel src --root-mode upward --extensions '.ts,.tsx' --out-dir dist/esm",
     "build:esm:watch": "yarn build:esm --watch",
     "build:umd": "rollup --config",
@@ -31,7 +30,7 @@
     "watch": "concurrently \"yarn build:esm:watch\" \"yarn build:types:watch\""
   },
   "dependencies": {
-    "@docsearch/react": "^1.0.0-alpha.20",
+    "@docsearch/react": "^1.0.0-alpha.21",
     "preact": "^10.0.0"
   }
 }
