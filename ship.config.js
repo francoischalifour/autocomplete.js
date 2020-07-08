@@ -51,10 +51,7 @@ module.exports = {
       },
       {
         package: '@docsearch/js',
-        dependencies: [
-          `@docsearch/css@^${version}`,
-          `@docsearch/react@^${version}`,
-        ],
+        dependencies: [`@docsearch/react@^${version}`],
       },
       {
         package: '@francoischalifour/autocomplete-website',
