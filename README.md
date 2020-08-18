@@ -131,7 +131,7 @@ If you do not wish to use a package manager, you can use standalone endpoints:
 
 > `string | HTMLElement` | **required**
 
-The container for the autocomplete search box.
+The container for the autocomplete search box. It can be a valid CSS selector string. The first `HTMLElement` matching the specified selector will be used as container.
 
 #### `getSources`
 
