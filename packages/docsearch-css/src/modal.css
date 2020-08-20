@@ -613,6 +613,13 @@ svg.DocSearch-Hit-Select-Icon {
   .DocSearch-Hit-Tree {
     display: none;
   }
+
+  .DocSearch-Dropdown {
+    max-height: calc(
+      100vh - var(--docsearch-searchbox-height) - var(--docsearch-spacing) -
+        var(--docsearch-footer-height)
+    );
+  }
 }
 
 @keyframes fade-in {
