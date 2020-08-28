@@ -9,12 +9,20 @@
       "maxSize": "1.25 kB"
     },
     {
+      "path": "packages/autocomplete-js/dist/umd/index.js",
+      "maxSize": "6.5 kB"
+    },
+    {
       "path": "packages/autocomplete-react/dist/umd/index.js",
       "maxSize": "11 kB"
     },
     {
+      "path": "packages/docsearch-css/dist/style.css",
+      "maxSize": "3 kB"
+    },
+    {
       "path": "packages/docsearch-react/dist/umd/index.js",
-      "maxSize": "17 kB"
+      "maxSize": "17.25 kB"
     },
     {
       "path": "packages/docsearch-js/dist/umd/index.js",

@@ -4,73 +4,80 @@ id: DocSearchModal
 
 This component displays the DocSearch modal.
 
-# Example
+It can be useful to use this component instead of [`DocSearch`](DocSearch) to have better control over when to open the modal, or to lazy load the modal.
+
+## Example
 
 ```js
 import React from 'react';
 import { createPortal } from 'react-dom';
-import { DocSearchButton, DocSearchModal } from '@docsearch/react';
+import {
+  DocSearchButton,
+  DocSearchModal,
+  useDocSearchEvent,
+} from '@docsearch/react';
 
-function App({ apiKey, indexName }) {
-  const [isShowing, setIsShowing] = React.useState(false);
+import '@docsearch/react/style';
+
+function Search({ apiKey, indexName }) {
+  const searchButtonRef = React.useRef(null);
+  const [isOpen, setIsOpen] = React.useState(false);
+  const [initialQuery, setInitialQuery] = React.useState(null);
+
+  const onOpen = React.useCallback(() => {
+    setIsOpen(true);
+  }, [setIsOpen]);
+
+  const onClose = React.useCallback(() => {
+    setIsOpen(false);
+  }, [setIsOpen]);
+
+  const onInput = React.useCallback(
+    (event) => {
+      setIsOpen(true);
+      setInitialQuery(event.key);
+    },
+    [setIsOpen, setInitialQuery]
+  );
+
+  useDocSearchKeyboardEvents({
+    isOpen,
+    onOpen,
+    onClose,
+    onInput,
+    searchButtonRef,
+  });
 
   return (
-    <div>
-      <header>
-        <DocSearchButton onClick={() => setIsShowing(true)} />
-      </header>
+    <React.Fragment>
+      <DocSearchButton ref={searchButtonRef} onClick={onOpen} />
 
-      {isShowing &&
+      {isOpen &&
         createPortal(
           <DocSearchModal
             apiKey={apiKey}
             indexName={indexName}
-            onClose={() => setIsShowing(false)}
+            onClose={onClose}
+            initialScrollY={window.scrollY}
+            initialQuery={initialQuery}
           />,
           document.body
         )}
-    </div>
+    </React.Fragment>
   );
 }
 ```
 
-# Reference
+<!-- prettier-ignore -->
+:::info
+All objects or functions passed to `DocSearchModal` should be memoized so that DocSearch doesn't trigger other renders and loses its state.
+:::
 
-### `appId`
+## Props
 
-> `string` | defaults to `"BH4D9OD16A"`
+import DocSearchProps from './partials/docsearch-props.md'
 
-The Algolia application ID.
-
-### `apiKey`
-
-> `string`
-
-The Algolia search-only API key.
-
-### `indexName`
-
-> `string`
-
-The Algolia index name.
-
-### `placeholder`
-
-> `string` | defaults to `"Search docs"`
-
-The text that appears in the search box input when there is no query.
-
-### `searchParameters`
-
-> `SearchParameters`
-
-[Search parameters](https://www.algolia.com/doc/api-reference/search-api-parameters/) to forward to Algolia.
-
-### `initialQuery`
-
-> `string`
-
-The initial query when the modal opens.
+<DocSearchProps />
 
 ### `onClose`
 
@@ -78,34 +85,8 @@ The initial query when the modal opens.
 
 Function to call when the DocSearch modal closes.
 
-### `transformItems`
+### `initialScrollY`
 
-> `(items: DocSearchHit[]) => DocSearchHit[]`
+> number | defaults to `0`
 
-Function to customize the hits before rendering them.
-
-### `hitComponent`
-
-> `(props: { hit: DocSearchHit; children: React.ReactNode; }): JSX.Element`
-
-The component to use for a hit. It's useful to use a custom link component, or to customize the hits to display.
-
-It defaults to:
-
-```js
-function Hit({ hit, children }) {
-  return <a href={hit.url}>{children}</a>;
-}
-```
-
-### `navigator`
-
-> `Navigator`
-
-[Navigator API](keyboard-navigation) to redirect the user when a link should be opened.
-
-### `disableUserPersonalization`
-
-> `boolean` | defaults to `false`
-
-Whether to disable all personalized features: recent searches, favorite searches.
+The vertical scroll value when the modal was opened to scroll back to that position when the modal is closed.

@@ -4,7 +4,7 @@ id: createAutocomplete
 
 This function returns the methods to create an autocomplete experience.
 
-# Example
+## Example
 
 ```js
 import algoliasearch from 'algoliasearch/lite';
@@ -41,113 +41,15 @@ const autocomplete = createAutocomplete({
 });
 ```
 
-# Reference
+## Options
 
-## Required props
+import CreateAutocompleteProps from './partials/createAutocomplete-props.md'
 
-### `getSources`
+<CreateAutocompleteProps />
 
-The [sources](sources) to get the suggestions from.
+## Returns
 
-## Optional props
-
-### `id`
-
-> `string` | defaults to `"autocomplete-0"` (incremented for each instance)
-
-The autocomplete ID to create accessible attributes.
-
-### `onStateChange`
-
-> `(params: { state: AutocompleteState<TItem> }) => void`
-
-Function called when the internal state changes.
-
-### `placeholder`
-
-> `string`
-
-The text that appears in the search box input when there is no query.
-
-### `autoFocus`
-
-> `boolean` | defaults to `false`
-
-Whether to focus the search box when the page is loaded.
-
-### `defaultHighlightedIndex`
-
-> `number | null` | default to `null`
-
-The default item index to pre-select.
-
-We recommend using `0` when the query typed aims at opening suggestion links, without triggering an actual search.
-
-### `showCompletion`
-
-> `boolean` | defaults to `false`
-
-Whether to show the highlighted suggestion as completion in the input.
-
-### `openOnFocus`
-
-> `boolean` | defaults to `false`
-
-Whether to open the dropdown on focus when there's no query.
-
-### `stallThreshold`
-
-> `number` | defaults to `300`
-
-The number of milliseconds that must elapse before the autocomplete experience is stalled.
-
-### `initialState`
-
-> `Partial<AutocompleteState>`
-
-The initial state to apply when autocomplete is created.
-
-### `environment`
-
-> `typeof window` | defaults to `window`
-
-The environment from where your JavaScript is running.
-
-Useful if you're using autocomplete in a different context than `window`.
-
-### `navigator`
-
-> `Navigator`
-
-Navigator API to redirect the user when a link should be opened.
-
-Learn more on the [Navigator API](navigator-api) documentation.
-
-### `shouldDropdownShow`
-
-> `(params: { state: AutocompleteState }) => boolean`
-
-The function called to determine whether the dropdown should open.
-
-By default, it opens when there are suggestions in the state.
-
-### `onSubmit`
-
-> `(params: { state: AutocompleteState, event: Event, ...setters }) => void`
-
-The function called when the autocomplete form is submitted.
-
-### `onInput`
-
-> `(params: {query: string, state: AutocompleteState, ...setters }) => void`
-
-The function called when the input changes.
-
-This turns the experience in controlled mode, leaving you in charge of updating the state.
-
-## Returned props
-
-```js {2-14}
+```js
 const {
   getEnvironmentProps,
   getRootProps,
@@ -162,7 +64,8 @@ const {
   setIsOpen,
   setStatus,
   setContext,
+  refresh,
 } = createAutocomplete(options);
 ```
 
-This function returns the [prop getters](prop-getters) and the [state setters](state#setters)
+This function returns the [prop getters](prop-getters), the [state setters](state#setters) and the `refresh` method that updates the UI state.

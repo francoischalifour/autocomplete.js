@@ -1,14 +1,16 @@
 import { plugins } from '../../rollup.base.config';
+import { getBundleBanner } from '../../scripts/getBundleBanner';
 
-import { name } from './package.json';
+import pkg from './package.json';
 
 export default {
   input: 'src/index.ts',
   output: {
     file: 'dist/umd/index.js',
     format: 'umd',
-    name,
     sourcemap: true,
+    name: pkg.name,
+    banner: getBundleBanner(pkg),
   },
   plugins,
 };

@@ -51,7 +51,7 @@ module.exports = {
   },
   overrides: [
     {
-      files: ['**/rollup.config.js', 'stories/**/*'],
+      files: ['**/rollup.config.js', 'stories/**/*', '**/__tests__/**'],
       rules: {
         'import/no-extraneous-dependencies': 'off',
       },
@@ -63,7 +63,15 @@ module.exports = {
         'cypress/globals': true,
       },
       rules: {
-        'jest/expect-expect': 0,
+        'jest/expect-expect': 'off',
+        'spaced-comment': 'off',
+        '@typescript-eslint/triple-slash-reference': 'off',
+      },
+    },
+    {
+      files: ['scripts/**/*'],
+      rules: {
+        'import/no-commonjs': 'off',
       },
     },
   ],

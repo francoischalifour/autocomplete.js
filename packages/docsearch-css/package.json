@@ -1,9 +1,10 @@
 {
   "name": "@docsearch/css",
-  "version": "1.0.0-alpha.27",
+  "description": "Styles for DocSearch.",
+  "version": "1.0.0-alpha.28",
   "license": "MIT",
-  "homepage": "https://github.com/algolia/autocomplete.js",
-  "repository": "algolia/autocomplete.js",
+  "homepage": "https://github.com/francoischalifour/autocomplete.js",
+  "repository": "francoischalifour/autocomplete.js",
   "author": {
     "name": "Algolia, Inc.",
     "url": "https://www.algolia.com"
@@ -17,7 +18,7 @@
   "jsdelivr": "dist/style.css",
   "scripts": {
     "build": "yarn build:clean && mkdir dist && yarn build:css",
-    "build:css": "cp src/_variables.css dist/ && cp src/modal.css dist/ && cp src/button.css dist/ && cat src/*.css > dist/style.css",
+    "build:css": "node build-css.js",
     "build:clean": "rm -rf ./dist",
     "watch": "watch \"yarn build:css\" --ignoreDirectoryPattern \"/dist/\""
   }

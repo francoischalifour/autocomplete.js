@@ -58,6 +58,9 @@ interface OnInputParams<TItem> extends AutocompleteSetters<TItem> {
 }
 
 export interface PublicAutocompleteSource<TItem> {
+  // This allows flavors to pass other keys to their source.
+  // Example: `templates` in the JavaScript API
+  [key: string]: unknown;
   /**
    * Get the string value of the suggestion. The value is used to fill the search box.
    */
@@ -110,17 +113,19 @@ export type GetSources<TItem> = (
   params: GetSourcesParams<TItem>
 ) => Promise<Array<AutocompleteSource<TItem>>>;
 
-export interface Environment {
-  [prop: string]: unknown;
-  addEventListener: Window['addEventListener'];
-  removeEventListener: Window['removeEventListener'];
-  setTimeout: Window['setTimeout'];
-  document: Window['document'];
-  location: {
-    assign: Location['assign'];
-  };
-  open: Window['open'];
-}
+export type Environment =
+  | Window
+  | {
+      [prop: string]: unknown;
+      addEventListener: Window['addEventListener'];
+      removeEventListener: Window['removeEventListener'];
+      setTimeout: Window['setTimeout'];
+      document: Window['document'];
+      location: {
+        assign: Location['assign'];
+      };
+      open: Window['open'];
+    };
 
 interface Navigator<TItem> {
   /**
@@ -181,7 +186,7 @@ export interface PublicAutocompleteOptions<TItem> {
    *
    * @default false
    */
-  showCompletion?: boolean;
+  enableCompletion?: boolean;
   /**
    * Whether to open the dropdown on focus when there's no query.
    *
@@ -243,7 +248,7 @@ export interface AutocompleteOptions<TItem> {
   placeholder: string;
   autoFocus: boolean;
   defaultHighlightedIndex: number | null;
-  showCompletion: boolean;
+  enableCompletion: boolean;
   openOnFocus: boolean;
   stallThreshold: number;
   initialState: AutocompleteState<TItem>;

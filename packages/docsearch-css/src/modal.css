@@ -177,11 +177,11 @@
 /* Modal Dropdown */
 
 .DocSearch-Dropdown {
-  min-height: var(--docsearch-spacing);
   max-height: calc(
     var(--docsearch-modal-height) - var(--docsearch-searchbox-height) -
       var(--docsearch-spacing) - var(--docsearch-footer-height)
   );
+  min-height: var(--docsearch-spacing);
   overflow-y: auto; /* firefox */
   overflow-y: overlay;
   padding: 0 var(--docsearch-spacing);
@@ -383,6 +383,14 @@ svg.DocSearch-Hit-Select-Icon {
   display: block;
 }
 
+@media screen and (prefers-reduced-motion: reduce) {
+  .DocSearch-Hit-action-button:hover,
+  .DocSearch-Hit-action-button:focus {
+    background: rgba(0, 0, 0, 0.2);
+    transition: none;
+  }
+}
+
 .DocSearch-Hit-action-button:hover,
 .DocSearch-Hit-action-button:focus {
   background: rgba(0, 0, 0, 0.2);
@@ -549,10 +557,6 @@ svg.DocSearch-Hit-Select-Icon {
   :root {
     --docsearch-spacing: 10px;
     --docsearch-footer-height: 40px;
-  }
-
-  .DocSearch--active #__docusaurus {
-    display: none;
   }
 
   .DocSearch-Dropdown {
