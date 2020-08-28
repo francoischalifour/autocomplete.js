@@ -341,7 +341,6 @@ export function DocSearchModal({
     setRealHeight();
     window.addEventListener('resize', setRealHeight);
     return () => window.removeEventListener('resize', setRealHeight);
-
     // Dependency of use effect is an empty array to make it run onlcy once.
     // Effect will not be called each time it updates.
     // We only want the listener to be added once.
