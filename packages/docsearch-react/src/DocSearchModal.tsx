@@ -27,15 +27,6 @@ export interface DocSearchModalProps extends DocSearchProps {
   onClose?(): void;
 }
 
-const setFullViewportHeight = () => {
-  // We rely on a CSS property to set the modal height to the full viewport height
-  // because all mobile browsers don't compute their height the same way.
-  // See https://css-tricks.com/the-trick-to-viewport-units-on-mobile/
-  const vh = window.innerHeight * 0.01;
-  const modalElement = document.querySelector<HTMLElement>('.DocSearch-Modal')!;
-  modalElement.style.setProperty('--docsearch-vh', `${vh}px`);
-};
-
 export function DocSearchModal({
   appId = 'BH4D9OD16A',
   apiKey,
@@ -63,6 +54,7 @@ export function DocSearchModal({
   const searchBoxRef = React.useRef<HTMLDivElement | null>(null);
   const dropdownRef = React.useRef<HTMLDivElement | null>(null);
   const inputRef = React.useRef<HTMLInputElement | null>(null);
+  const modalRef = React.useRef<HTMLInputElement | null>(null);
   const snippetLength = React.useRef<number>(10);
   const initialQuery = React.useRef(
     initialQueryFromProp || typeof window !== 'undefined'
@@ -338,6 +330,16 @@ export function DocSearchModal({
   }, [initialQuery, refresh]);
 
   React.useEffect(() => {
+    const setFullViewportHeight = () => {
+      // We rely on a CSS property to set the modal height to the full viewport height
+      // because all mobile browsers don't compute their height the same way.
+      // See https://css-tricks.com/the-trick-to-viewport-units-on-mobile/
+      const vh = window.innerHeight * 0.01;
+      if (modalRef.current) {
+        modalRef.current.style.setProperty('--docsearch-vh', `${vh}px`);
+      }
+    };
+
     setFullViewportHeight();
     window.addEventListener('resize', setFullViewportHeight);
     return () => window.removeEventListener('resize', setFullViewportHeight);
@@ -363,7 +365,7 @@ export function DocSearchModal({
         }
       }}
     >
-      <div className="DocSearch-Modal">
+      <div className="DocSearch-Modal" ref={modalRef}>
         <header className="DocSearch-SearchBar" ref={searchBoxRef}>
           <SearchBox
             {...autocomplete}
