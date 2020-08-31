@@ -33,7 +33,7 @@ const setFullViewportHeight = () => {
   // See https://css-tricks.com/the-trick-to-viewport-units-on-mobile/
   const vh = window.innerHeight * 0.01;
   const modalElement = document.querySelector<HTMLElement>('.DocSearch-Modal')!;
-  modalElement.style.setProperty('--vh', `${vh}px`);
+  modalElement.style.setProperty('--docsearch-vh', `${vh}px`);
 };
 
 export function DocSearchModal({
