@@ -51,10 +51,10 @@ export function DocSearchModal({
   } as any);
 
   const containerRef = React.useRef<HTMLDivElement | null>(null);
+  const modalRef = React.useRef<HTMLDivElement | null>(null);
   const searchBoxRef = React.useRef<HTMLDivElement | null>(null);
   const dropdownRef = React.useRef<HTMLDivElement | null>(null);
   const inputRef = React.useRef<HTMLInputElement | null>(null);
-  const modalRef = React.useRef<HTMLInputElement | null>(null);
   const snippetLength = React.useRef<number>(10);
   const initialQuery = React.useRef(
     initialQueryFromProp || typeof window !== 'undefined'
