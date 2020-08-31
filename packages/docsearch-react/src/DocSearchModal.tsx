@@ -28,7 +28,9 @@ export interface DocSearchModalProps extends DocSearchProps {
 }
 
 const setFullViewportHeight = () => {
-  // We update the value of the CSS variables
+  // We rely on a CSS property to set the modal height to the full viewport height
+  // because all mobile browsers don't compute their height the same way.
+  // See https://css-tricks.com/the-trick-to-viewport-units-on-mobile/
   const vh = window.innerHeight * 0.01;
   const modalElement = document.querySelector<HTMLElement>('.DocSearch-Modal')!;
   modalElement.style.setProperty('--vh', `${vh}px`);
