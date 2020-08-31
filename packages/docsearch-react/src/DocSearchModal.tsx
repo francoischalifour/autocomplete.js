@@ -341,10 +341,6 @@ export function DocSearchModal({
     setFullViewportHeight();
     window.addEventListener('resize', setFullViewportHeight);
     return () => window.removeEventListener('resize', setFullViewportHeight);
-    // Dependency of use effect is an empty array to make it run onlcy once.
-    // Effect will not be called each time it updates.
-    // We only want the listener to be added once.
-    // Removing EventListener as useEffect cleanup.
   }, []);
 
   return (
