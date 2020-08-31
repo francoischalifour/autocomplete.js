@@ -27,7 +27,7 @@ export interface DocSearchModalProps extends DocSearchProps {
   onClose?(): void;
 }
 
-const setRealHeight = () => {
+const setFullViewportHeight = () => {
   // We update the value of the CSS variables
   const vh = window.innerHeight * 0.01;
   const modalElement = document.querySelector<HTMLElement>('.DocSearch-Modal')!;
@@ -338,9 +338,9 @@ export function DocSearchModal({
   React.useEffect(() => {
     // Inside of a "useEffect" hook add an event listener that updates
     // the "height" CSS variable when the window size changes.
-    setRealHeight();
-    window.addEventListener('resize', setRealHeight);
-    return () => window.removeEventListener('resize', setRealHeight);
+    setFullViewportHeight();
+    window.addEventListener('resize', setFullViewportHeight);
+    return () => window.removeEventListener('resize', setFullViewportHeight);
     // Dependency of use effect is an empty array to make it run onlcy once.
     // Effect will not be called each time it updates.
     // We only want the listener to be added once.
