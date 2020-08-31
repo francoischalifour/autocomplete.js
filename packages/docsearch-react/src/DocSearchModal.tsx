@@ -338,8 +338,6 @@ export function DocSearchModal({
   }, [initialQuery, refresh]);
 
   React.useEffect(() => {
-    // Inside of a "useEffect" hook add an event listener that updates
-    // the "height" CSS variable when the window size changes.
     setFullViewportHeight();
     window.addEventListener('resize', setFullViewportHeight);
     return () => window.removeEventListener('resize', setFullViewportHeight);
